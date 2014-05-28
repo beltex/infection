@@ -1,0 +1,39 @@
+/*
+  Note this CSS uses custom keywords for GraphStream
+
+  http://graphstream-project.org/doc/Tutorials/GraphStream-CSS-Reference_1.0/
+*/
+
+
+graph {
+    fill-color: #000000;
+}
+
+
+node {
+    /*
+      Node size and colour is dynamic. Size is based on the number of agents
+      in the node. Colour is based on the infection level in the node. It is a
+      interpolation based on 3 colours, green, yellow and red, where pure green
+      is no infections, and pure red is fully infected.
+    */
+
+    size-mode: dyn-size;
+
+    fill-mode: dyn-plain;
+    fill-color: #27AE60, #F1C40F, #C0392B;
+
+    text-size: 25px;
+    text-color: #FFFFFF;
+}
+
+
+edge {
+    /*
+      Edge colour flips between white and blue, where blue denotes that an agent
+      is traversing the edge
+    */
+
+    fill-mode: dyn-plain;
+    fill-color: #FFFFFF, #3498DB;
+}

@@ -1,0 +1,254 @@
+package main.java.sim;
+
+import java.util.HashMap;
+import java.util.Iterator;
+
+import org.graphstream.algorithm.ConnectedComponents;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.pmw.tinylog.Logger;
+
+import com.google.common.collect.Range;
+
+
+/**
+ * Extension of SingleGraph with added attributes and methods. Done for
+ * convenience and simplicity. No need to continually call set and get
+ * attribute with casts from Graph class.
+ *
+ */
+public class ExtendedGraph extends SingleGraph {
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PRIVATE ATTRIBUTES
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Number of agents in the whole graph
+     */
+    private int numAgents;
+
+
+    /**
+     * Which agent distribution method should be used
+     */
+    private int agentDistribution;
+
+
+    /**
+     * For SINGLE agent distribution. Which node should have all agents. See
+     * AgentDistribution class for more.
+     */
+    private String SINGLE_nodeID;
+
+
+    /**
+     * ID of the node select by RANDOM_SINGLE agent distribution. This is for
+     * internal reference. See AgentDistribution class for more.
+     */
+    private String RANDOM_SINGLE_nodeID;
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTORS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public ExtendedGraph(String id) {
+        super(id);
+
+        // Set custom node type for graph
+        setNodeFactory(new ExtendedNodeFactory());
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public String toString() {
+        // Info only relevant if SINGLE agent distribution being used
+        String single = "";
+        if (agentDistribution == AgentDistribution.SINGLE) {
+            single = "; SINGLE Node ID: " + SINGLE_nodeID;
+        }
+
+        return super.toString() +
+               "; Number of Agents: " + numAgents +
+               "; Agent Distribution Method: " + agentDistribution + single;
+    }
+
+
+    /**
+     * The number of agents infected by the leader across the whole graph
+     *
+     * @return Infection count
+     */
+    public int infectionCount() {
+        int count = 0;
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+            count += n.infectionCount();
+        }
+
+        return count;
+    }
+
+
+    /**
+     * The number of agents that believe leader election is complete across the
+     * whole graph
+     *
+     * @return Count of agents that believe election is complete
+     */
+    public int electionCompleteCount() {
+        int count = 0;
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+            count += n.electionCompleteCount();
+        }
+
+        return count;
+    }
+
+
+    /**
+     * Returns the probability spread across the graph. This is used for making
+     * for a weighted random node selection.
+     *
+     *
+     * @return Hash map with each node's ID and it's probability given as a
+     *         Range object
+     */
+    public HashMap<String, Range<Double>> agentSpread() {
+        double offset = 0.0;
+        HashMap<String, Range<Double>> map = new HashMap<String, Range<Double>>();
+
+
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+
+            // Probability of the node being selected
+            double p = (double) n.getAgentCount() / (double) numAgents;
+
+            // Upper bound for the range of the this node
+            double upper = offset + p;
+
+            // https://code.google.com/p/guava-libraries/wiki/RangesExplained
+            map.put(n.getId(), Range.closedOpen(offset, upper));
+
+            Logger.trace("{0}; Probability {1}; Offset {2}; Upper {3}", n,
+                                                                        p,
+                                                                        offset,
+                                                                        upper);
+
+            offset = upper;
+        }
+
+        return map;
+    }
+
+
+    /**
+     * Check if all agents are in a single node which has an out degree of 0,
+     * a dead end. Thus, no agent can escape. If this is the case, traversal
+     * actions cannot be attempted.
+     *
+     * @return True if the graph has hit a dead end, false otherwise
+     */
+    public boolean hasDeadEnd() {
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+
+            if (n.getAgentCount() == numAgents && n.getOutDegree() == 0) {
+                Logger.warn("ALL AGENTS HAVE HIT A DEAD END - NO MORE TRAVERSE ACTION");
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Is the graph connected?
+     *
+     * @return True if the graph is connected, false otherwise
+     */
+    public boolean isConnected() {
+        ConnectedComponents cc = new ConnectedComponents();
+        cc.init(this);
+
+        if (cc.getConnectedComponentsCount() == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS - GETTERS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * The number of agents in the whole graph. This is constant throughout the
+     * simulation.
+     *
+     * @return Number of agents in the graph
+     */
+    public int getNumAgents() {
+        return numAgents;
+    }
+
+
+    public String getSINGLE_nodeID() {
+        return SINGLE_nodeID;
+    }
+
+
+    public String getRANDOM_SINGLE_nodeID() {
+        return RANDOM_SINGLE_nodeID;
+    }
+
+
+    public int getAgentDistribution() {
+        return agentDistribution;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS - SETTERS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public void setNumAgents(int numAgents) {
+        this.numAgents = numAgents;
+    }
+
+
+    public void setSINGLE_nodeID(String SINGLE_nodeID) {
+        this.SINGLE_nodeID = SINGLE_nodeID;
+    }
+
+
+    public void setRANDOM_SINGLE_nodeID(String rANDOM_SINGLE_nodeID) {
+        RANDOM_SINGLE_nodeID = rANDOM_SINGLE_nodeID;
+    }
+
+
+    public void setAgentDistribution(int agentDistribution) {
+        this.agentDistribution = agentDistribution;
+    }
+}
