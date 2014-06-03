@@ -1,9 +1,10 @@
-package test.java.junit;
+package junit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import main.java.sim.Agent;
+
+import sim.*;
 
 import org.junit.Test;
 

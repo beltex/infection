@@ -1,4 +1,4 @@
-package main.java.sim;
+package sim;
 
 import java.io.File;
 import java.io.FileNotFoundException;

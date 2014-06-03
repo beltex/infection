@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 
 sourceCompatibility = '1.7'
-mainClassName = 'main.java.client.SampleClient'
+mainClassName = 'client.SampleClient'
 
 repositories {
     mavenCentral()

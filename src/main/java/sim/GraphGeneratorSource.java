@@ -1,4 +1,4 @@
-package main.java.sim;
+package sim;
 
 import org.graphstream.algorithm.generator.BaseGenerator;
 import org.graphstream.algorithm.generator.FullGenerator;

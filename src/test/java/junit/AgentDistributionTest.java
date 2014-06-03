@@ -1,14 +1,10 @@
-package test.java.junit;
+package junit;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
-import main.java.sim.AgentDistribution;
-import main.java.sim.ExtendedGraph;
-import main.java.sim.ExtendedNode;
-import main.java.sim.GraphVis;
-import main.java.sim.RandomSource;
+import sim.*;
 
 import org.junit.Before;
 import org.junit.Test;

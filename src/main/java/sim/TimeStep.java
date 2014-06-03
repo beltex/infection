@@ -1,4 +1,4 @@
-package main.java.sim;
+package sim;
 
 import org.graphstream.graph.Edge;
 import org.pmw.tinylog.Logger;

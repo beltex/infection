@@ -1,4 +1,4 @@
-package main.java.sim;
+package sim;
 
 import org.graphstream.algorithm.measure.ChartMeasure.PlotException;
 import org.graphstream.algorithm.measure.ChartSeries2DMeasure;

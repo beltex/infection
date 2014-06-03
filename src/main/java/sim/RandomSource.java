@@ -1,4 +1,4 @@
-package main.java.sim;
+package sim;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;

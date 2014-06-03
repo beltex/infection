@@ -1,8 +1,6 @@
-package main.java.client;
+package client;
 
-import main.java.sim.AgentDistribution;
-import main.java.sim.ExtendedGraph;
-import main.java.sim.Simulator;
+import sim.*;
 
 public class SampleClient {
 

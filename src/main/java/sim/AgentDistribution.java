@@ -1,4 +1,4 @@
-package main.java.sim;
+package sim;
 
 import java.util.ArrayList;
 import java.util.HashMap;
