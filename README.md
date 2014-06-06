@@ -38,7 +38,7 @@ and experiment.
 
 - Java (7)
 - [GraphStream](http://graphstream-project.org) (1.2)
-- [tinylog](http://www.tinylog.org) (0.8.1)
+- [tinylog](http://www.tinylog.org) (0.9.1)
 - Google Guava (16.0.1)
 - JUnit (4.11)
 - Gradle (1.10)

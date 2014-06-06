@@ -13,7 +13,7 @@ dependencies {
     compile 'org.graphstream:gs-core:1.2'
     compile 'org.graphstream:gs-algo:1.2'
     compile 'org.graphstream:gs-ui:1.2'
-    compile 'org.tinylog:tinylog:0.8.1'
+    compile 'org.tinylog:tinylog:0.9.1'
     compile 'com.google.guava:guava:16.0.1'
     testCompile 'junit:junit:4.11'
 }

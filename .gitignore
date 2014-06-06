@@ -2,7 +2,7 @@
 # Modified from Bootstrap
 
 # tinylog
-log*
+log.*
 tinylog.properties.dev
 
 # Gradle
