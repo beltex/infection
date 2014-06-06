@@ -1,7 +1,7 @@
 infection
 ====
 
-A simulator for studying infection algorithms for distributed agents with 
+A simulator for studying infection algorithms for distributed agents with
 variable graph topologies.
 
 This project is under the **MIT License**. See ```LICENSE``` file.
@@ -20,13 +20,15 @@ zombie apocalypse.
 
 ### Background
 
-4th year CS project supervised by professors **Patrick Dymond** & **Michael Jenkin**
+- 4th year CS project at York University supervised by professors
+  **Patrick Dymond** & **Michael Jenkin**
 
-This work is based on the paper, **_Infection algorithms for distributed
-agents_**, by **Rahul Chaturvedi**, **Patrick Dymond**, and **Michael Jenkin**.
-In the paper, infection algorithms for leader election were presented for a
-collection of numbered agents with the ability to determine probabilistically
-when election was completed.
+This work is based on the paper, [_Infection algorithms for distributed
+agents_](http://beltex.github.io/infection/paper-1.pdf), by
+**Rahul Chaturvedi**, **Patrick Dymond**, and **Michael Jenkin**. In the paper,
+infection algorithms for leader election were presented for a collection of
+numbered agents with the ability to determine probabilistically when election
+was completed.
 
 We extend the work by studying leader election using these infection algorithms,
 but now with variable graph topologies. To do so, a simulator is needed to test
@@ -56,7 +58,7 @@ gradle run
 # To create Eclipse project files
 gradle eclipse
 
-# To create Javadoc 
+# To create Javadoc
 # Docs found in - build/docs/javadoc/index.html
 gradle javadoc
 ```
@@ -64,3 +66,8 @@ gradle javadoc
 **Creating Your Own Simulation**
 
 Sample client classes can be found inside `src/main/java/client/`
+
+### References
+
+- [_Infection algorithms for distributed agents_](http://beltex.github.io/infection/paper-1.pdf)
+- [_Efficient leader election among numbered agents_](http://vgrserver.cs.yorku.ca/~jenkin/papers/2011/rahuldeit2011.pdf)
