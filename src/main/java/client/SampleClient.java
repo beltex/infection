@@ -10,7 +10,7 @@ public class SampleClient {
         final int B = 0;
         final int numAgents = 1000;
         final int maxTimeSteps = 100000;
-        final int runs = 2;
+        final int runs = 4;
 
         ExtendedGraph g = new ExtendedGraph("SampleClient");
 

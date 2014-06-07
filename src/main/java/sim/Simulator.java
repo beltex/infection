@@ -1,5 +1,7 @@
 package sim;
 
+import java.util.ArrayList;
+
 import org.pmw.tinylog.Logger;
 
 
@@ -54,7 +56,16 @@ public class Simulator  {
     private int maxTimeSteps;
 
 
+    /**
+     * How many times should the simulation be run?
+     */
     private int runs;
+
+
+    /**
+     * Hold data from simulation runs. Used for stats at the end.
+     */
+    private static final ArrayList<SimRun> runData = new ArrayList<SimRun>();
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -111,6 +122,7 @@ public class Simulator  {
 
         if (flag_vis) {
             GraphVis.getInstance().display();
+            flag_vis = false;
         }
 
         if (flag_generateGraph) {
@@ -142,10 +154,19 @@ public class Simulator  {
         /*
          * Create and distribute the agents
          */
-        Logger.info("GRAPH STATE: " + g.checkNumAgents());
         AgentDistribution dist = new AgentDistribution();
         dist.init(g);
         dist.execute();
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PROTECTED METHODS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    protected static ArrayList<SimRun> getRunData() {
+        return runData;
     }
 
 
@@ -157,12 +178,11 @@ public class Simulator  {
     /**
      * Execute the simulation
      *
-     * @throws Exception
      */
     public void execute() {
         for (int y = 0; y < runs; y++) {
-            Logger.info("RUN: " + y);
-
+            Logger.info("----------------------------------------------------");
+            Logger.info("STARTING RUN: " + (y + 1));
             init();
 
             TimeStep ts = new TimeStep(g, termA, termB, maxTimeSteps);
@@ -171,7 +191,43 @@ public class Simulator  {
             }
 
             ts.end(flag_charts);
+            Logger.info("ENDING RUN: " + (y + 1));
+            Logger.info("----------------------------------------------------");
         }
+
+        Logger.info("ALL SIMULATION RUNS COMPLETE");
+
+        stats();
+    }
+
+
+    public void stats() {
+        double infected = 0;
+        double eleComp = 0;
+        double interactions = 0;
+        double traversals = 0;
+        double marker_infectionComplete = 0;
+        double marker_leaderElectionComplete = 0;
+        double marker_allElectionComplete = 0;
+
+        for (SimRun r : runData) {
+            infected += (double)r.getInfected();
+            eleComp += (double)r.getEleComp();
+            interactions += (double)r.getInteractions();
+            traversals += (double)r.getTraversals();
+            marker_infectionComplete += (double)r.getMarker_infectionComplete();
+            marker_leaderElectionComplete += (double)r.getMarker_leaderElectionComplete();
+            marker_allElectionComplete += (double)r.getMarker_allElectionComplete();
+        }
+
+
+        Logger.info("# of INFECTED agents: " + (infected / runs));
+        Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
+        Logger.info("# of agent INTERACTIONS: " + (interactions / runs));
+        Logger.info("# of agent TRAVERSALS: " + (traversals/runs));
+        Logger.info("MARKER - Infection Complete Step: " + (marker_infectionComplete / runs));
+        Logger.info("MARKER - Leader Election Complete Step: " + (marker_leaderElectionComplete / runs));
+        Logger.info("MARKER - All Election Complete Step: " + (marker_allElectionComplete/runs));
     }
 
 

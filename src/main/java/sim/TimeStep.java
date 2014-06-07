@@ -74,7 +74,6 @@ public class TimeStep {
      * @param termB
      */
     public TimeStep(ExtendedGraph g, int termA, int termB, int maxSteps) {
-
         this.g = g;
         this.termA = termA;
         this.termB = termB;
@@ -83,6 +82,9 @@ public class TimeStep {
         infectionCounter = 1;
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
+        marker_infectionComplete = -1;
+        marker_leaderElectionComplete = -1;
+        marker_allElectionComplete = -1;
 
         icc = new InfectionCountChart(maxSteps);
         irc = new InfectionRateChart(maxSteps);
@@ -90,7 +92,7 @@ public class TimeStep {
         gv = GraphVis.getInstance();
         rs = RandomSource.getInstance();
 
-        Logger.debug("TimeStep inited");
+        Logger.debug("TimeStep INIT");
     }
 
 
@@ -345,6 +347,17 @@ public class TimeStep {
 
     private void postmortem() {
         Logger.info("Simulation POSTMORTEM - BEGIN");
+
+        SimRun run = new SimRun();
+        run.setInfected(g.infectionCount());
+        run.setEleComp(g.electionCompleteCount());
+        run.setInteractions(actionInteractCounter);
+        run.setTraversals(actionTraverseCounter);
+        run.setMarker_infectionComplete(marker_infectionComplete);
+        run.setMarker_leaderElectionComplete(marker_leaderElectionComplete);
+        run.setMarker_allElectionComplete(marker_allElectionComplete);
+
+        Simulator.getRunData().add(run);
 
         Logger.info("# of INFECTED agents: " + g.infectionCount() + "/" + g.getNumAgents());
         Logger.info("# of agents that believe election is COMPLETE: " + g.electionCompleteCount() + "/" + g.getNumAgents());
