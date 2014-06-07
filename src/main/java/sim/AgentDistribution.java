@@ -98,7 +98,7 @@ public class AgentDistribution {
 
     public void init(ExtendedGraph g) {
         this.g = g;
-
+        this.g.reset();
         Logger.info("Agent distribution INIT");
     }
 

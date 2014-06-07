@@ -54,6 +54,9 @@ public class Simulator  {
     private int maxTimeSteps;
 
 
+    private int runs;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -67,10 +70,12 @@ public class Simulator  {
      * @param termA Multiplicative factor
      * @param termB Additive factor
      * @param maxTimeSteps
+     * @param runs How many times should the simulation be run?
      */
     public Simulator(ExtendedGraph g, int numAgents, int termA,
                                                      int termB,
-                                                     int maxTimeSteps) {
+                                                     int maxTimeSteps,
+                                                     int runs) {
         if (numAgents < 2) {
             Logger.error("MUST have >= 2 agents");
             System.exit(-1);
@@ -83,8 +88,9 @@ public class Simulator  {
         this.termA = termA;
         this.termB = termB;
         this.maxTimeSteps = maxTimeSteps;
+        this.runs = runs;
 
-        Logger.info("Simulator initialized: " + toString());
+        Logger.info("Simulator INIT: " + toString());
     }
 
 
@@ -109,6 +115,9 @@ public class Simulator  {
 
         if (flag_generateGraph) {
             GraphGeneratorSource.getInstance().generateGraph(g);
+
+            // Only need to generate the graph once
+            flag_generateGraph = false;
         }
 
 
@@ -133,6 +142,7 @@ public class Simulator  {
         /*
          * Create and distribute the agents
          */
+        Logger.info("GRAPH STATE: " + g.checkNumAgents());
         AgentDistribution dist = new AgentDistribution();
         dist.init(g);
         dist.execute();
@@ -150,14 +160,18 @@ public class Simulator  {
      * @throws Exception
      */
     public void execute() {
-        init();
+        for (int y = 0; y < runs; y++) {
+            Logger.info("RUN: " + y);
 
-        TimeStep ts = new TimeStep(g, termA, termB, maxTimeSteps);
-        for (int i = 0; i < maxTimeSteps; i++) {
-            ts.step();
+            init();
+
+            TimeStep ts = new TimeStep(g, termA, termB, maxTimeSteps);
+            for (int i = 0; i < maxTimeSteps; i++) {
+                ts.step();
+            }
+
+            ts.end(flag_charts);
         }
-
-        ts.end(flag_charts);
     }
 
 
