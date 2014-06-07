@@ -68,48 +68,40 @@ public class RandomSource {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // CONSTRUCTOR
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    private RandomSource() {
-       try {
-           sr = SecureRandom.getInstance(ALGORITHM, PROVIDER);
-
-           /*
-            * Force SecureRandom to seed itself.
-            *
-            * From Javadoc:
-            *
-            * "The returned SecureRandom object has not been seeded. To seed the
-            *  returned object, call the setSeed method. If setSeed is not
-            *  called, the first call to nextBytes will force the SecureRandom
-            *  object to seed itself."
-            */
-           byte[] bytes = new byte[64];
-           sr.nextBytes(bytes);
-       } catch (NoSuchAlgorithmException e) {
-           e.printStackTrace();
-
-           /*
-            * We exit to prevent running on a machine with a different RNG that
-            * may give non-standard results. Fail loudly.
-            */
-           System.exit(-1);
-       } catch (NoSuchProviderException e) {
-           e.printStackTrace();
-           System.exit(-1);
-       }
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS
     ///////////////////////////////////////////////////////////////////////////
 
 
     public void init(ExtendedGraph g) {
         this.g = g;
+
+        try {
+            sr = SecureRandom.getInstance(ALGORITHM, PROVIDER);
+
+            /*
+             * Force SecureRandom to seed itself.
+             *
+             * From Javadoc:
+             *
+             * "The returned SecureRandom object has not been seeded. To seed the
+             *  returned object, call the setSeed method. If setSeed is not
+             *  called, the first call to nextBytes will force the SecureRandom
+             *  object to seed itself."
+             */
+            byte[] bytes = new byte[64];
+            sr.nextBytes(bytes);
+        } catch (NoSuchAlgorithmException e) {
+            Logger.error(e);
+
+            /*
+             * We exit to prevent running on a machine with a different RNG that
+             * may give non-standard results. Fail loudly.
+             */
+            System.exit(-1);
+        } catch (NoSuchProviderException e) {
+            Logger.error(e);
+            System.exit(-1);
+        }
     }
 
 
@@ -128,11 +120,8 @@ public class RandomSource {
      * Get a pair of random agents from the given node. Agents are different.
      * Method assumes that node has 2 or more agents.
      *
-     *        // Select a random pair of different agents
-        // An agent doesn't interact with itself
-
-     * @param n
-     * @return
+     * @param n Node to choose agents from
+     * @return Array holding two different agents
      */
     public Agent[] nextAgentPair(ExtendedNode n) {
         Agent[] agents = new Agent[2];
@@ -154,8 +143,8 @@ public class RandomSource {
     /**
      * Pick a random leaving (outgoing) edge from the node n.
      *
-     * @param n
-     * @return
+     * @param n Node to choose leaving edge from
+     * @return Edge Outgoing edge
      */
     public Edge nextLeavingEdge(ExtendedNode n) {
         // Valid edges to choose from
@@ -172,7 +161,7 @@ public class RandomSource {
     /**
      * Pick a random node in the graph
      *
-     * @return ExtendedNode
+     * @return ExtendedNode Random node
      */
     public ExtendedNode nextNode() {
         return g.getNode(sr.nextInt(g.getNodeCount()));
@@ -183,8 +172,9 @@ public class RandomSource {
      * Pick a random node in the graph factoring in the constraints of the
      * action.
      *
-     * @param action
-     * @return
+     * @param action Which action is this node going to be used for? Interact
+     *               or traverse?
+     * @return ExtendedNode Random node
      */
     public ExtendedNode nextNode(int action) {
         while (true) {
@@ -210,9 +200,9 @@ public class RandomSource {
      * Make sure that the selected node has at least one agent, otherwise a
      * time-step gets wasted with no action
      *
-     * @param minAgentCount
-     * @param flag If the action is a interact or traverse
-     * @return
+     * @param action Which action is this node going to be used for? Interact
+     *               or traverse?
+     * @return ExtendedNode Random node
      */
     public ExtendedNode nextNodeWeighted(int action) {
         ExtendedNode n = null;
@@ -253,10 +243,9 @@ public class RandomSource {
 
 
     /**
-     * Wrapper for nextInt
+     * Pick a random action to perform, interact or traverse.
      *
-     * @param range
-     * @return
+     * @return int Random action
      */
     public int nextAction() {
         // Determine the action. Flip a coin, pick which action, two agents
@@ -268,8 +257,7 @@ public class RandomSource {
     /**
      * Wrapper for nextInt
      *
-     * @param range
-     * @return
+     * @see java.util.Random#nextInt()
      */
     public int nextInt(int range) {
         return sr.nextInt(range);
@@ -279,8 +267,7 @@ public class RandomSource {
     /**
      * Wrapper for nextInt
      *
-     * @param range
-     * @return
+     * @see java.util.Random#nextDouble()
      */
     public double nextDouble() {
         return sr.nextDouble();
