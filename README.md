@@ -70,4 +70,4 @@ Sample client classes can be found inside `src/main/java/client/`
 ### References
 
 - [_Infection algorithms for distributed agents_](http://beltex.github.io/infection/paper-1.pdf)
-- [_Efficient leader election among numbered agents_](http://vgrserver.cs.yorku.ca/~jenkin/papers/2011/rahuldeit2011.pdf)
+- [_Efficient leader election among numbered agents_](http://beltex.github.io/infection/paper-2.pdf)
