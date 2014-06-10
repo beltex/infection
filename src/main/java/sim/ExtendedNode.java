@@ -107,6 +107,14 @@ public class ExtendedNode extends SingleNode {
     }
 
 
+    /**
+     * Clear the node (reset). This is done before a new run of a simulation.
+     */
+    public void reset() {
+        agents = new ArrayList<Agent>();
+    }
+
+
     public String toString() {
         return "ID: " + super.id +
                 "; Agent count: " + agents.size() +

@@ -197,6 +197,38 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
+    /**
+     * How many agents are currently in the graph? This is used to check if any
+     * agents have fallen off the graph.
+     *
+     * @return Number of agents across the graph currently
+     */
+    public int checkNumAgents() {
+        int count = 0;
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+            count += n.getAgentCount();
+        }
+
+        return count;
+    }
+
+
+    /**
+     * Clear the graph (reset it).
+     *
+     */
+    public void reset() {
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+
+        while (it.hasNext()) {
+            it.next().reset();
+        }
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - GETTERS
     ///////////////////////////////////////////////////////////////////////////

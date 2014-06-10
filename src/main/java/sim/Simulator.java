@@ -1,5 +1,7 @@
 package sim;
 
+import java.util.ArrayList;
+
 import org.pmw.tinylog.Logger;
 
 
@@ -54,6 +56,18 @@ public class Simulator  {
     private int maxTimeSteps;
 
 
+    /**
+     * How many times should the simulation be run?
+     */
+    private int runs;
+
+
+    /**
+     * Hold data from simulation runs. Used for stats at the end.
+     */
+    private static final ArrayList<SimRun> runData = new ArrayList<SimRun>();
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -67,10 +81,12 @@ public class Simulator  {
      * @param termA Multiplicative factor
      * @param termB Additive factor
      * @param maxTimeSteps
+     * @param runs How many times should the simulation be run?
      */
     public Simulator(ExtendedGraph g, int numAgents, int termA,
                                                      int termB,
-                                                     int maxTimeSteps) {
+                                                     int maxTimeSteps,
+                                                     int runs) {
         if (numAgents < 2) {
             Logger.error("MUST have >= 2 agents");
             System.exit(-1);
@@ -83,8 +99,9 @@ public class Simulator  {
         this.termA = termA;
         this.termB = termB;
         this.maxTimeSteps = maxTimeSteps;
+        this.runs = runs;
 
-        Logger.info("Simulator initialized: " + toString());
+        Logger.info("Simulator INIT: " + toString());
     }
 
 
@@ -105,10 +122,14 @@ public class Simulator  {
 
         if (flag_vis) {
             GraphVis.getInstance().display();
+            flag_vis = false;
         }
 
         if (flag_generateGraph) {
             GraphGeneratorSource.getInstance().generateGraph(g);
+
+            // Only need to generate the graph once
+            flag_generateGraph = false;
         }
 
 
@@ -140,6 +161,16 @@ public class Simulator  {
 
 
     ///////////////////////////////////////////////////////////////////////////
+    // PROTECTED METHODS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    protected static ArrayList<SimRun> getRunData() {
+        return runData;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS
     ///////////////////////////////////////////////////////////////////////////
 
@@ -147,17 +178,56 @@ public class Simulator  {
     /**
      * Execute the simulation
      *
-     * @throws Exception
      */
     public void execute() {
-        init();
+        for (int y = 0; y < runs; y++) {
+            Logger.info("----------------------------------------------------");
+            Logger.info("STARTING RUN: " + (y + 1));
+            init();
 
-        TimeStep ts = new TimeStep(g, termA, termB, maxTimeSteps);
-        for (int i = 0; i < maxTimeSteps; i++) {
-            ts.step();
+            TimeStep ts = new TimeStep(g, termA, termB, maxTimeSteps);
+            for (int i = 0; i < maxTimeSteps; i++) {
+                ts.step();
+            }
+
+            ts.end(flag_charts);
+            Logger.info("ENDING RUN: " + (y + 1));
+            Logger.info("----------------------------------------------------");
         }
 
-        ts.end(flag_charts);
+        Logger.info("ALL SIMULATION RUNS COMPLETE");
+
+        stats();
+    }
+
+
+    public void stats() {
+        double infected = 0;
+        double eleComp = 0;
+        double interactions = 0;
+        double traversals = 0;
+        double marker_infectionComplete = 0;
+        double marker_leaderElectionComplete = 0;
+        double marker_allElectionComplete = 0;
+
+        for (SimRun r : runData) {
+            infected += (double)r.getInfected();
+            eleComp += (double)r.getEleComp();
+            interactions += (double)r.getInteractions();
+            traversals += (double)r.getTraversals();
+            marker_infectionComplete += (double)r.getMarker_infectionComplete();
+            marker_leaderElectionComplete += (double)r.getMarker_leaderElectionComplete();
+            marker_allElectionComplete += (double)r.getMarker_allElectionComplete();
+        }
+
+
+        Logger.info("# of INFECTED agents: " + (infected / runs));
+        Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
+        Logger.info("# of agent INTERACTIONS: " + (interactions / runs));
+        Logger.info("# of agent TRAVERSALS: " + (traversals/runs));
+        Logger.info("MARKER - Infection Complete Step: " + (marker_infectionComplete / runs));
+        Logger.info("MARKER - Leader Election Complete Step: " + (marker_leaderElectionComplete / runs));
+        Logger.info("MARKER - All Election Complete Step: " + (marker_allElectionComplete/runs));
     }
 
 

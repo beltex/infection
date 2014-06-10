@@ -98,7 +98,7 @@ public class AgentDistribution {
 
     public void init(ExtendedGraph g) {
         this.g = g;
-
+        this.g.reset();
         Logger.info("Agent distribution INIT");
     }
 
@@ -205,12 +205,18 @@ public class AgentDistribution {
 
             ArrayList<Agent> sublist = new ArrayList<Agent>(agents.subList(0, allocate));
             n.addAgents(sublist);
-            Logger.info("Allocated {0} agents to {1}", allocate, n);
+            Logger.trace("Allocated {0} agents to {1}", allocate, n);
 
             agents.removeAll(sublist);
             remainingAgents = agents.size();
 
             gv.updateNode(n.getId());
+        }
+
+        // Log final starting distribution of agents
+        Iterator<ExtendedNode> it = g.getNodeIterator();
+        while (it.hasNext()) {
+            Logger.info(it.next());
         }
     }
 

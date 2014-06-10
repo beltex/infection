@@ -9,12 +9,13 @@ public class SampleClient {
         final int A = 4;
         final int B = 0;
         final int numAgents = 1000;
-        final int maxInteractions = 100000;
+        final int maxTimeSteps = 100000;
+        final int runs = 4;
 
         ExtendedGraph g = new ExtendedGraph("SampleClient");
 
         // Create a new simulation
-        Simulator sim = new Simulator(g, numAgents, A, B, maxInteractions);
+        Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs);
 
         // Configure simulation settings
 
@@ -25,10 +26,10 @@ public class SampleClient {
         sim.agentDistribution(AgentDistribution.RANDOM_SPREAD);
 
         // Turn on graph visualization
-        sim.vis();
+        //sim.vis();
 
         // Turn on charts
-        sim.charts();
+        //sim.charts();
 
         // Run the simulation
         sim.execute();
