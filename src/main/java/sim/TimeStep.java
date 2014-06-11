@@ -47,8 +47,17 @@ public class TimeStep {
     private int marker_leaderElectionComplete;
     private int marker_allElectionComplete;
 
-    private boolean f1 = true;
-    private boolean f2 = true;
+
+    /**
+     * Is infection complete?
+     */
+    private boolean flag_infectionComplete;
+
+
+    /**
+     * Do all agents believe election is complete?
+     */
+    private boolean flag_allElectionComplete;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -85,6 +94,8 @@ public class TimeStep {
         marker_infectionComplete = -1;
         marker_leaderElectionComplete = -1;
         marker_allElectionComplete = -1;
+        flag_infectionComplete = false;
+        flag_allElectionComplete = false;
 
         icc = new InfectionCountChart(maxSteps);
         irc = new InfectionRateChart(maxSteps);
@@ -138,14 +149,14 @@ public class TimeStep {
 
 
         // Marker checks
-        if (g.infectionCount() == g.getNumAgents() && f1) {
+        if (g.infectionCount() == g.getNumAgents() && !flag_infectionComplete) {
             marker_infectionComplete = step;
-            f1 = false;
+            flag_infectionComplete = true;
         }
 
-        if (g.electionCompleteCount() == g.getNumAgents() && f2) {
+        if (g.electionCompleteCount() == g.getNumAgents() && !flag_allElectionComplete) {
             marker_allElectionComplete = step;
-            f2 = false;
+            flag_allElectionComplete = true;
         }
 
 
