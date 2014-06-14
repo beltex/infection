@@ -210,16 +210,26 @@ public class Simulator  {
         double marker_leaderElectionComplete = 0;
         double marker_allElectionComplete = 0;
 
+        InfectionCountChart icc = new InfectionCountChart(maxTimeSteps);
+
+
         for (SimRun r : runData) {
             infected += (double)r.getInfected();
             eleComp += (double)r.getEleComp();
             interactions += (double)r.getInteractions();
             traversals += (double)r.getTraversals();
             marker_infectionComplete += (double)r.getMarker_infectionComplete();
+            icc.addDataPoint(g.getNumAgents(), r.getMarker_infectionComplete());
+
             marker_leaderElectionComplete += (double)r.getMarker_leaderElectionComplete();
+            icc.addDataPointLeader(g.getNumAgents(), r.getMarker_leaderElectionComplete());
+
+
             marker_allElectionComplete += (double)r.getMarker_allElectionComplete();
+            icc.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete());
         }
 
+        icc.plot();
 
         Logger.info("# of INFECTED agents: " + (infected / runs));
         Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
