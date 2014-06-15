@@ -78,12 +78,12 @@ public class ExtendedGraph extends SingleGraph {
         // Info only relevant if SINGLE agent distribution being used
         String single = "";
         if (agentDistribution == AgentDistribution.SINGLE) {
-            single = "; SINGLE Node ID: " + SINGLE_nodeID;
+            single = ";\n SINGLE Node ID: " + SINGLE_nodeID;
         }
 
-        return super.toString() +
-               "; Number of Agents: " + numAgents +
-               "; Agent Distribution Method: " + agentDistribution + single;
+        return ";\n Number of Agents: " + numAgents +
+               ";\n Agent Distribution Method: " +
+                  AgentDistribution.map.get(agentDistribution) + single;
     }
 
 

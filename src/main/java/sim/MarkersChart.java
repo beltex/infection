@@ -13,8 +13,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pmw.tinylog.Logger;
 
@@ -31,9 +29,9 @@ public class MarkersChart {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    private ChartSeries2DMeasure c;
-    private ChartSeries2DMeasure c2;
-    private ChartSeries2DMeasure c3;
+    private ChartSeries2DMeasure infectionComplete;
+    private ChartSeries2DMeasure leaderElectionComplete;
+    private ChartSeries2DMeasure allElectionComplete;
 
 
     private PlotParameters params;
@@ -46,8 +44,8 @@ public class MarkersChart {
 
     public MarkersChart(int maxItemCount) {
         params = new PlotParameters();
-        params.title = "Infection Count";
-        params.yAxisLabel = "Number of Agents Infected";
+        params.title = "Simulation Markers Chart";
+        params.yAxisLabel = "Number of Agents";
         params.xAxisLabel = "Time Step";
         params.type = PlotType.SCATTER;
         params.height = 720;
@@ -55,13 +53,11 @@ public class MarkersChart {
         params.path = System.getProperty("user.dir") +
                       File.separator + "logs" + File.separator + "test.png";
 
-        c = new ChartSeries2DMeasure("Infection Count");
-        c2 = new ChartSeries2DMeasure("Leader");
-        c3 = new ChartSeries2DMeasure("All");
+        infectionComplete = new ChartSeries2DMeasure("Infection Count");
+        leaderElectionComplete = new ChartSeries2DMeasure("Leader");
+        allElectionComplete = new ChartSeries2DMeasure("All");
         //chart.setWindowSize(maxItemCount);
-        c.getXYSeries().setMaximumItemCount(maxItemCount);
-
-        //XYSeries xy = c.getXYSeries();
+        infectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
 
         Logger.debug("Infection count chart INIT");
     }
@@ -73,15 +69,15 @@ public class MarkersChart {
 
 
     public void addDataPoint(int timeStep, int infectionCounter) {
-        c.addValue(timeStep, infectionCounter);
+        infectionComplete.addValue(timeStep, infectionCounter);
     }
 
     public void addDataPointLeader(int timeStep, int infectionCounter) {
-        c2.addValue(timeStep, infectionCounter);
+        leaderElectionComplete.addValue(timeStep, infectionCounter);
     }
 
     public void addDataPointAll(int timeStep, int infectionCounter) {
-        c3.addValue(timeStep, infectionCounter);
+        allElectionComplete.addValue(timeStep, infectionCounter);
     }
 
 
@@ -92,9 +88,9 @@ public class MarkersChart {
             JFreeChart chart = null;
             XYSeriesCollection dataset = new XYSeriesCollection();
 
-            dataset.addSeries(c.getXYSeries());
-            dataset.addSeries(c2.getXYSeries());
-            dataset.addSeries(c3.getXYSeries());
+            dataset.addSeries(infectionComplete.getXYSeries());
+            dataset.addSeries(leaderElectionComplete.getXYSeries());
+            dataset.addSeries(allElectionComplete.getXYSeries());
 
             chart = ChartFactory.createScatterPlot(params.title,
                     params.xAxisLabel, params.yAxisLabel, dataset,
@@ -132,11 +128,5 @@ public class MarkersChart {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-
-
-
-
     }
 }

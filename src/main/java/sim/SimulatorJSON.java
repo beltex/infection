@@ -6,6 +6,7 @@ import java.util.Date;
 import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class SimulatorJSON {
 
@@ -87,7 +88,7 @@ public class SimulatorJSON {
 
 
     public void exportToJSON() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Logger.info(gson.toJson(this));
     }
 

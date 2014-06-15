@@ -9,10 +9,6 @@ import org.pmw.tinylog.Logger;
  * The "controller" class. Single point of contact for the user.
  *
  */
-/**
- * @author OS
- *
- */
 public class Simulator  {
 
 
@@ -122,7 +118,7 @@ public class Simulator  {
         this.maxTimeSteps = maxTimeSteps;
         this.runs = runs;
 
-        Logger.info("Simulator INIT: " + toString());
+        Logger.info("Simulator CREATED");
     }
 
 
@@ -203,6 +199,8 @@ public class Simulator  {
      *
      */
     public void execute() {
+        Logger.info("Simulation SETTINGS" + toString());
+
         for (int y = 0; y < runs; y++) {
             Logger.info("----------------------------------------------------");
             Logger.info("STARTING RUN: " + (y + 1));
@@ -215,7 +213,7 @@ public class Simulator  {
                 if (ts.isFlag_infectionComplete() &&
                     ts.isFlag_leaderElectionComplete() &&
                     ts.isFlag_allElectionComplete()) {
-                    Logger.info("Cutting off simulation - all actions complete");
+                    Logger.info("STEP: {0}; Cutting off simulation - all actions complete", i);
                     break;
                 }
             }
@@ -297,10 +295,9 @@ public class Simulator  {
 
 
     public String toString() {
-        return "Graph: " + g +
-               "; Term A: " + termA +
-               "; Term B: " + termB +
-               "; Max interactions: " + maxTimeSteps;
+        return "\n\t Term A: " + termA +
+               ";\n\t Term B: " + termB +
+               ";\n\t Max interactions: " + maxTimeSteps;
     }
 
 

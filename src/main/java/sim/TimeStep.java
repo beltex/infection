@@ -63,7 +63,11 @@ public class TimeStep {
     private boolean flag_allElectionComplete;
 
 
+    /**
+     *
+     */
     private SimulatorRun simRun;
+
 
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED ATTRIBUTES
@@ -141,12 +145,12 @@ public class TimeStep {
         ExtendedNode n = null;
 
         switch (g.getNodeSelection()) {
-        case Simulator.NODE_WEIGHTED:
-            n = rs.nextNodeWeighted(action);
-            break;
-        case Simulator.NODE_NON_WEIGHTED:
-            n = rs.nextNode(action);
-            break;
+            case Simulator.NODE_WEIGHTED:
+                n = rs.nextNodeWeighted(action);
+                break;
+            case Simulator.NODE_NON_WEIGHTED:
+                n = rs.nextNode(action);
+                break;
         }
 
 
@@ -381,7 +385,11 @@ public class TimeStep {
             }
 
             Logger.info("STEP: {0}; Agent believes election is complete and " +
-                        "is the leader: {1}", step, agent);
+                        "is the leader " +
+                        "\n\t # of interactions: {1}; " +
+                        "{2}",
+                        step, actionInteractCounter, agent);
+
             return true;
         }
 

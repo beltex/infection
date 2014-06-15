@@ -13,7 +13,7 @@ public class SampleClient {
         final int runs = 1;
 
         ExtendedGraph g = new ExtendedGraph("SampleClient");
-        g.addNode("A");
+        //g.addNode("A");
 
         // Create a new simulation
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs);
@@ -21,7 +21,7 @@ public class SampleClient {
         // Configure simulation settings
 
         // Use a graph generator to auto create a graph. In this case, a chain
-//        sim.generateGraphChain(10, true, true, true);
+        sim.generateGraphChain(10, true, true, true);
 
         // Define how agents should be spread across the graph
         sim.agentDistribution(AgentDistribution.SINGLE);
@@ -30,7 +30,7 @@ public class SampleClient {
         sim.nodeSelection(Simulator.NODE_WEIGHTED);
 
         // Turn on graph visualization
-        sim.vis();
+        //sim.vis();
 
         // Turn on charts
         //sim.charts();
