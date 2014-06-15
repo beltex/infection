@@ -384,7 +384,7 @@ public class TimeStep {
         simRun.setInteractions(actionInteractCounter);
         simRun.setTraversals(actionTraverseCounter);
 
-        Simulator.getRunData().add(simRun);
+        Simulator.getSimulatoJSON().getRunData().add(simRun);
 
         Logger.info("# of INFECTED agents: " + g.infectionCount() + "/" + g.getNumAgents());
         Logger.info("# of agents that believe election is COMPLETE: " + g.electionCompleteCount() + "/" + g.getNumAgents());

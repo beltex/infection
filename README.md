@@ -6,6 +6,7 @@ variable graph topologies.
 
 This project is under the **MIT License**. See ```LICENSE``` file.
 
+
 ### Problem
 
 You want to send _n_ robots (agents) to Mars. For certain tasks, synchronization
@@ -17,6 +18,7 @@ robots need a means to choose a leader autonomously and efficiently. This is
 known as **leader election**, a problem in distributed computing. It can also be
 viewed as, for example, an infection spreading through a population, like a
 zombie apocalypse.
+
 
 ### Background
 
@@ -34,14 +36,17 @@ We extend the work by studying leader election using these infection algorithms,
 but now with variable graph topologies. To do so, a simulator is needed to test
 and experiment.
 
+
 ### Tech Stack
 
 - Java (7)
 - [GraphStream](http://graphstream-project.org) (1.2)
 - [tinylog](http://www.tinylog.org) (0.9.1)
-- Google Guava (16.0.1)
-- JUnit (4.11)
-- Gradle (1.10)
+- [Google Guava](https://code.google.com/p/guava-libraries/) (16.0.1)
+- [Google Gson](https://code.google.com/p/google-gson/) (2.2.4)
+- [JUnit](http://junit.org) (4.11)
+- [Gradle](http://www.gradle.org) (1.10)
+
 
 ### Setup & Use
 
@@ -75,6 +80,7 @@ gradle javadoc
 **Creating Your Own Simulation**
 
 Sample client classes can be found inside `src/main/java/client/`
+
 
 ### References
 

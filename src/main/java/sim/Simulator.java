@@ -9,6 +9,10 @@ import org.pmw.tinylog.Logger;
  * The "controller" class. Single point of contact for the user.
  *
  */
+/**
+ * @author OS
+ *
+ */
 public class Simulator  {
 
 
@@ -80,9 +84,9 @@ public class Simulator  {
 
 
     /**
-     * Hold data from simulation runs. Used for stats at the end.
+     *
      */
-    private static final ArrayList<SimulatorRun> runData = new ArrayList<SimulatorRun>();
+    private static SimulatorJSON simJSON = new SimulatorJSON();
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -184,8 +188,8 @@ public class Simulator  {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    protected static ArrayList<SimulatorRun> getRunData() {
-        return runData;
+    protected static SimulatorJSON getSimulatoJSON() {
+        return simJSON;
     }
 
 
@@ -236,8 +240,8 @@ public class Simulator  {
         MarkersChart icc = new MarkersChart(maxTimeSteps);
         MarkersChart icc2 = new MarkersChart(maxTimeSteps);
 
-
-        for (SimulatorRun r : runData) {
+        ArrayList<SimulatorRun> list = simJSON.getRunData();
+        for (SimulatorRun r : list) {
             infected += (double)r.getInfected();
             eleComp += (double)r.getEleComp();
             interactions += (double)r.getInteractions();
@@ -264,9 +268,6 @@ public class Simulator  {
 
             marker_allElectionComplete_interact += (double)r.getMarker_allElectionComplete_interact();
             icc2.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete_interact());
-
-
-
         }
 
         //icc.plot();
@@ -283,6 +284,8 @@ public class Simulator  {
         Logger.info("MARKER - Infection Complete INTERACT: " + (marker_infectionComplete_interact / runs));
         Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
         Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
+
+        simJSON.exportToJSON();
     }
 
 

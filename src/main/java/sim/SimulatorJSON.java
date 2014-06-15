@@ -3,6 +3,10 @@ package sim;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.pmw.tinylog.Logger;
+
+import com.google.gson.Gson;
+
 public class SimulatorJSON {
 
 
@@ -29,13 +33,21 @@ public class SimulatorJSON {
     private ExtendedGraph g;
 
 
-    private String graphType; // Chain, Grid, Fully Connected, Custom (directed, etc)
+    /**
+    * What is the graph type?
+    */
+    private String graphType;
+
+
+    /**
+    * How many agents
+    */
     private int numAgents;
     private int termA;
     private int termB;
     private int maxTimeSteps;
     private int runs;
-    //private int simVersion;
+    private int simVersion;
 
     // Averages set at the end
     private double infected;
@@ -46,6 +58,10 @@ public class SimulatorJSON {
     private double marker_leaderElectionComplete;
     private double marker_allElectionComplete;
 
+
+    /**
+     * Hold data from individual simulation runs
+     */
     private ArrayList<SimulatorRun> runData;
 
 
@@ -54,20 +70,29 @@ public class SimulatorJSON {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public SimulatorJSON(int numAgents, int termA, int termB, int maxTimeSteps, int runs) {
+    public SimulatorJSON() {
         date = new Date();
         runData = new ArrayList<SimulatorRun>();
-
-        this.numAgents = numAgents;
-        this.termA = termA;
-        this.termB = termB;
-        this.maxTimeSteps = maxTimeSteps;
-        this.runs = runs;
     }
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC METHODS
+    // PUBLIC METHODS - GETTERS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public boolean addRunData(SimulatorRun e) {
+        return runData.add(e);
+    }
+
+
+    public void exportToJSON() {
+        Gson gson = new Gson();
+        Logger.info(gson.toJson(this));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS - GETTERS
     ///////////////////////////////////////////////////////////////////////////
 
 
@@ -76,9 +101,9 @@ public class SimulatorJSON {
     }
 
 
-    public boolean addRunData(SimulatorRun e) {
-        return runData.add(e);
-    }
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS - SETTERS
+    ///////////////////////////////////////////////////////////////////////////
 
 
     public void setInfected(double infected) {
