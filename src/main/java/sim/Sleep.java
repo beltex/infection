@@ -12,14 +12,15 @@ public class Sleep {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PRIVATE ATTRIBUTES
+    // PUBLIC ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
 
 
     /**
-     * Default sleep value used across the simulator
+     * Default sleep value used across the simulator. This is used to slow down
+     * the simulation for better viewing of graph visualization.
      */
-    public static final int SLEEP = 0;
+    protected static int SLEEP = 0;
 
 
     ///////////////////////////////////////////////////////////////////////////

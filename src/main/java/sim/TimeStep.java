@@ -43,9 +43,6 @@ public class TimeStep {
     private int infectionCounter;
     private int actionInteractCounter;
     private int actionTraverseCounter;
-    private int marker_infectionComplete;
-    private int marker_leaderElectionComplete;
-    private int marker_allElectionComplete;
 
 
     /**
@@ -59,6 +56,8 @@ public class TimeStep {
      */
     private boolean flag_allElectionComplete;
 
+
+    private SimulatorRun simRun;
 
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED ATTRIBUTES
@@ -75,13 +74,6 @@ public class TimeStep {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    /**
-     *
-     *
-     * @param g Graph to operate on
-     * @param termA
-     * @param termB
-     */
     public TimeStep(ExtendedGraph g, int termA, int termB, int maxSteps) {
         this.g = g;
         this.termA = termA;
@@ -91,14 +83,15 @@ public class TimeStep {
         infectionCounter = 1;
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
-        marker_infectionComplete = -1;
-        marker_leaderElectionComplete = -1;
-        marker_allElectionComplete = -1;
+
+
         flag_infectionComplete = false;
         flag_allElectionComplete = false;
 
         icc = new InfectionCountChart(maxSteps);
         irc = new InfectionRateChart(maxSteps);
+
+        simRun = new SimulatorRun();
 
         gv = GraphVis.getInstance();
         rs = RandomSource.getInstance();
@@ -112,6 +105,9 @@ public class TimeStep {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    /**
+     * A single step of the simulation (tick or heart beat).
+     */
     public void step() {
         Logger.debug("Step: {0} BEGIN", step);
 
@@ -129,12 +125,22 @@ public class TimeStep {
             // Graph is safe for traverse action
             action = rs.nextAction();
         }
-
         Logger.debug("ACTION: {0}", action);
 
 
-        // Pick a random node
-        ExtendedNode n = rs.nextNodeWeighted(action);
+        /*
+         * Pick a random node
+         */
+        ExtendedNode n = null;
+
+        switch (g.getNodeSelection()) {
+        case Simulator.NODE_WEIGHTED:
+            n = rs.nextNodeWeighted(action);
+            break;
+        case Simulator.NODE_NON_WEIGHTED:
+            n = rs.nextNode(action);
+            break;
+        }
 
 
         /*
@@ -148,14 +154,25 @@ public class TimeStep {
         }
 
 
-        // Marker checks
+        /*
+         * Marker checks
+         */
+
+        // Is infection complete?
         if (g.infectionCount() == g.getNumAgents() && !flag_infectionComplete) {
-            marker_infectionComplete = step;
+            Logger.info("STEP: {0}; All agents INFECTED", step);
+            simRun.setMarker_infectionComplete(step);
+            simRun.setMarker_infectionComplete_interact(actionInteractCounter);
+
             flag_infectionComplete = true;
         }
 
+        // Do all agents believe election is complete?
         if (g.electionCompleteCount() == g.getNumAgents() && !flag_allElectionComplete) {
-            marker_allElectionComplete = step;
+            Logger.info("STEP: {0}; All agents believe election is complete", step);
+            simRun.setMarker_allElectionComplete(step);
+            simRun.setMarker_allElectionComplete_interact(actionInteractCounter);
+
             flag_allElectionComplete = true;
         }
 
@@ -166,10 +183,10 @@ public class TimeStep {
 
 
     /**
-     * Simulation complete, run cleanup
+     * Simulation run complete, cleanup
      */
     public void end(boolean plotChart) {
-        Logger.info("Simulation COMPLETE");
+        Logger.info("Simulation run COMPLETE");
         postmortem();
 
         if (plotChart) {
@@ -328,11 +345,14 @@ public class TimeStep {
             agent.setLeader(true);
             agent.setElectionComplete(true);
 
+            // Is this the real leader that believes election is complete?
             if (agent.getAID() == g.getNumAgents() - 1) {
-                marker_leaderElectionComplete = step;
+                simRun.setMarker_leaderElectionComplete(step);
+                simRun.setMarker_infectionComplete_interact(actionInteractCounter);
             }
 
-            Logger.info("Agent believes election is complete and is the leader: {0}", agent);
+            Logger.info("STEP: {0}; Agent believes election is complete and " +
+                        "is the leader: {1}", step, agent);
             return true;
         }
 
@@ -357,26 +377,26 @@ public class TimeStep {
 
 
     private void postmortem() {
-        Logger.info("Simulation POSTMORTEM - BEGIN");
+        Logger.info("Simulation run POSTMORTEM - BEGIN");
 
-        SimRun run = new SimRun();
-        run.setInfected(g.infectionCount());
-        run.setEleComp(g.electionCompleteCount());
-        run.setInteractions(actionInteractCounter);
-        run.setTraversals(actionTraverseCounter);
-        run.setMarker_infectionComplete(marker_infectionComplete);
-        run.setMarker_leaderElectionComplete(marker_leaderElectionComplete);
-        run.setMarker_allElectionComplete(marker_allElectionComplete);
+        simRun.setInfected(g.infectionCount());
+        simRun.setEleComp(g.electionCompleteCount());
+        simRun.setInteractions(actionInteractCounter);
+        simRun.setTraversals(actionTraverseCounter);
 
-        Simulator.getRunData().add(run);
+        Simulator.getRunData().add(simRun);
 
         Logger.info("# of INFECTED agents: " + g.infectionCount() + "/" + g.getNumAgents());
         Logger.info("# of agents that believe election is COMPLETE: " + g.electionCompleteCount() + "/" + g.getNumAgents());
         Logger.info("# of agent INTERACTIONS: " + actionInteractCounter);
         Logger.info("# of agent TRAVERSALS: " + actionTraverseCounter);
-        Logger.info("MARKER - Infection Complete Step: " + marker_infectionComplete);
-        Logger.info("MARKER - Leader Election Complete Step: " + marker_leaderElectionComplete);
-        Logger.info("MARKER - All Election Complete Step: " + marker_allElectionComplete);
+        Logger.info("MARKER - Infection Complete Step: " + simRun.getMarker_infectionComplete());
+        Logger.info("MARKER - Leader Election Complete Step: " + simRun.getMarker_leaderElectionComplete());
+        Logger.info("MARKER - All Election Complete Step: " + simRun.getMarker_allElectionComplete());
+
+        Logger.info("MARKER - Infection Complete INTERACT: " + simRun.getMarker_infectionComplete_interact());
+        Logger.info("MARKER - Leader Election Complete INTERACT: " + simRun.getMarker_leaderElectionComplete_interact());
+        Logger.info("MARKER - All Election Complete INTERACT: " + simRun.getMarker_allElectionComplete_interact());
 
         Logger.info("Simulation POSTMORTEM - COMPLETE");
     }

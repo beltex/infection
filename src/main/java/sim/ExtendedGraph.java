@@ -25,9 +25,15 @@ public class ExtendedGraph extends SingleGraph {
 
 
     /**
-     * Number of agents in the whole graph
+     * Number of agents in the whole graph (static)
      */
     private int numAgents;
+
+
+    /**
+     * Which node selection method should be used?
+     */
+    private int nodeSelection;
 
 
     /**
@@ -260,6 +266,11 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
+    public int getNodeSelection() {
+        return nodeSelection;
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - SETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -282,5 +293,10 @@ public class ExtendedGraph extends SingleGraph {
 
     public void setAgentDistribution(int agentDistribution) {
         this.agentDistribution = agentDistribution;
+    }
+
+
+    public void setNodeSelection(int nodeSelection) {
+        this.nodeSelection = nodeSelection;
     }
 }

@@ -26,8 +26,11 @@ public class SampleClient {
         // Define how agents should be spread across the graph
         sim.agentDistribution(AgentDistribution.SINGLE);
 
+        // Define how a node should be selected on every time step
+        sim.nodeSelection(Simulator.NODE_WEIGHTED);
+
         // Turn on graph visualization
-        //sim.vis();
+        sim.vis();
 
         // Turn on charts
         //sim.charts();

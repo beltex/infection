@@ -1,7 +1,5 @@
 TODO
 ====
-- [TimeStep] weighted vs non-weighted option for node selection
-- [Sleep] Configurable sleep for viewing graph vis
 - [GraphImage] Complete class - handle corner cases
 - [GraphIO] Unit tests
 - [Agent Distribution] Allow for leader placement

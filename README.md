@@ -47,6 +47,15 @@ and experiment.
 
 **Gradle**
 
+Gradle is used for build automation. It can be installed via Homebrew.
+
+```bash
+brew update
+brew install gradle
+```
+
+To use Gradle:
+
 ```bash
 # To build and run tests
 # Test results can be found in - build/reports/tests/index.html

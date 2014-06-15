@@ -115,8 +115,8 @@ public class AgentDistribution {
         int algo = g.getAgentDistribution();
 
         if (algo < SINGLE || algo > RANDOM_SPREAD) {
-            Logger.warn("Agent distribution algorithm NOT set - default to " +
-                        "SINGLE with all agents in node 0");
+            Logger.warn("Agent distribution algorithm NOT set or invalid - " +
+                        "default to SINGLE with all agents in node 0");
 
             g.setSINGLE_nodeID(g.getNode(0).getId());
             g.setAgentDistribution(SINGLE);
@@ -273,7 +273,7 @@ public class AgentDistribution {
 
 
     /**
-     * Create the agents. AID's start from 0 and go to n -1
+     * Create the agents. AID's start from 0 and go to n - 1
      *
      * @return Array list of the agent(s)
      */

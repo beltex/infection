@@ -6,10 +6,27 @@ import org.pmw.tinylog.Logger;
 
 
 /**
- * The controller class. Single point of contact for the user
+ * The "controller" class. Single point of contact for the user.
  *
  */
 public class Simulator  {
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC ATTRIBUTES
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Automatic graph generation flag
+     */
+    public static final int NODE_NON_WEIGHTED = 0;
+
+
+    /**
+     * Automatic graph generation flag
+     */
+    public static final int NODE_WEIGHTED = 1;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -65,7 +82,7 @@ public class Simulator  {
     /**
      * Hold data from simulation runs. Used for stats at the end.
      */
-    private static final ArrayList<SimRun> runData = new ArrayList<SimRun>();
+    private static final ArrayList<SimulatorRun> runData = new ArrayList<SimulatorRun>();
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -122,6 +139,8 @@ public class Simulator  {
 
         if (flag_vis) {
             GraphVis.getInstance().display();
+
+            // Only need to display graph once
             flag_vis = false;
         }
 
@@ -165,7 +184,7 @@ public class Simulator  {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    protected static ArrayList<SimRun> getRunData() {
+    protected static ArrayList<SimulatorRun> getRunData() {
         return runData;
     }
 
@@ -210,10 +229,15 @@ public class Simulator  {
         double marker_leaderElectionComplete = 0;
         double marker_allElectionComplete = 0;
 
-        InfectionCountChart icc = new InfectionCountChart(maxTimeSteps);
+        double marker_infectionComplete_interact = 0;
+        double marker_leaderElectionComplete_interact = 0;
+        double marker_allElectionComplete_interact = 0;
+
+        MarkersChart icc = new MarkersChart(maxTimeSteps);
+        MarkersChart icc2 = new MarkersChart(maxTimeSteps);
 
 
-        for (SimRun r : runData) {
+        for (SimulatorRun r : runData) {
             infected += (double)r.getInfected();
             eleComp += (double)r.getEleComp();
             interactions += (double)r.getInteractions();
@@ -227,9 +251,26 @@ public class Simulator  {
 
             marker_allElectionComplete += (double)r.getMarker_allElectionComplete();
             icc.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete());
+
+
+            ///
+
+            marker_infectionComplete_interact += (double)r.getMarker_infectionComplete_interact();
+            icc2.addDataPoint(g.getNumAgents(), r.getMarker_infectionComplete_interact());
+
+            marker_leaderElectionComplete_interact += (double)r.getMarker_leaderElectionComplete_interact();
+            icc2.addDataPointLeader(g.getNumAgents(), r.getMarker_leaderElectionComplete_interact());
+
+
+            marker_allElectionComplete_interact += (double)r.getMarker_allElectionComplete_interact();
+            icc2.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete_interact());
+
+
+
         }
 
-        icc.plot();
+        //icc.plot();
+        icc2.plot();
 
         Logger.info("# of INFECTED agents: " + (infected / runs));
         Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
@@ -238,6 +279,10 @@ public class Simulator  {
         Logger.info("MARKER - Infection Complete Step: " + (marker_infectionComplete / runs));
         Logger.info("MARKER - Leader Election Complete Step: " + (marker_leaderElectionComplete / runs));
         Logger.info("MARKER - All Election Complete Step: " + (marker_allElectionComplete/runs));
+
+        Logger.info("MARKER - Infection Complete INTERACT: " + (marker_infectionComplete_interact / runs));
+        Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
+        Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
     }
 
 
@@ -263,6 +308,29 @@ public class Simulator  {
      */
     public void agentDistribution(int agentDistributionAlgo) {
         g.setAgentDistribution(agentDistributionAlgo);
+    }
+
+
+    /**
+     * How should a node randomly be selected? Set node selection method.
+     *
+     * @param nodeSelectionMethod Node selection method
+     */
+    public void nodeSelection(int nodeSelectionMethod) {
+        g.setNodeSelection(nodeSelectionMethod);
+    }
+
+
+    /**
+     * How long should the simulator sleep between each graph action? This is
+     * default 0 ms, however if you would like to slow down the simulation to
+     * better view the visualization, then you will want to increase this.
+     *
+     * @param sleep How many milliseconds the simulation should sleep between
+     * 			    each event
+     */
+    public void visSleep(int sleep) {
+        Sleep.SLEEP = sleep;
     }
 
 
