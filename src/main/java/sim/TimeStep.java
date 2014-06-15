@@ -52,6 +52,12 @@ public class TimeStep {
 
 
     /**
+     * Does the leader believe election is complete?
+     */
+    private boolean flag_leaderElectionComplete;
+
+
+    /**
      * Do all agents believe election is complete?
      */
     private boolean flag_allElectionComplete;
@@ -86,6 +92,7 @@ public class TimeStep {
 
 
         flag_infectionComplete = false;
+        flag_leaderElectionComplete = false;
         flag_allElectionComplete = false;
 
         icc = new InfectionCountChart(maxSteps);
@@ -193,6 +200,26 @@ public class TimeStep {
             icc.plot();
             irc.plot();
         }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS - GETTERS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public boolean isFlag_infectionComplete() {
+        return flag_infectionComplete;
+    }
+
+
+    public boolean isFlag_leaderElectionComplete() {
+        return flag_leaderElectionComplete;
+    }
+
+
+    public boolean isFlag_allElectionComplete() {
+        return flag_allElectionComplete;
     }
 
 
@@ -349,6 +376,8 @@ public class TimeStep {
             if (agent.getAID() == g.getNumAgents() - 1) {
                 simRun.setMarker_leaderElectionComplete(step);
                 simRun.setMarker_infectionComplete_interact(actionInteractCounter);
+
+                flag_leaderElectionComplete = true;
             }
 
             Logger.info("STEP: {0}; Agent believes election is complete and " +

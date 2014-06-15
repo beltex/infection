@@ -211,6 +211,13 @@ public class Simulator  {
             TimeStep ts = new TimeStep(g, termA, termB, maxTimeSteps);
             for (int i = 0; i < maxTimeSteps; i++) {
                 ts.step();
+
+                if (ts.isFlag_infectionComplete() &&
+                    ts.isFlag_leaderElectionComplete() &&
+                    ts.isFlag_allElectionComplete()) {
+                    Logger.info("Cutting off simulation - all actions complete");
+                    break;
+                }
             }
 
             ts.end(flag_charts);
