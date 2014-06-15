@@ -1,5 +1,7 @@
 package client;
 
+import org.pmw.tinylog.Level;
+
 import sim.*;
 
 public class SampleClient {
@@ -16,7 +18,7 @@ public class SampleClient {
         //g.addNode("A");
 
         // Create a new simulation
-        Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs);
+        Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.INFO);
 
         // Configure simulation settings
 

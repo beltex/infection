@@ -8,6 +8,8 @@ TODO
 - [CSS] Add sprite to show direction of traversal for undirected graphs
 - [CSS] Change the size of the label for when graph is really dense
 - [gh-pages] Add graph screenshot to README.md
+- Update to NIO
+- Simulation run dir - have additional counter label for easier cd
 - Check for self edges in a graph?
 - Complete and add scripts (make_movie.sh, etc)
 - Do package-info.java

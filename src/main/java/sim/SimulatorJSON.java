@@ -1,5 +1,10 @@
 package sim;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -72,13 +77,12 @@ public class SimulatorJSON {
 
 
     public SimulatorJSON() {
-        date = new Date();
         runData = new ArrayList<SimulatorRun>();
     }
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC METHODS - GETTERS
+    // PUBLIC METHODS
     ///////////////////////////////////////////////////////////////////////////
 
 
@@ -87,10 +91,23 @@ public class SimulatorJSON {
     }
 
 
-    public void exportToJSON() {
+    public String toJSON() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Logger.info(gson.toJson(this));
+        return gson.toJson(this);
     }
+
+
+    public void writeJSON(String dirName, String timestamp) {
+        String jsonName = "data." + timestamp + ".json";
+        Path path = FileSystems.getDefault().getPath("logs", dirName, jsonName);
+
+        try {
+            Files.write(path, this.toJSON().getBytes(), StandardOpenOption.CREATE);
+        } catch (IOException e) {
+            Logger.error(e);
+        }
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - GETTERS
@@ -105,6 +122,11 @@ public class SimulatorJSON {
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - SETTERS
     ///////////////////////////////////////////////////////////////////////////
+
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
 
     public void setInfected(double infected) {

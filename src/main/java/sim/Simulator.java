@@ -1,8 +1,19 @@
 package sim;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
+import org.pmw.tinylog.Configurator;
+import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
+import org.pmw.tinylog.writers.RollingFileWriter;
 
 
 /**
@@ -85,6 +96,9 @@ public class Simulator  {
     private static SimulatorJSON simJSON = new SimulatorJSON();
 
 
+    private TinylogProperties tinylog;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -103,11 +117,17 @@ public class Simulator  {
     public Simulator(ExtendedGraph g, int numAgents, int termA,
                                                      int termB,
                                                      int maxTimeSteps,
-                                                     int runs) {
+                                                     int runs,
+                                                     Level level) {
+        // Init logging
+        tinylog = new TinylogProperties(level);
+
         if (numAgents < 2) {
             Logger.error("MUST have >= 2 agents");
             System.exit(-1);
         }
+
+
 
         this.g = g;
         this.g.setNullAttributesAreErrors(true);
@@ -118,9 +138,11 @@ public class Simulator  {
         this.maxTimeSteps = maxTimeSteps;
         this.runs = runs;
 
+        simJSON.setDate(tinylog.getDate());
         simJSON.setTermA(termA);
         simJSON.setTermB(termB);
         simJSON.setRuns(runs);
+
 
         Logger.info("Simulator CREATED");
     }
@@ -293,7 +315,7 @@ public class Simulator  {
         Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
         Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
 
-        simJSON.exportToJSON();
+        simJSON.writeJSON(tinylog.getDirName(), tinylog.getTimestamp());
     }
 
 
