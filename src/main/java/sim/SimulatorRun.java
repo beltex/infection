@@ -1,5 +1,7 @@
 package sim;
 
+import java.util.LinkedHashMap;
+
 
 /**
  * Hold all data from a single simulation run
@@ -16,7 +18,7 @@ public class SimulatorRun {
     /**
      * How many agents were infected?
      */
-    private int infectionCount;
+    private int infections;
 
 
     /**
@@ -32,7 +34,7 @@ public class SimulatorRun {
 
 
     /**
-     * How many traversal actions occured?
+     * How many traversal actions occurred?
      */
     private int traversals;
 
@@ -40,49 +42,66 @@ public class SimulatorRun {
     /**
      * At what time step did all agents became infected?
      */
-    private int marker_infectionComplete;
+    private int infectionCompleteStep;
 
 
     /**
      * At what time step did the leader believe infection was complete?
      */
-    private int marker_leaderElectionComplete;
+    private int leaderElectionCompleteStep;
 
 
     /**
      * At what time step did all agents believe election was complete?
      */
-    private int marker_allElectionComplete;
+    private int allElectionCompleteStep;
 
 
     /**
      * How many interactions had occurred at the time step in which all agents
      * became infected?
      */
-    private int marker_infectionComplete_interact;
+    private int infectionCompleteInteractions;
 
 
     /**
      * How many interactions had occurred at the time step in which the leader
      * believed election was complete?
      */
-    private int marker_leaderElectionComplete_interact;
+    private int leaderElectionCompleteInteractions;
 
 
     /**
      * How many interactions had occurred at the time step in which the all
      * agents believed election was complete?
      */
-    private int marker_allElectionComplete_interact;
+    private int allElectionCompleteInteractions;
+
+
+    /**
+     * XY pairs - step, infection level for simulation run. This can be used
+     * for charts.
+     */
+    private LinkedHashMap<Integer, Integer> stepInfectionsMap;
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC METHODS - GETTERS
+    // CONSTRUCTORS
     ///////////////////////////////////////////////////////////////////////////
 
 
     public SimulatorRun() {
+        stepInfectionsMap = new LinkedHashMap<Integer, Integer>();
+    }
 
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public void addInfection(int step, int infectionCount) {
+        stepInfectionsMap.put(step, infectionCount);
     }
 
 
@@ -91,45 +110,12 @@ public class SimulatorRun {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public int getMarker_infectionComplete_interact() {
-        return marker_infectionComplete_interact;
+    public int getInfections() {
+        return infections;
     }
 
 
-    public int getMarker_leaderElectionComplete_interact() {
-        return marker_leaderElectionComplete_interact;
-    }
-
-
-    public int getMarker_allElectionComplete_interact() {
-        return marker_allElectionComplete_interact;
-    }
-
-
-    public void setMarker_infectionComplete_interact(
-            int marker_infectionComplete_interact) {
-        this.marker_infectionComplete_interact = marker_infectionComplete_interact;
-    }
-
-
-    public void setMarker_leaderElectionComplete_interact(
-            int marker_leaderElectionComplete_interact) {
-        this.marker_leaderElectionComplete_interact = marker_leaderElectionComplete_interact;
-    }
-
-
-    public void setMarker_allElectionComplete_interact(
-            int marker_allElectionComplete_interact) {
-        this.marker_allElectionComplete_interact = marker_allElectionComplete_interact;
-    }
-
-
-    public int getInfected() {
-        return infectionCount;
-    }
-
-
-    public int getEleComp() {
+    public int getElectionCompleteCount() {
         return electionCompleteCount;
     }
 
@@ -144,18 +130,38 @@ public class SimulatorRun {
     }
 
 
-    public int getMarker_infectionComplete() {
-        return marker_infectionComplete;
+    public int getInfectionCompleteStep() {
+        return infectionCompleteStep;
     }
 
 
-    public int getMarker_leaderElectionComplete() {
-        return marker_leaderElectionComplete;
+    public int getLeaderElectionCompleteStep() {
+        return leaderElectionCompleteStep;
     }
 
 
-    public int getMarker_allElectionComplete() {
-        return marker_allElectionComplete;
+    public int getAllElectionCompleteStep() {
+        return allElectionCompleteStep;
+    }
+
+
+    public int getInfectionCompleteInteractions() {
+        return infectionCompleteInteractions;
+    }
+
+
+    public int getLeaderElectionCompleteInteractions() {
+        return leaderElectionCompleteInteractions;
+    }
+
+
+    public int getAllElectionCompleteInteractions() {
+        return allElectionCompleteInteractions;
+    }
+
+
+    public LinkedHashMap<Integer, Integer> getStepInfectionsMap() {
+        return stepInfectionsMap;
     }
 
 
@@ -164,13 +170,13 @@ public class SimulatorRun {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public void setInfected(int infected) {
-        this.infectionCount = infected;
+    public void setInfections(int infections) {
+        this.infections = infections;
     }
 
 
-    public void setEleComp(int eleComp) {
-        this.electionCompleteCount = eleComp;
+    public void setElectionCompleteCount(int electionCompleteCount) {
+        this.electionCompleteCount = electionCompleteCount;
     }
 
 
@@ -184,17 +190,34 @@ public class SimulatorRun {
     }
 
 
-    public void setMarker_infectionComplete(int marker_infectionComplete) {
-        this.marker_infectionComplete = marker_infectionComplete;
+    public void setInfectionCompleteStep(int infectionCompleteStep) {
+        this.infectionCompleteStep = infectionCompleteStep;
     }
 
 
-    public void setMarker_leaderElectionComplete(int marker_leaderElectionComplete) {
-        this.marker_leaderElectionComplete = marker_leaderElectionComplete;
+    public void setLeaderElectionCompleteStep(int leaderElectionCompleteStep) {
+        this.leaderElectionCompleteStep = leaderElectionCompleteStep;
     }
 
 
-    public void setMarker_allElectionComplete(int marker_allElectionComplete) {
-        this.marker_allElectionComplete = marker_allElectionComplete;
+    public void setAllElectionCompleteStep(int allElectionCompleteStep) {
+        this.allElectionCompleteStep = allElectionCompleteStep;
+    }
+
+
+    public void setInfectionCompleteInteractions(int infectionCompleteInteractions) {
+        this.infectionCompleteInteractions = infectionCompleteInteractions;
+    }
+
+
+    public void setLeaderElectionCompleteInteractions(
+            int leaderElectionCompleteInteractions) {
+        this.leaderElectionCompleteInteractions = leaderElectionCompleteInteractions;
+    }
+
+
+    public void setAllElectionCompleteInteractions(
+            int allElectionCompleteInteractions) {
+        this.allElectionCompleteInteractions = allElectionCompleteInteractions;
     }
 }

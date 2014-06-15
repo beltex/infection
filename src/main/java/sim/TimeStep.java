@@ -26,10 +26,7 @@ public class TimeStep {
     private RandomSource rs;
 
 
-    private InfectionCountChart icc;
-
-
-    private InfectionRateChart irc;
+    private SimulatorRun simRun;
 
 
     /**
@@ -63,12 +60,6 @@ public class TimeStep {
     private boolean flag_allElectionComplete;
 
 
-    /**
-     *
-     */
-    private SimulatorRun simRun;
-
-
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
@@ -84,7 +75,7 @@ public class TimeStep {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public TimeStep(ExtendedGraph g, int termA, int termB, int maxSteps) {
+    public TimeStep(ExtendedGraph g, int termA, int termB) {
         this.g = g;
         this.termA = termA;
         this.termB = termB;
@@ -94,18 +85,16 @@ public class TimeStep {
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
 
-
         flag_infectionComplete = false;
         flag_leaderElectionComplete = false;
         flag_allElectionComplete = false;
-
-        icc = new InfectionCountChart(maxSteps);
-        irc = new InfectionRateChart(maxSteps);
 
         simRun = new SimulatorRun();
 
         gv = GraphVis.getInstance();
         rs = RandomSource.getInstance();
+
+        simRun.addInfection(step, infectionCounter);
 
         Logger.debug("TimeStep INIT");
     }
@@ -172,8 +161,8 @@ public class TimeStep {
         // Is infection complete?
         if (g.infectionCount() == g.getNumAgents() && !flag_infectionComplete) {
             Logger.info("STEP: {0}; All agents INFECTED", step);
-            simRun.setMarker_infectionComplete(step);
-            simRun.setMarker_infectionComplete_interact(actionInteractCounter);
+            simRun.setInfectionCompleteStep(step);
+            simRun.setInfectionCompleteInteractions(actionInteractCounter);
 
             flag_infectionComplete = true;
         }
@@ -181,8 +170,8 @@ public class TimeStep {
         // Do all agents believe election is complete?
         if (g.electionCompleteCount() == g.getNumAgents() && !flag_allElectionComplete) {
             Logger.info("STEP: {0}; All agents believe election is complete", step);
-            simRun.setMarker_allElectionComplete(step);
-            simRun.setMarker_allElectionComplete_interact(actionInteractCounter);
+            simRun.setAllElectionCompleteStep(step);
+            simRun.setAllElectionCompleteInteractions(actionInteractCounter);
 
             flag_allElectionComplete = true;
         }
@@ -196,14 +185,9 @@ public class TimeStep {
     /**
      * Simulation run complete, cleanup
      */
-    public void end(boolean plotChart) {
+    public void end() {
         Logger.info("Simulation run COMPLETE");
         postmortem();
-
-        if (plotChart) {
-            icc.plot();
-            irc.plot();
-        }
     }
 
 
@@ -348,9 +332,7 @@ public class TimeStep {
 
         if (infector.getLeaderAID() == g.getNumAgents() - 1) {
             infectionCounter++;
-
-            icc.addDataPoint(step, infectionCounter);
-            irc.addDataPoint(step, infectionCounter);
+            simRun.addInfection(step, infectionCounter);
         }
     }
 
@@ -378,8 +360,8 @@ public class TimeStep {
 
             // Is this the real leader that believes election is complete?
             if (agent.getAID() == g.getNumAgents() - 1) {
-                simRun.setMarker_leaderElectionComplete(step);
-                simRun.setMarker_infectionComplete_interact(actionInteractCounter);
+                simRun.setLeaderElectionCompleteStep(step);
+                simRun.setLeaderElectionCompleteInteractions(actionInteractCounter);
 
                 flag_leaderElectionComplete = true;
             }
@@ -416,24 +398,28 @@ public class TimeStep {
     private void postmortem() {
         Logger.info("Simulation run POSTMORTEM - BEGIN");
 
-        simRun.setInfected(g.infectionCount());
-        simRun.setEleComp(g.electionCompleteCount());
+        // Set completed simulation run stats
+        simRun.setInfections(g.infectionCount());
+        simRun.setElectionCompleteCount(g.electionCompleteCount());
         simRun.setInteractions(actionInteractCounter);
         simRun.setTraversals(actionTraverseCounter);
 
+        // Add it to the list of all runs
         Simulator.getSimulatoJSON().getRunData().add(simRun);
 
+        /*
+         * Log stats
+         */
         Logger.info("# of INFECTED agents: " + g.infectionCount() + "/" + g.getNumAgents());
         Logger.info("# of agents that believe election is COMPLETE: " + g.electionCompleteCount() + "/" + g.getNumAgents());
         Logger.info("# of agent INTERACTIONS: " + actionInteractCounter);
         Logger.info("# of agent TRAVERSALS: " + actionTraverseCounter);
-        Logger.info("MARKER - Infection Complete Step: " + simRun.getMarker_infectionComplete());
-        Logger.info("MARKER - Leader Election Complete Step: " + simRun.getMarker_leaderElectionComplete());
-        Logger.info("MARKER - All Election Complete Step: " + simRun.getMarker_allElectionComplete());
-
-        Logger.info("MARKER - Infection Complete INTERACT: " + simRun.getMarker_infectionComplete_interact());
-        Logger.info("MARKER - Leader Election Complete INTERACT: " + simRun.getMarker_leaderElectionComplete_interact());
-        Logger.info("MARKER - All Election Complete INTERACT: " + simRun.getMarker_allElectionComplete_interact());
+        Logger.info("MARKER - Infection Complete Step: " + simRun.getInfectionCompleteStep());
+        Logger.info("MARKER - Leader Election Complete Step: " + simRun.getLeaderElectionCompleteStep());
+        Logger.info("MARKER - All Election Complete Step: " + simRun.getAllElectionCompleteStep());
+        Logger.info("MARKER - Infection Complete INTERACTIONS: " + simRun.getInfectionCompleteInteractions());
+        Logger.info("MARKER - Leader Election Complete INTERACTIONS: " + simRun.getLeaderElectionCompleteInteractions());
+        Logger.info("MARKER - All Election Complete INTERACTIONS: " + simRun.getAllElectionCompleteInteractions());
 
         Logger.info("Simulation POSTMORTEM - COMPLETE");
     }

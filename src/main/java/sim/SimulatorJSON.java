@@ -141,4 +141,49 @@ public class SimulatorJSON {
     public void setMarker_allElectionComplete(double marker_allElectionComplete) {
         this.marker_allElectionComplete = marker_allElectionComplete;
     }
+
+
+    public void setLogFile(String logFile) {
+        this.logFile = logFile;
+    }
+
+
+    public void setGraphType(String graphType) {
+        this.graphType = graphType;
+    }
+
+
+    public void setNumAgents(int numAgents) {
+        this.numAgents = numAgents;
+    }
+
+
+    public void setTermA(int termA) {
+        this.termA = termA;
+    }
+
+
+    public void setTermB(int termB) {
+        this.termB = termB;
+    }
+
+
+    public void setMaxTimeSteps(int maxTimeSteps) {
+        this.maxTimeSteps = maxTimeSteps;
+    }
+
+
+    public void setRuns(int runs) {
+        this.runs = runs;
+    }
+
+
+    public void setSimVersion(int simVersion) {
+        this.simVersion = simVersion;
+    }
+
+
+    public void setRunData(ArrayList<SimulatorRun> runData) {
+        this.runData = runData;
+    }
 }

@@ -118,6 +118,10 @@ public class Simulator  {
         this.maxTimeSteps = maxTimeSteps;
         this.runs = runs;
 
+        simJSON.setTermA(termA);
+        simJSON.setTermB(termB);
+        simJSON.setRuns(runs);
+
         Logger.info("Simulator CREATED");
     }
 
@@ -206,7 +210,7 @@ public class Simulator  {
             Logger.info("STARTING RUN: " + (y + 1));
             init();
 
-            TimeStep ts = new TimeStep(g, termA, termB, maxTimeSteps);
+            TimeStep ts = new TimeStep(g, termA, termB);
             for (int i = 0; i < maxTimeSteps; i++) {
                 ts.step();
 
@@ -218,7 +222,7 @@ public class Simulator  {
                 }
             }
 
-            ts.end(flag_charts);
+            ts.end();
             Logger.info("ENDING RUN: " + (y + 1));
             Logger.info("----------------------------------------------------");
         }
@@ -247,36 +251,35 @@ public class Simulator  {
 
         ArrayList<SimulatorRun> list = simJSON.getRunData();
         for (SimulatorRun r : list) {
-            infected += (double)r.getInfected();
-            eleComp += (double)r.getEleComp();
+            infected += (double)r.getInfections();
+            eleComp += (double)r.getElectionCompleteCount();
             interactions += (double)r.getInteractions();
             traversals += (double)r.getTraversals();
-            marker_infectionComplete += (double)r.getMarker_infectionComplete();
-            icc.addDataPoint(g.getNumAgents(), r.getMarker_infectionComplete());
+            marker_infectionComplete += (double)r.getInfectionCompleteStep();
+//            icc.addDataPoint(g.getNumAgents(), r.getMarker_infectionComplete());
 
-            marker_leaderElectionComplete += (double)r.getMarker_leaderElectionComplete();
-            icc.addDataPointLeader(g.getNumAgents(), r.getMarker_leaderElectionComplete());
+            marker_leaderElectionComplete += (double)r.getLeaderElectionCompleteStep();
+//            icc.addDataPointLeader(g.getNumAgents(), r.getMarker_leaderElectionComplete());
 
 
-            marker_allElectionComplete += (double)r.getMarker_allElectionComplete();
-            icc.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete());
+            marker_allElectionComplete += (double)r.getAllElectionCompleteStep();
+//            icc.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete());
 
 
             ///
 
-            marker_infectionComplete_interact += (double)r.getMarker_infectionComplete_interact();
-            icc2.addDataPoint(g.getNumAgents(), r.getMarker_infectionComplete_interact());
+            marker_infectionComplete_interact += (double)r.getInfectionCompleteInteractions();
+//            icc2.addDataPoint(g.getNumAgents(), r.getMarker_infectionComplete_interact());
 
-            marker_leaderElectionComplete_interact += (double)r.getMarker_leaderElectionComplete_interact();
-            icc2.addDataPointLeader(g.getNumAgents(), r.getMarker_leaderElectionComplete_interact());
+            marker_leaderElectionComplete_interact += (double)r.getLeaderElectionCompleteInteractions();
+//            icc2.addDataPointLeader(g.getNumAgents(), r.getMarker_leaderElectionComplete_interact());
 
 
-            marker_allElectionComplete_interact += (double)r.getMarker_allElectionComplete_interact();
-            icc2.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete_interact());
+            marker_allElectionComplete_interact += (double)r.getAllElectionCompleteInteractions();
+//            icc2.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete_interact());
         }
 
-        //icc.plot();
-        icc2.plot();
+//        icc2.plot();
 
         Logger.info("# of INFECTED agents: " + (infected / runs));
         Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
