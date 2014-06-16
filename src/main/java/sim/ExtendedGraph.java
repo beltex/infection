@@ -25,9 +25,15 @@ public class ExtendedGraph extends SingleGraph {
 
 
     /**
-     * Number of agents in the whole graph
+     * Number of agents in the whole graph (static)
      */
     private int numAgents;
+
+
+    /**
+     * Which node selection method should be used?
+     */
+    private int nodeSelection;
 
 
     /**
@@ -48,6 +54,9 @@ public class ExtendedGraph extends SingleGraph {
      * internal reference. See AgentDistribution class for more.
      */
     private String RANDOM_SINGLE_nodeID;
+
+
+    private HashMap<Integer, Range<Double>> actionProbabilitySpread;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -72,12 +81,12 @@ public class ExtendedGraph extends SingleGraph {
         // Info only relevant if SINGLE agent distribution being used
         String single = "";
         if (agentDistribution == AgentDistribution.SINGLE) {
-            single = "; SINGLE Node ID: " + SINGLE_nodeID;
+            single = ";\n SINGLE Node ID: " + SINGLE_nodeID;
         }
 
-        return super.toString() +
-               "; Number of Agents: " + numAgents +
-               "; Agent Distribution Method: " + agentDistribution + single;
+        return ";\n Number of Agents: " + numAgents +
+               ";\n Agent Distribution Method: " +
+                  AgentDistribution.map.get(agentDistribution) + single;
     }
 
 
@@ -123,10 +132,10 @@ public class ExtendedGraph extends SingleGraph {
      * for a weighted random node selection.
      *
      *
-     * @return Hash map with each node's ID and it's probability given as a
+     * @return HashMap with each node's ID and it's probability given as a
      *         Range object
      */
-    public HashMap<String, Range<Double>> agentSpread() {
+    public HashMap<String, Range<Double>> agentProbabilitySpread() {
         double offset = 0.0;
         HashMap<String, Range<Double>> map = new HashMap<String, Range<Double>>();
 
@@ -260,6 +269,16 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
+    public int getNodeSelection() {
+        return nodeSelection;
+    }
+
+
+    public HashMap<Integer, Range<Double>> getActionProbabilitySpread() {
+        return actionProbabilitySpread;
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - SETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -282,5 +301,16 @@ public class ExtendedGraph extends SingleGraph {
 
     public void setAgentDistribution(int agentDistribution) {
         this.agentDistribution = agentDistribution;
+    }
+
+
+    public void setNodeSelection(int nodeSelection) {
+        this.nodeSelection = nodeSelection;
+    }
+
+
+    public void setActionProbabilitySpread(
+            HashMap<Integer, Range<Double>> agentProbabilitySpread) {
+        this.actionProbabilitySpread = agentProbabilitySpread;
     }
 }

@@ -210,7 +210,7 @@ public class RandomSource {
         // Refuse to pick a node with no agents, hence while loop
         while (true) {
             double r = sr.nextDouble();
-            HashMap<String, Range<Double>> map = g.agentSpread();
+            HashMap<String, Range<Double>> map = g.agentProbabilitySpread();
 
 
             // Find the node
@@ -251,6 +251,29 @@ public class RandomSource {
         // Determine the action. Flip a coin, pick which action, two agents
         // interact, or one moves to another node. 50/50 chance
         return sr.nextInt(actionsAllowed);
+    }
+
+
+    /**
+     * Pick a random action to perform, interact or traverse.
+     *
+     * @return int Random action
+     */
+    public int nextActionWeighted() {
+        double r = sr.nextDouble();
+        HashMap<Integer, Range<Double>> map = g.getActionProbabilitySpread();
+
+        // Find the action
+        for (Integer key : map.keySet()) {
+
+            // If in range
+            if (map.get(key).contains(r)) {
+                Logger.debug("KEY: {2}; {0} is with range {1}", r, map.get(key), key);
+                return key;
+            }
+        }
+
+        return -1;
     }
 
 

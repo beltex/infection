@@ -1,10 +1,11 @@
 package sim;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.pmw.tinylog.Logger;
+
+import com.google.common.collect.ImmutableMap;
 
 
 /**
@@ -60,8 +61,12 @@ public class AgentDistribution {
      * for more friendly logging - being able to print the actual name of the
      * option being used.
      */
-    protected HashMap<Integer, String> map;
-
+    protected static final ImmutableMap<Integer, String> map = ImmutableMap.of(
+        SINGLE, "SINGLE",
+        RANDOM_SINGLE, "RANDOM_SINGLE",
+        EVEN_SPREAD, "EVEN_SPREAD",
+        RANDOM_SPREAD, "RANDOM_SPREAD"
+    );
 
     ///////////////////////////////////////////////////////////////////////////
     // PRIVATE ATTRIBUTES
@@ -83,11 +88,6 @@ public class AgentDistribution {
 
 
     public AgentDistribution() {
-        map = new HashMap<Integer, String>();
-        map.put(SINGLE, "SINGLE");
-        map.put(RANDOM_SINGLE, "RANDOM_SINGLE");
-        map.put(EVEN_SPREAD, "EVEN_SPREAD");
-        map.put(RANDOM_SPREAD, "RANDOM_SPREAD");
     }
 
 
@@ -115,8 +115,8 @@ public class AgentDistribution {
         int algo = g.getAgentDistribution();
 
         if (algo < SINGLE || algo > RANDOM_SPREAD) {
-            Logger.warn("Agent distribution algorithm NOT set - default to " +
-                        "SINGLE with all agents in node 0");
+            Logger.warn("Agent distribution algorithm NOT set or invalid - " +
+                        "default to SINGLE with all agents in node 0");
 
             g.setSINGLE_nodeID(g.getNode(0).getId());
             g.setAgentDistribution(SINGLE);
@@ -273,7 +273,7 @@ public class AgentDistribution {
 
 
     /**
-     * Create the agents. AID's start from 0 and go to n -1
+     * Create the agents. AID's start from 0 and go to n - 1
      *
      * @return Array list of the agent(s)
      */

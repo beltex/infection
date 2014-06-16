@@ -47,7 +47,7 @@ public class InfectionRateChart {
 
         lastInfectionCount = 1.0;
 
-        Logger.info("Infection rate chart CREATED");
+        Logger.debug("Infection rate chart CREATED");
     }
 
     public void addDataPoint(int timeStep, double infectionCount) {

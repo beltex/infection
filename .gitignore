@@ -1,6 +1,10 @@
 # General purpose .gitignore file
 # Modified from Bootstrap
 
+# Simulator data
+*.png
+*.json
+
 # tinylog
 log.*
 tinylog.properties.dev

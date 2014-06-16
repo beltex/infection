@@ -82,12 +82,12 @@ public class Agent {
 
 
     public String toString() {
-        return "AID: " + AID +
-                "; Leader AID:  " + leaderAID +
-                "; Conversions: " + conversions +
-                "; Met followers: " + metFollowers +
-                "; Is leader: " + isLeader +
-                "; Election Complete: " + electionComplete;
+        return "\n\t AID: " + AID +
+                ";\n\t Leader AID:  " + leaderAID +
+                ";\n\t Conversions: " + conversions +
+                ";\n\t Met followers: " + metFollowers +
+                ";\n\t Is leader: " + isLeader +
+                ";\n\t Election Complete: " + electionComplete;
     }
 
 

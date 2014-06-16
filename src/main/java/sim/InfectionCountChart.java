@@ -42,7 +42,7 @@ public class InfectionCountChart {
         chart = new ChartSeries2DMeasure("Infection Count");
         chart.getXYSeries().setMaximumItemCount(maxItemCount);
 
-        Logger.info("Infection count chart CREATED");
+        Logger.debug("Infection count chart CREATED");
     }
 
 
