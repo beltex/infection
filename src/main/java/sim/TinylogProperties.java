@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Level;
+import org.pmw.tinylog.Logger;
 import org.pmw.tinylog.policies.StartupPolicy;
 import org.pmw.tinylog.writers.RollingFileWriter;
 
@@ -79,9 +80,18 @@ public class TinylogProperties {
 
         // Get path
         dirName = "log." + timestamp;
-        path = FileSystems.getDefault().getPath("logs", dirName);
+        path = FileSystems.getDefault().getPath("logs");
+
 
         try {
+            // If the 'logs' directory does not exist, create it
+            if (Files.notExists(path)) {
+                Files.createDirectory(path);
+                Logger.info("Creating 'logs' directory");
+            }
+
+            // Create the log directory for THIS specific simulation
+            path = FileSystems.getDefault().getPath("logs", dirName);
             Files.createDirectory(path);
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,6 +112,8 @@ public class TinylogProperties {
         .writer(rfw)
         .level(logLevel)
         .activate();
+
+        Logger.info("Logs directory for this simulation created: {0}", path);
     }
 
 
