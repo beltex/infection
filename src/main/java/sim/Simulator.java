@@ -1,19 +1,11 @@
 package sim;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
-import org.pmw.tinylog.writers.RollingFileWriter;
 
 import com.google.common.collect.Range;
 
@@ -104,6 +96,9 @@ public class Simulator  {
     private Range<Integer> numAgents;
 
 
+    private HashMap<Integer, Double> actionProbability;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -145,6 +140,10 @@ public class Simulator  {
         simJSON.setMaxTimeSteps(maxTimeSteps);
         simJSON.setNumAgents(numAgents);
 
+        actionProbability = new HashMap<Integer, Double>();
+        actionProbability.put(TimeStep.ACTION_INTERACT, 0.5);
+        actionProbability.put(TimeStep.ACTION_TRAVERSE, 0.5);
+
         Logger.info("Simulator CREATED");
     }
 
@@ -154,10 +153,38 @@ public class Simulator  {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    private HashMap<Integer, Range<Double>> actionProbabilitySpread() {
+        double offset = 0.0;
+        HashMap<Integer, Range<Double>> map = new HashMap<Integer, Range<Double>>();
+
+        for (Integer key : actionProbability.keySet()) {
+            // Probability of the action
+            double p = actionProbability.get(key);
+
+            // Upper bound for the range of the this node
+            double upper = offset + p;
+
+            // https://code.google.com/p/guava-libraries/wiki/RangesExplained
+            map.put(key, Range.closedOpen(offset, upper));
+
+            Logger.trace("{0}; Probability {1}; Offset {2}; Upper {3}", key,
+                                                                        p,
+                                                                        offset,
+                                                                        upper);
+
+            offset = upper;
+        }
+
+        return map;
+    }
+
+
     /**
      * Simulator init operations
      */
     private void init() {
+        g.setActionProbabilitySpread(actionProbabilitySpread());
+
         /*
          * Init helper classes
          */
@@ -359,6 +386,16 @@ public class Simulator  {
      */
     public void nodeSelection(int nodeSelectionMethod) {
         g.setNodeSelection(nodeSelectionMethod);
+    }
+
+
+    /**
+     * @param interaction
+     * @param traversal
+     */
+    public void setActionProbabilites(double interaction, double traversal) {
+        actionProbability.put(TimeStep.ACTION_INTERACT, interaction);
+        actionProbability.put(TimeStep.ACTION_TRAVERSE, traversal);
     }
 
 

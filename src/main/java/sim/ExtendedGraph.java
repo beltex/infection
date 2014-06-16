@@ -56,6 +56,9 @@ public class ExtendedGraph extends SingleGraph {
     private String RANDOM_SINGLE_nodeID;
 
 
+    private HashMap<Integer, Range<Double>> actionProbabilitySpread;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
     ///////////////////////////////////////////////////////////////////////////
@@ -129,10 +132,10 @@ public class ExtendedGraph extends SingleGraph {
      * for a weighted random node selection.
      *
      *
-     * @return Hash map with each node's ID and it's probability given as a
+     * @return HashMap with each node's ID and it's probability given as a
      *         Range object
      */
-    public HashMap<String, Range<Double>> agentSpread() {
+    public HashMap<String, Range<Double>> agentProbabilitySpread() {
         double offset = 0.0;
         HashMap<String, Range<Double>> map = new HashMap<String, Range<Double>>();
 
@@ -271,6 +274,11 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
+    public HashMap<Integer, Range<Double>> getActionProbabilitySpread() {
+        return actionProbabilitySpread;
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - SETTERS
     ///////////////////////////////////////////////////////////////////////////
@@ -298,5 +306,11 @@ public class ExtendedGraph extends SingleGraph {
 
     public void setNodeSelection(int nodeSelection) {
         this.nodeSelection = nodeSelection;
+    }
+
+
+    public void setActionProbabilitySpread(
+            HashMap<Integer, Range<Double>> agentProbabilitySpread) {
+        this.actionProbabilitySpread = agentProbabilitySpread;
     }
 }
