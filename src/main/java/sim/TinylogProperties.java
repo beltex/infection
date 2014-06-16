@@ -33,8 +33,20 @@ public class TinylogProperties {
     private Level logLevel;
     private Date date;
     private DateFormat dateFormat;
+
+
+    /**
+     * Date format pattern. Used for creation of files and directories.
+     */
     private String pattern = "yyyy-MM-dd_HH-mm-ss";
+
+
+    /**
+     * Timestamp of THIS simulation run
+     */
     private String timestamp;
+
+
     private String dirName;
 
 
@@ -57,13 +69,15 @@ public class TinylogProperties {
 
 
     /**
-     * Create the dir in which all simulation data will be stored in
+     * Create the directory in which all simulation data will be stored in
      */
     private void createLogsDir() {
+        // Get timestamp
         date = new Date();
         dateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
         timestamp = dateFormat.format(date);
 
+        // Get path
         dirName = "log." + timestamp;
         path = FileSystems.getDefault().getPath("logs", dirName);
 

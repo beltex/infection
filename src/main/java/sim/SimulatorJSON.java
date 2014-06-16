@@ -10,6 +10,7 @@ import java.util.Date;
 
 import org.pmw.tinylog.Logger;
 
+import com.google.common.collect.Range;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,36 +29,18 @@ public class SimulatorJSON {
 
 
     /**
-     * What is the name of the log file for this simulation?
-     */
-    private String logFile;
-
-
-    /**
-     *
-     */
-    private ExtendedGraph g;
-
-
-    /**
-    * What is the graph type?
-    */
-    private String graphType;
-
-
-    /**
     * How many agents
     */
-    private int numAgents;
+    private Range<Integer> numAgents;
     private int termA;
     private int termB;
     private int maxTimeSteps;
     private int runs;
-    private int simVersion;
+
 
     // Averages set at the end
-    private double infected;
-    private double eleComp;
+    private double avgerageInfections;
+    private double averageElectionCompleteCount;
     private double interactions;
     private double traversals;
     private double marker_infectionComplete;
@@ -86,17 +69,29 @@ public class SimulatorJSON {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    /**
+     * @param e
+     * @return
+     */
     public boolean addRunData(SimulatorRun e) {
         return runData.add(e);
     }
 
 
+    /**
+     * @return
+     */
     public String toJSON() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(this);
     }
 
 
+    /**
+     *
+     * @param dirName
+     * @param timestamp
+     */
     public void writeJSON(String dirName, String timestamp) {
         String jsonName = "data." + timestamp + ".json";
         Path path = FileSystems.getDefault().getPath("logs", dirName, jsonName);
@@ -130,12 +125,12 @@ public class SimulatorJSON {
 
 
     public void setInfected(double infected) {
-        this.infected = infected;
+        this.avgerageInfections = infected;
     }
 
 
     public void setEleComp(double eleComp) {
-        this.eleComp = eleComp;
+        this.averageElectionCompleteCount = eleComp;
     }
 
 
@@ -165,17 +160,8 @@ public class SimulatorJSON {
     }
 
 
-    public void setLogFile(String logFile) {
-        this.logFile = logFile;
-    }
 
-
-    public void setGraphType(String graphType) {
-        this.graphType = graphType;
-    }
-
-
-    public void setNumAgents(int numAgents) {
+    public void setNumAgents(Range<Integer> numAgents) {
         this.numAgents = numAgents;
     }
 
@@ -197,11 +183,6 @@ public class SimulatorJSON {
 
     public void setRuns(int runs) {
         this.runs = runs;
-    }
-
-
-    public void setSimVersion(int simVersion) {
-        this.simVersion = simVersion;
     }
 
 

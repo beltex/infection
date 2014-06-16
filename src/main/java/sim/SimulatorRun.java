@@ -16,6 +16,12 @@ public class SimulatorRun {
 
 
     /**
+     * How many agents were there in this simulation?
+     */
+    private int numAgents;
+
+
+    /**
      * How many agents were infected?
      */
     private int infections;
@@ -110,6 +116,11 @@ public class SimulatorRun {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    public int getNumAgents() {
+        return numAgents;
+    }
+
+
     public int getInfections() {
         return infections;
     }
@@ -168,6 +179,11 @@ public class SimulatorRun {
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - SETTERS
     ///////////////////////////////////////////////////////////////////////////
+
+
+    public void setNumAgents(int numAgents) {
+        this.numAgents = numAgents;
+    }
 
 
     public void setInfections(int infections) {

@@ -15,6 +15,8 @@ import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
 import org.pmw.tinylog.writers.RollingFileWriter;
 
+import com.google.common.collect.Range;
+
 
 /**
  * The "controller" class. Single point of contact for the user.
@@ -99,6 +101,9 @@ public class Simulator  {
     private TinylogProperties tinylog;
 
 
+    private Range<Integer> numAgents;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -108,13 +113,15 @@ public class Simulator  {
      * Create a simulation
      *
      * @param g Graph for the simulation to run on
-     * @param numAgents Number of agents to be created. Must be at least >= 2.
+     * @param numAgents Range of agents to be created
      * @param termA Multiplicative factor
      * @param termB Additive factor
-     * @param maxTimeSteps
+     * @param maxTimeSteps Max number of time steps to be performed. That is
+     * 					   interacts + traversals.
      * @param runs How many times should the simulation be run?
      */
-    public Simulator(ExtendedGraph g, int numAgents, int termA,
+    public Simulator(ExtendedGraph g, Range<Integer> numAgents,
+                                                     int termA,
                                                      int termB,
                                                      int maxTimeSteps,
                                                      int runs,
@@ -122,16 +129,9 @@ public class Simulator  {
         // Init logging
         tinylog = new TinylogProperties(level);
 
-        if (numAgents < 2) {
-            Logger.error("MUST have >= 2 agents");
-            System.exit(-1);
-        }
-
-
-
         this.g = g;
+        this.numAgents = numAgents;
         this.g.setNullAttributesAreErrors(true);
-        this.g.setNumAgents(numAgents);
 
         this.termA = termA;
         this.termB = termB;
@@ -142,7 +142,8 @@ public class Simulator  {
         simJSON.setTermA(termA);
         simJSON.setTermB(termB);
         simJSON.setRuns(runs);
-
+        simJSON.setMaxTimeSteps(maxTimeSteps);
+        simJSON.setNumAgents(numAgents);
 
         Logger.info("Simulator CREATED");
     }
@@ -205,6 +206,32 @@ public class Simulator  {
     }
 
 
+    private void execute(int numAgents) {
+        g.setNumAgents(numAgents);
+
+        for (int y = 0; y < runs; y++) {
+            Logger.info("----------------------------------------------------");
+            Logger.info("STARTING RUN: " + (y + 1));
+            init();
+
+            TimeStep ts = new TimeStep(g, termA, termB);
+            for (int i = 0; i < maxTimeSteps; i++) {
+                ts.step();
+
+                if (ts.isFlag_infectionComplete() &&
+                    ts.isFlag_leaderElectionComplete() &&
+                    ts.isFlag_allElectionComplete()) {
+                    Logger.info("STEP: {0}; Cutting off simulation - all actions complete", i);
+                    break;
+                }
+            }
+
+            ts.end();
+            Logger.info("ENDING RUN: " + (y + 1));
+            Logger.info("----------------------------------------------------");
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED METHODS
     ///////////////////////////////////////////////////////////////////////////
@@ -227,26 +254,8 @@ public class Simulator  {
     public void execute() {
         Logger.info("Simulation SETTINGS" + toString());
 
-        for (int y = 0; y < runs; y++) {
-            Logger.info("----------------------------------------------------");
-            Logger.info("STARTING RUN: " + (y + 1));
-            init();
-
-            TimeStep ts = new TimeStep(g, termA, termB);
-            for (int i = 0; i < maxTimeSteps; i++) {
-                ts.step();
-
-                if (ts.isFlag_infectionComplete() &&
-                    ts.isFlag_leaderElectionComplete() &&
-                    ts.isFlag_allElectionComplete()) {
-                    Logger.info("STEP: {0}; Cutting off simulation - all actions complete", i);
-                    break;
-                }
-            }
-
-            ts.end();
-            Logger.info("ENDING RUN: " + (y + 1));
-            Logger.info("----------------------------------------------------");
+        for (int y = numAgents.lowerEndpoint(); y < numAgents.upperEndpoint(); y++) {
+            execute(y);
         }
 
         Logger.info("ALL SIMULATION RUNS COMPLETE");
@@ -291,17 +300,17 @@ public class Simulator  {
             ///
 
             marker_infectionComplete_interact += (double)r.getInfectionCompleteInteractions();
-//            icc2.addDataPoint(g.getNumAgents(), r.getMarker_infectionComplete_interact());
+            icc2.addDataPoint(r.getNumAgents(), r.getInfectionCompleteInteractions());
 
             marker_leaderElectionComplete_interact += (double)r.getLeaderElectionCompleteInteractions();
-//            icc2.addDataPointLeader(g.getNumAgents(), r.getMarker_leaderElectionComplete_interact());
+            icc2.addDataPointLeader(r.getNumAgents(), r.getLeaderElectionCompleteInteractions());
 
 
             marker_allElectionComplete_interact += (double)r.getAllElectionCompleteInteractions();
-//            icc2.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete_interact());
+            icc2.addDataPointAll(r.getNumAgents(), r.getAllElectionCompleteInteractions());
         }
 
-//        icc2.plot();
+        icc2.plot();
 
         Logger.info("# of INFECTED agents: " + (infected / runs));
         Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
@@ -315,7 +324,7 @@ public class Simulator  {
         Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
         Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
 
-        simJSON.writeJSON(tinylog.getDirName(), tinylog.getTimestamp());
+        //simJSON.writeJSON(tinylog.getDirName(), tinylog.getTimestamp());
     }
 
 

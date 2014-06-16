@@ -90,6 +90,7 @@ public class TimeStep {
         flag_allElectionComplete = false;
 
         simRun = new SimulatorRun();
+        simRun.setNumAgents(g.getNumAgents());
 
         gv = GraphVis.getInstance();
         rs = RandomSource.getInstance();

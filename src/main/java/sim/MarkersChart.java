@@ -13,6 +13,10 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pmw.tinylog.Logger;
 
@@ -48,8 +52,9 @@ public class MarkersChart {
         params.yAxisLabel = "Number of Agents";
         params.xAxisLabel = "Time Step";
         params.type = PlotType.SCATTER;
-        params.height = 720;
-        params.width = 1280;
+        params.height = 1080;
+        params.width = 1920;
+
         params.path = System.getProperty("user.dir") +
                       File.separator + "logs" + File.separator + "test.png";
 
@@ -57,7 +62,7 @@ public class MarkersChart {
         leaderElectionComplete = new ChartSeries2DMeasure("Leader");
         allElectionComplete = new ChartSeries2DMeasure("All");
         //chart.setWindowSize(maxItemCount);
-        infectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
+        //infectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
 
         Logger.debug("Infection count chart INIT");
     }
@@ -95,38 +100,40 @@ public class MarkersChart {
             chart = ChartFactory.createScatterPlot(params.title,
                     params.xAxisLabel, params.yAxisLabel, dataset,
                     params.orientation, params.showLegend, false, false);
+            chart.setTextAntiAlias(true);
 
-
-
-//        //JFreeChart chart = null;
-//        try {
-//            chart = c.createChart(params);
-//        } catch (PlotException e1) {
-//            e1.printStackTrace();
-//        }
-
-
-//            ChartPanel panel = new ChartPanel(chart, params.width,
-//                    params.height, params.width, params.height,
-//                    params.width + 50, params.height + 50, true, true, true,
-//                    true, true, true);
+//            NumberAxis xAxis = new NumberAxis();
+//            xAxis.setRange(1000, 1001);
+//            xAxis.setTickUnit(new NumberTickUnit(1));
 //
-//            JFrame frame = new JFrame(params.title);
-//            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//            frame.setLocationRelativeTo(null);
-//            frame.add(panel);
-//            frame.pack();
-//            frame.setVisible(true);
+//            chart.getXYPlot().setDomainAxis(xAxis);
+            NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
+            xAxis.setTickUnit(new NumberTickUnit(1));
+
+
+
+
+            ChartPanel panel = new ChartPanel(chart, params.width,
+                    params.height, params.width, params.height,
+                    params.width + 50, params.height + 50, true, true, true,
+                    true, true, true);
+
+            JFrame frame = new JFrame(params.title);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setLocationRelativeTo(null);
+            frame.add(panel);
+            frame.pack();
+            frame.setVisible(true);
 
 
 
 
 
-                try {
-                    ChartUtilities.saveChartAsPNG(new File(params.path), chart,
-                            params.width, params.height);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    ChartUtilities.saveChartAsPNG(new File(params.path), chart,
+//                            params.width, params.height);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
     }
 }
