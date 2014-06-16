@@ -34,7 +34,7 @@ public class Client {
          * agents is from 5 to 10, then 10 simulations will be run
          * for each value of agents within that range.
          */
-        final int runs = 10;
+        final int runs = 1;
 
 
         /**
@@ -66,11 +66,11 @@ public class Client {
         *
         */
         ExtendedGraph g = new ExtendedGraph("SampleClient");
-        g.addNode("A");
+        //g.addNode("A");
 
 
         // Create a new simulation
-        Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.OFF);
+        Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.INFO);
 
 
         /*
@@ -79,7 +79,7 @@ public class Client {
 
 
         // Use a graph generator to auto create a graph. In this case, a chain
-        //sim.generateGraphChain(10, true, true, true);
+        sim.generateGraphChain(10, true, true, false);
 
 
         // Define how agents should be spread across the graph
@@ -89,9 +89,10 @@ public class Client {
         // Define how a node should be selected on every time step
         sim.nodeSelection(Simulator.NODE_WEIGHTED);
 
+        sim.setActionProbabilites(0.25, 0.75);
 
         // Turn on graph visualization
-        //sim.vis();
+        sim.vis();
 
 
         // Turn on charts

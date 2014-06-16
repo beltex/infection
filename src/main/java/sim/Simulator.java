@@ -2,7 +2,6 @@ package sim;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
@@ -363,7 +362,7 @@ public class Simulator  {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC METHODS - Simulation Settings
+    // PUBLIC METHODS - SIMULATION SETTINGS
     ///////////////////////////////////////////////////////////////////////////
 
 
@@ -390,8 +389,12 @@ public class Simulator  {
 
 
     /**
-     * @param interaction
-     * @param traversal
+     * Define the probabilities for interaction and traversal actions. By
+     * default, this is 50/50. Probabilities are specified as values between 0
+     * and 1. Thus, the values passed must sum to 1.
+     *
+     * @param interaction Probability of interaction action
+     * @param traversal Probability of traversal action.
      */
     public void setActionProbabilites(double interaction, double traversal) {
         actionProbability.put(TimeStep.ACTION_INTERACT, interaction);
@@ -422,7 +425,9 @@ public class Simulator  {
 
 
     /**
-     * Turn on charts
+     * Turn on charts for viewing at the end of the simulation. This is OFF by
+     * default and the chart data that is saved to disk is not affected by this
+     * setting.
      */
     public void charts() {
         flag_charts = true;

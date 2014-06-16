@@ -124,7 +124,7 @@ public class TimeStep {
         }
         else if (actionsAllowed > 1) {
             // Graph is safe for traverse action
-            action = rs.nextAction();
+            action = rs.nextActionWeighted();
         }
         Logger.debug("ACTION: {0}", action);
 
