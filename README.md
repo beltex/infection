@@ -66,7 +66,7 @@ To use Gradle:
 # Test results can be found in - build/reports/tests/index.html
 gradle build
 
-# To run project (runs src/main/java/client/SampleClient.java)
+# To run project (runs src/main/java/client/ClientVis.java)
 gradle run
 
 # To create Eclipse project files

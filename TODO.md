@@ -17,3 +17,4 @@ TODO
 - Should conversions & metFollowers of an agent reset if infected?
 - Look into OpenGL, DirectX, and Quartz Java system properties
 - Add experiments section to README.md
+- Add d3.js or nvd3.js charts and report?
