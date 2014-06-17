@@ -65,7 +65,6 @@ public class TimeStep {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    protected int actionsAllowed = 2;
     protected static final int ACTION_INTERACT = 0;
     protected static final int ACTION_TRAVERSE = 1;
 
@@ -116,13 +115,13 @@ public class TimeStep {
         /*
          * Determine the action to perform. Interact or traverse?
          */
-        int action = 0;
+        int action = -1;
 
-        if (actionsAllowed > 1 && g.hasDeadEnd()) {
-            // Can only do interact now
-            actionsAllowed = 1;
+        if (g.hasDeadEnd()) {
+            // Can only do interact
+            action = ACTION_INTERACT;
         }
-        else if (actionsAllowed > 1) {
+        else {
             // Graph is safe for traverse action
             action = rs.nextActionWeighted();
         }

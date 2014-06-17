@@ -286,11 +286,11 @@ public class Simulator  {
 
         Logger.info("ALL SIMULATION RUNS COMPLETE");
 
-        stats();
+        postmortem();
     }
 
 
-    public void stats() {
+    public void postmortem() {
         double infected = 0;
         double eleComp = 0;
         double interactions = 0;
@@ -350,7 +350,7 @@ public class Simulator  {
         Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
         Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
 
-        //simJSON.writeJSON(tinylog.getDirName(), tinylog.getTimestamp());
+        simJSON.writeJSON(tinylog.getDirName(), tinylog.getTimestamp());
     }
 
 

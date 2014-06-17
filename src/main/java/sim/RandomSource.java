@@ -38,9 +38,6 @@ public class RandomSource {
     private SecureRandom sr;
 
 
-    private int actionsAllowed = 2;
-
-
     /*
      * The algorithm and provider for SecureRandom. We set
      * this make things as consistent as possible.
@@ -65,6 +62,9 @@ public class RandomSource {
      * always need an instance.
      */
     private static final RandomSource INSTANCE = new RandomSource();
+
+
+    private final int NUM_ACTIONS = 2;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -250,12 +250,13 @@ public class RandomSource {
     public int nextAction() {
         // Determine the action. Flip a coin, pick which action, two agents
         // interact, or one moves to another node. 50/50 chance
-        return sr.nextInt(actionsAllowed);
+        return sr.nextInt(NUM_ACTIONS);
     }
 
 
     /**
-     * Pick a random action to perform, interact or traverse.
+     * Pick a random action to perform, interact or traverse, based on the
+     * action probability spread.
      *
      * @return int Random action
      */
@@ -263,16 +264,17 @@ public class RandomSource {
         double r = sr.nextDouble();
         HashMap<Integer, Range<Double>> map = g.getActionProbabilitySpread();
 
-        // Find the action
+        // Find the action in which the random double r falls within
         for (Integer key : map.keySet()) {
-
-            // If in range
             if (map.get(key).contains(r)) {
-                Logger.debug("KEY: {2}; {0} is with range {1}", r, map.get(key), key);
+                Logger.trace("KEY: {0}; {1} is with range {2}", key,
+                                                                r,
+                                                                map.get(key));
                 return key;
             }
         }
 
+        // This should never happen
         return -1;
     }
 
