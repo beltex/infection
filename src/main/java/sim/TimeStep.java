@@ -60,6 +60,9 @@ public class TimeStep {
     private boolean flag_allElectionComplete;
 
 
+    private boolean deadEnd;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
@@ -84,6 +87,7 @@ public class TimeStep {
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
 
+        deadEnd = false;
         flag_infectionComplete = false;
         flag_leaderElectionComplete = false;
         flag_allElectionComplete = false;
@@ -117,8 +121,9 @@ public class TimeStep {
          */
         int action = -1;
 
-        if (g.hasDeadEnd()) {
-            // Can only do interact
+        if (deadEnd || g.hasDeadEnd()) {
+            // Can only do interact now
+            deadEnd = true;
             action = ACTION_INTERACT;
         }
         else {

@@ -38,16 +38,6 @@ public class SimulatorJSON {
     private int runs;
 
 
-    // Averages set at the end
-    private double avgerageInfections;
-    private double averageElectionCompleteCount;
-    private double interactions;
-    private double traversals;
-    private double marker_infectionComplete;
-    private double marker_leaderElectionComplete;
-    private double marker_allElectionComplete;
-
-
     /**
      * Hold data from individual simulation runs
      */
@@ -122,43 +112,6 @@ public class SimulatorJSON {
     public void setDate(Date date) {
         this.date = date;
     }
-
-
-    public void setInfected(double infected) {
-        this.avgerageInfections = infected;
-    }
-
-
-    public void setEleComp(double eleComp) {
-        this.averageElectionCompleteCount = eleComp;
-    }
-
-
-    public void setInteractions(double interactions) {
-        this.interactions = interactions;
-    }
-
-
-    public void setTraversals(double traversals) {
-        this.traversals = traversals;
-    }
-
-
-    public void setMarker_infectionComplete(double marker_infectionComplete) {
-        this.marker_infectionComplete = marker_infectionComplete;
-    }
-
-
-    public void setMarker_leaderElectionComplete(
-            double marker_leaderElectionComplete) {
-        this.marker_leaderElectionComplete = marker_leaderElectionComplete;
-    }
-
-
-    public void setMarker_allElectionComplete(double marker_allElectionComplete) {
-        this.marker_allElectionComplete = marker_allElectionComplete;
-    }
-
 
 
     public void setNumAgents(Range<Integer> numAgents) {

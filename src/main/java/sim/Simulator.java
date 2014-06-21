@@ -84,7 +84,8 @@ public class Simulator  {
 
 
     /**
-     *
+     * Holds all data about entire simulation. Will be exported to JSON at the
+     * very end
      */
     private static SimulatorJSON simJSON = new SimulatorJSON();
 
@@ -113,15 +114,16 @@ public class Simulator  {
      * @param maxTimeSteps Max number of time steps to be performed. That is
      * 					   interacts + traversals.
      * @param runs How many times should the simulation be run?
+     * @param logLevel What log level should the simulation run at?
      */
     public Simulator(ExtendedGraph g, Range<Integer> numAgents,
                                                      int termA,
                                                      int termB,
                                                      int maxTimeSteps,
                                                      int runs,
-                                                     Level level) {
-        // Init logging
-        tinylog = new TinylogProperties(level);
+                                                     Level logLevel) {
+        // Init logging before anything else
+        tinylog = new TinylogProperties(logLevel);
 
         this.g = g;
         this.numAgents = numAgents;
@@ -132,6 +134,8 @@ public class Simulator  {
         this.maxTimeSteps = maxTimeSteps;
         this.runs = runs;
 
+
+        // Record simulation settings
         simJSON.setDate(tinylog.getDate());
         simJSON.setTermA(termA);
         simJSON.setTermB(termB);
@@ -139,6 +143,8 @@ public class Simulator  {
         simJSON.setMaxTimeSteps(maxTimeSteps);
         simJSON.setNumAgents(numAgents);
 
+
+        // Set default probabilities for actions
         actionProbability = new HashMap<Integer, Double>();
         actionProbability.put(TimeStep.ACTION_INTERACT, 0.5);
         actionProbability.put(TimeStep.ACTION_TRAVERSE, 0.5);
@@ -152,6 +158,10 @@ public class Simulator  {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    /**
+     *
+     * @return
+     */
     private HashMap<Integer, Range<Double>> actionProbabilitySpread() {
         double offset = 0.0;
         HashMap<Integer, Range<Double>> map = new HashMap<Integer, Range<Double>>();
@@ -303,8 +313,7 @@ public class Simulator  {
         double marker_leaderElectionComplete_interact = 0;
         double marker_allElectionComplete_interact = 0;
 
-        MarkersChart icc = new MarkersChart(maxTimeSteps);
-        MarkersChart icc2 = new MarkersChart(maxTimeSteps);
+        MarkersChart icc2 = new MarkersChart(maxTimeSteps, tinylog.getDirName(), tinylog.getTimestamp());
 
         ArrayList<SimulatorRun> list = simJSON.getRunData();
         for (SimulatorRun r : list) {
@@ -313,17 +322,12 @@ public class Simulator  {
             interactions += (double)r.getInteractions();
             traversals += (double)r.getTraversals();
             marker_infectionComplete += (double)r.getInfectionCompleteStep();
-//            icc.addDataPoint(g.getNumAgents(), r.getMarker_infectionComplete());
 
             marker_leaderElectionComplete += (double)r.getLeaderElectionCompleteStep();
-//            icc.addDataPointLeader(g.getNumAgents(), r.getMarker_leaderElectionComplete());
 
 
             marker_allElectionComplete += (double)r.getAllElectionCompleteStep();
-//            icc.addDataPointAll(g.getNumAgents(), r.getMarker_allElectionComplete());
 
-
-            ///
 
             marker_infectionComplete_interact += (double)r.getInfectionCompleteInteractions();
             icc2.addDataPoint(r.getNumAgents(), r.getInfectionCompleteInteractions());

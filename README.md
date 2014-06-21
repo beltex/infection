@@ -50,6 +50,13 @@ and experiment.
 
 ### Setup & Use
 
+**Download Project**
+
+```bash
+git clone https://github.com/beltex/infection.git
+cd infection/
+```
+
 **Gradle**
 
 Gradle is used for build automation. It can be installed via Homebrew.
@@ -80,6 +87,13 @@ gradle javadoc
 **Creating Your Own Simulation**
 
 Sample client classes can be found inside `src/main/java/client/`
+
+
+**Logs**
+
+Logs from the simulation can be found in the `logs` directory which is
+created at run time. Each simulation run creates it's own timestamped
+directory inside containing logs, simulation data in JSON format, and charts.
 
 
 ### References
