@@ -3,7 +3,8 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 
 sourceCompatibility = '1.7'
-mainClassName = 'client.ClientVis'
+mainClassName = hasProperty('client') ? 'client.' + client : 
+                                        'client.Visualization'
 
 repositories {
     mavenCentral()

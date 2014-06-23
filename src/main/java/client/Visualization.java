@@ -13,7 +13,7 @@ import com.google.common.collect.Range;
  * simulation runs, not large scale testing due to the performance overhead.
  *
  */
-public class ClientVis {
+public class Visualization {
 
     public static void main(String[] args) {
 
@@ -35,13 +35,15 @@ public class ClientVis {
         sim.nodeSelection(Simulator.NODE_WEIGHTED);
         sim.setActionProbabilites(interactProbability, traversalProbability);
 
-
-        // Turn on graph visualization
+        /*
+         * Turn on graph visualization
+         */
         sim.vis();
 
-        // Turn on charts
+        /*
+         * Turn on charts
+         */
         sim.charts();
-
 
         sim.execute();
     }

@@ -45,7 +45,7 @@ and experiment.
 - [Google Guava](https://code.google.com/p/guava-libraries/) (16.0.1)
 - [Google Gson](https://code.google.com/p/google-gson/) (2.2.4)
 - [JUnit](http://junit.org) (4.11)
-- [Gradle](http://www.gradle.org) (1.10)
+- [Gradle](http://www.gradle.org) (1.12)
 
 
 ### Setup & Use
@@ -75,6 +75,11 @@ gradle build
 
 # To run project (runs src/main/java/client/ClientVis.java)
 gradle run
+
+# To run a specific client class
+# This assumes that the class is located inside the client package
+# (src/main/java/client) 
+gradle -Pclient=<NAME_OF_CLASS> run
 
 # To create Eclipse project files
 gradle eclipse

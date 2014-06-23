@@ -8,7 +8,13 @@ import sim.Simulator;
 
 import com.google.common.collect.Range;
 
+
+/**
+ * A general purpose client setup for mass testing.
+ *
+ */
 public class Client {
+
 
     public static void main(String[] args) {
 
@@ -62,11 +68,8 @@ public class Client {
         final int maxTimeSteps = 100000;
 
 
-        /**
-        *
-        */
+        // Create a graph
         ExtendedGraph g = new ExtendedGraph("SampleClient");
-        //g.addNode("A");
 
 
         // Create a new simulation
@@ -75,29 +78,21 @@ public class Client {
 
         /*
          * Configure simulation settings
+         *
          */
 
 
         // Use a graph generator to auto create a graph. In this case, a chain
         sim.generateGraphChain(10, true, true, false);
 
-
         // Define how agents should be spread across the graph
         sim.agentDistribution(AgentDistribution.SINGLE);
-
 
         // Define how a node should be selected on every time step
         sim.nodeSelection(Simulator.NODE_WEIGHTED);
 
+        // Set the probabilities for the possible actions
         sim.setActionProbabilites(0.25, 0.75);
-
-        // Turn on graph visualization
-        sim.vis();
-
-
-        // Turn on charts
-        sim.charts();
-
 
         // Run the simulation
         sim.execute();
