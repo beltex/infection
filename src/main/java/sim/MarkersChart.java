@@ -75,6 +75,7 @@ public class MarkersChart {
         dataset.addSeries(leaderElectionComplete.getXYSeries());
         dataset.addSeries(allElectionComplete.getXYSeries());
 
+
         chart = ChartFactory.createScatterPlot(params.title,
                 params.xAxisLabel, params.yAxisLabel, dataset,
                 params.orientation, params.showLegend, false, false);

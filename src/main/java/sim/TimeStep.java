@@ -38,6 +38,7 @@ public class TimeStep {
     private int termA;
     private int termB;
     private int infectionCounter;
+    private int electionCompleteCounter;
     private int actionInteractCounter;
     private int actionTraverseCounter;
 
@@ -63,6 +64,9 @@ public class TimeStep {
     private boolean deadEnd;
 
 
+    private boolean flag_vis;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
@@ -77,13 +81,14 @@ public class TimeStep {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public TimeStep(ExtendedGraph g, int termA, int termB) {
+    public TimeStep(ExtendedGraph g, int termA, int termB, boolean flag_vis) {
         this.g = g;
         this.termA = termA;
         this.termB = termB;
 
         step = 0;
         infectionCounter = 1;
+        electionCompleteCounter = 0;
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
 
@@ -91,6 +96,7 @@ public class TimeStep {
         flag_infectionComplete = false;
         flag_leaderElectionComplete = false;
         flag_allElectionComplete = false;
+        this.flag_vis = flag_vis;
 
         simRun = new SimulatorRun();
         simRun.setNumAgents(g.getNumAgents());
@@ -98,7 +104,7 @@ public class TimeStep {
         gv = GraphVis.getInstance();
         rs = RandomSource.getInstance();
 
-        simRun.addInfection(step, infectionCounter);
+        //simRun.addInfection(step, infectionCounter);
 
         Logger.debug("TimeStep INIT");
     }
@@ -115,6 +121,8 @@ public class TimeStep {
     public void step() {
         Logger.debug("Step: {0} BEGIN", step);
 
+        ExtendedNode n = null;
+
 
         /*
          * Determine the action to perform. Interact or traverse?
@@ -125,27 +133,30 @@ public class TimeStep {
             // Can only do interact now
             deadEnd = true;
             action = ACTION_INTERACT;
+            n = g.getNode(0);
         }
         else {
             // Graph is safe for traverse action
             action = rs.nextActionWeighted();
+
+
+            /*
+             * Pick a random node
+             */
+
+            switch (g.getNodeSelection()) {
+                case Simulator.NODE_WEIGHTED:
+                    n = rs.nextNodeWeighted(action);
+                    break;
+                case Simulator.NODE_NON_WEIGHTED:
+                    n = rs.nextNode(action);
+                    break;
+            }
         }
         Logger.debug("ACTION: {0}", action);
 
 
-        /*
-         * Pick a random node
-         */
-        ExtendedNode n = null;
 
-        switch (g.getNodeSelection()) {
-            case Simulator.NODE_WEIGHTED:
-                n = rs.nextNodeWeighted(action);
-                break;
-            case Simulator.NODE_NON_WEIGHTED:
-                n = rs.nextNode(action);
-                break;
-        }
 
 
         /*
@@ -164,7 +175,7 @@ public class TimeStep {
          */
 
         // Is infection complete?
-        if (g.infectionCount() == g.getNumAgents() && !flag_infectionComplete) {
+        if (!flag_infectionComplete && infectionCounter == g.getNumAgents()) {
             Logger.info("STEP: {0}; All agents INFECTED", step);
             simRun.setInfectionCompleteStep(step);
             simRun.setInfectionCompleteInteractions(actionInteractCounter);
@@ -173,7 +184,7 @@ public class TimeStep {
         }
 
         // Do all agents believe election is complete?
-        if (g.electionCompleteCount() == g.getNumAgents() && !flag_allElectionComplete) {
+        if (flag_infectionComplete && !flag_allElectionComplete && electionCompleteCounter == g.getNumAgents()) {
             Logger.info("STEP: {0}; All agents believe election is complete", step);
             simRun.setAllElectionCompleteStep(step);
             simRun.setAllElectionCompleteInteractions(actionInteractCounter);
@@ -248,6 +259,8 @@ public class TimeStep {
         if (agent_i.isElectionComplete() || agent_j.isElectionComplete()) {
             agent_i.setElectionComplete(true);
             agent_j.setElectionComplete(true);
+            electionCompleteCounter++;
+
             Logger.debug("Election complete from agents: {0}, {1}", agent_i,
                                                                     agent_j);
         }
@@ -282,8 +295,10 @@ public class TimeStep {
         }
         actionInteractCounter++;
 
-        // Update the view
-        gv.updateNode(n.getId());
+        if (flag_vis) {
+            // Update the view
+            //gv.updateNode(n.getId());
+        }
     }
 
 
@@ -314,11 +329,13 @@ public class TimeStep {
 
         actionTraverseCounter++;
 
-        // Update the view
-        gv.updateNode(n.getId());
-        gv.updateEdge(e, true);
-        gv.updateNode(outGoingNode.getId());
-        gv.updateEdge(e, false);
+        if (flag_vis) {
+            // Update the view
+            gv.updateNode(n.getId());
+            gv.updateEdge(e, true);
+            gv.updateNode(outGoingNode.getId());
+            gv.updateEdge(e, false);
+        }
 
         Logger.debug("Agent traversed!");
     }
@@ -337,7 +354,7 @@ public class TimeStep {
 
         if (infector.getLeaderAID() == g.getNumAgents() - 1) {
             infectionCounter++;
-            simRun.addInfection(step, infectionCounter);
+            //simRun.addInfection(step, infectionCounter);
         }
     }
 
@@ -362,6 +379,7 @@ public class TimeStep {
         if ((termB + (termA * agent.getConversions())) < agent.getMetFollowers()) {
             agent.setLeader(true);
             agent.setElectionComplete(true);
+            electionCompleteCounter++;
 
             // Is this the real leader that believes election is complete?
             if (agent.getAID() == g.getNumAgents() - 1) {

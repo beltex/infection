@@ -250,7 +250,7 @@ public class Simulator  {
             Logger.info("STARTING RUN: " + (y + 1));
             init();
 
-            TimeStep ts = new TimeStep(g, termA, termB);
+            TimeStep ts = new TimeStep(g, termA, termB, flag_vis);
             for (int i = 0; i < maxTimeSteps; i++) {
                 ts.step();
 
@@ -313,7 +313,7 @@ public class Simulator  {
         double marker_leaderElectionComplete_interact = 0;
         double marker_allElectionComplete_interact = 0;
 
-        MarkersChart icc2 = new MarkersChart(numAgents.upperEndpoint() - numAgents.lowerEndpoint(), tinylog.getDirName(), tinylog.getTimestamp());
+        MarkersChart icc2 = new MarkersChart((numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs * 3, tinylog.getDirName(), tinylog.getTimestamp());
 
         ArrayList<SimulatorRun> list = simJSON.getRunData();
         for (SimulatorRun r : list) {
