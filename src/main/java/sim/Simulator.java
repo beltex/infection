@@ -340,7 +340,8 @@ public class Simulator  {
             icc2.addDataPointAll(r.getNumAgents(), r.getAllElectionCompleteInteractions());
         }
 
-        icc2.plot();
+        //icc2.display();
+        icc2.save();
 
         Logger.info("# of INFECTED agents: " + (infected / runs));
         Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));

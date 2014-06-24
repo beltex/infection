@@ -12,8 +12,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pmw.tinylog.Logger;
 
@@ -28,6 +26,9 @@ public class MarkersChart {
     ///////////////////////////////////////////////////////////////////////////
     // PRIVATE ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
+
+
+    private JFreeChart chart;
 
 
     private ChartSeries2DMeasure infectionComplete;
@@ -60,8 +61,20 @@ public class MarkersChart {
         infectionComplete = new ChartSeries2DMeasure("Infection Count");
         leaderElectionComplete = new ChartSeries2DMeasure("Leader");
         allElectionComplete = new ChartSeries2DMeasure("All");
-        //chart.setWindowSize(maxItemCount);
-        //infectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
+
+
+        // Main chart
+        XYSeriesCollection dataset = new XYSeriesCollection();
+
+        dataset.addSeries(infectionComplete.getXYSeries());
+        dataset.addSeries(leaderElectionComplete.getXYSeries());
+        dataset.addSeries(allElectionComplete.getXYSeries());
+
+        chart = ChartFactory.createScatterPlot(params.title,
+                params.xAxisLabel, params.yAxisLabel, dataset,
+                params.orientation, params.showLegend, false, false);
+        chart.setTextAntiAlias(true);
+
 
         Logger.debug("Infection count chart INIT");
     }
@@ -86,53 +99,40 @@ public class MarkersChart {
 
 
     /**
-     * Generate the chart (show it)
+     * Display the chart (plot it)
      */
-    public void plot() {
-            JFreeChart chart = null;
-            XYSeriesCollection dataset = new XYSeriesCollection();
+    public void display() {
+        ChartPanel panel = new ChartPanel(chart, params.width, params.height,
+                                                               params.width,
+                                                               params.height,
+                                                               params.width + 50,
+                                                               params.height + 50,
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               true,
+                                                               true);
 
-            dataset.addSeries(infectionComplete.getXYSeries());
-            dataset.addSeries(leaderElectionComplete.getXYSeries());
-            dataset.addSeries(allElectionComplete.getXYSeries());
-
-            chart = ChartFactory.createScatterPlot(params.title,
-                    params.xAxisLabel, params.yAxisLabel, dataset,
-                    params.orientation, params.showLegend, false, false);
-            chart.setTextAntiAlias(true);
-
-//            NumberAxis xAxis = new NumberAxis();
-//            xAxis.setRange(1000, 1001);
-//            xAxis.setTickUnit(new NumberTickUnit(1));
-//
-//            chart.getXYPlot().setDomainAxis(xAxis);
-//            NumberAxis xAxis = (NumberAxis) chart.getXYPlot().getDomainAxis();
-//            xAxis.setTickUnit(new NumberTickUnit(1));
-
-
+        JFrame frame = new JFrame(params.title);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.add(panel);
+        frame.pack();
+        frame.setVisible(true);
+    }
 
 
-//            ChartPanel panel = new ChartPanel(chart, params.width,
-//                    params.height, params.width, params.height,
-//                    params.width + 50, params.height + 50, true, true, true,
-//                    true, true, true);
-//
-//            JFrame frame = new JFrame(params.title);
-//            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//            frame.setLocationRelativeTo(null);
-//            frame.add(panel);
-//            frame.pack();
-//            frame.setVisible(true);
-
-
-
-
-
-                try {
-                    ChartUtilities.saveChartAsPNG(new File(params.path), chart,
-                            params.width, params.height);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    /**
+     * Save chart to disk as a PNG
+     */
+    public void save() {
+        try {
+            ChartUtilities.saveChartAsPNG(new File(params.path), chart,
+                                                                 params.width,
+                                                                 params.height);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
