@@ -59,8 +59,13 @@ public class MarkersChart {
                       File.separator + "chart." + timestamp + ".png";
 
         infectionComplete = new ChartSeries2DMeasure("Infection Count");
+        infectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
+
         leaderElectionComplete = new ChartSeries2DMeasure("Leader");
+        leaderElectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
+
         allElectionComplete = new ChartSeries2DMeasure("All");
+        allElectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
 
 
         // Main chart

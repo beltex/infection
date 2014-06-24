@@ -313,7 +313,7 @@ public class Simulator  {
         double marker_leaderElectionComplete_interact = 0;
         double marker_allElectionComplete_interact = 0;
 
-        MarkersChart icc2 = new MarkersChart(maxTimeSteps, tinylog.getDirName(), tinylog.getTimestamp());
+        MarkersChart icc2 = new MarkersChart(numAgents.upperEndpoint() - numAgents.lowerEndpoint(), tinylog.getDirName(), tinylog.getTimestamp());
 
         ArrayList<SimulatorRun> list = simJSON.getRunData();
         for (SimulatorRun r : list) {
