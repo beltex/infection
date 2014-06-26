@@ -27,7 +27,7 @@ public class Visualization {
         final double traversalProbability = 0.75;
 
 
-        ExtendedGraph g = new ExtendedGraph("ClientVis");
+        ExtendedGraph g = new ExtendedGraph("Visualization");
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.INFO);
 
         sim.generateGraphChain(10, true, true, false);

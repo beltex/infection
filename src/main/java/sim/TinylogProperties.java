@@ -51,16 +51,23 @@ public class TinylogProperties {
     private String dirName;
 
 
+    private boolean stdout;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public TinylogProperties(Level logLevel) {
+    public TinylogProperties(Level logLevel, boolean stdout) {
         this.logLevel = logLevel;
+        this.stdout = stdout;
 
         createLogsDir();
-        startTinylog();
+
+        if (!stdout) {
+            startTinylog();
+        }
     }
 
 

@@ -56,6 +56,9 @@ public class ExtendedGraph extends SingleGraph {
     private String RANDOM_SINGLE_nodeID;
 
 
+    private String deadEnd_nodeID;
+
+
     private HashMap<Integer, Range<Double>> actionProbabilitySpread;
 
 
@@ -181,6 +184,7 @@ public class ExtendedGraph extends SingleGraph {
             if (n.getAgentCount() == numAgents && n.getOutDegree() == 0) {
                 Logger.warn("ALL AGENTS HAVE HIT A DEAD END - NO MORE TRAVERSE ACTION");
 
+                deadEnd_nodeID = n.getId();
                 return true;
             }
         }
@@ -276,6 +280,11 @@ public class ExtendedGraph extends SingleGraph {
 
     public HashMap<Integer, Range<Double>> getActionProbabilitySpread() {
         return actionProbabilitySpread;
+    }
+
+
+    public String getDeadEnd_nodeID() {
+        return deadEnd_nodeID;
     }
 
 

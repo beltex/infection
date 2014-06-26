@@ -123,7 +123,7 @@ public class Simulator  {
                                                      int runs,
                                                      Level logLevel) {
         // Init logging before anything else
-        tinylog = new TinylogProperties(logLevel);
+        tinylog = new TinylogProperties(logLevel, false);
 
         this.g = g;
         this.numAgents = numAgents;
@@ -200,38 +200,6 @@ public class Simulator  {
         RandomSource.getInstance().init(g);
         GraphVis.getInstance().init(g);
 
-        if (flag_vis) {
-            GraphVis.getInstance().display();
-
-            // Only need to display graph once
-            flag_vis = false;
-        }
-
-        if (flag_generateGraph) {
-            GraphGeneratorSource.getInstance().generateGraph(g);
-
-            // Only need to generate the graph once
-            flag_generateGraph = false;
-        }
-
-
-        /*
-         * Check the graph
-         */
-        if (!g.isConnected()) {
-            /*
-             * Graph not connected, thus some node(s) not reachable. We can't
-             * work with such a graph, as certain agent(s) may not be reachable
-             * and so can never be infected
-             */
-            Logger.error("Graph is NOT connected");
-            System.exit(-1);
-        }
-
-        if (g.getNodeCount() == 1) {
-            Logger.warn("Single node graph - no traverse actions allowed");
-        }
-
 
         /*
          * Create and distribute the agents
@@ -289,6 +257,39 @@ public class Simulator  {
      */
     public void execute() {
         Logger.info("Simulation SETTINGS" + toString());
+        GraphVis.getInstance().init(g);
+
+
+        /*
+         * These only need to happen once
+         */
+        if (flag_vis) {
+            GraphVis.getInstance().display();
+        }
+
+        if (flag_generateGraph) {
+            GraphGeneratorSource.getInstance().generateGraph(g);
+        }
+
+
+        /*
+         * Check the graph
+         */
+        if (!g.isConnected()) {
+            /*
+             * Graph not connected, thus some node(s) not reachable. We can't
+             * work with such a graph, as certain agent(s) may not be reachable
+             * and so can never be infected
+             */
+            Logger.error("Graph is NOT connected");
+            System.exit(-1);
+        }
+
+        if (g.getNodeCount() == 1) {
+            Logger.warn("Single node graph - no traverse actions allowed");
+        }
+
+
 
         for (int y = numAgents.lowerEndpoint(); y < numAgents.upperEndpoint(); y++) {
             execute(y);

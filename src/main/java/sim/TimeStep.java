@@ -133,7 +133,7 @@ public class TimeStep {
             // Can only do interact now
             deadEnd = true;
             action = ACTION_INTERACT;
-            n = g.getNode(0);
+            n = g.getNode(g.getDeadEnd_nodeID());
         }
         else {
             // Graph is safe for traverse action
@@ -295,9 +295,10 @@ public class TimeStep {
         }
         actionInteractCounter++;
 
+
+        // Update the view
         if (flag_vis) {
-            // Update the view
-            //gv.updateNode(n.getId());
+            gv.updateNode(n.getId());
         }
     }
 
@@ -329,8 +330,9 @@ public class TimeStep {
 
         actionTraverseCounter++;
 
+
+        // Update the view
         if (flag_vis) {
-            // Update the view
             gv.updateNode(n.getId());
             gv.updateEdge(e, true);
             gv.updateNode(outGoingNode.getId());

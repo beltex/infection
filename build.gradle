@@ -2,7 +2,13 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
+version = '1.0.0'
+description = 'Leader election simulator with dynamic graph visualization'
+
 sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
+applicationDefaultJvmArgs = ["-Xmx2048m"]
 mainClassName = hasProperty('client') ? 'client.' + client : 
                                         'client.Visualization'
 

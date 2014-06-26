@@ -95,9 +95,11 @@ public class MarkersChart {
         infectionComplete.addValue(numAgents, step);
     }
 
+
     public void addDataPointLeader(int numAgents, int step) {
         leaderElectionComplete.addValue(numAgents, step);
     }
+
 
     public void addDataPointAll(int numAgents, int step) {
         allElectionComplete.addValue(numAgents, step);
