@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import org.graphstream.graph.Edge;
+import org.graphstream.ui.swingViewer.View;
+import org.graphstream.ui.swingViewer.Viewer;
 import org.pmw.tinylog.Logger;
 
 
@@ -106,7 +108,10 @@ public class GraphVis {
         g.addAttribute(UI_ANTIALIAS);
 
         applyCSS();
-        g.display();
+
+        Viewer viewer = g.display(true);
+        View view = viewer.getDefaultView();
+        view.resizeFrame(1080, 720);
     }
 
 
