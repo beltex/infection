@@ -341,8 +341,12 @@ public class Simulator  {
             icc2.addDataPointAll(r.getNumAgents(), r.getAllElectionCompleteInteractions());
         }
 
-        //icc2.display();
+        // Must come before chart display, exception thrown otherwise
         icc2.save();
+
+        if (flag_charts) {
+            icc2.display();
+        }
 
         Logger.info("# of INFECTED agents: " + (infected / runs));
         Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));

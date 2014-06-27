@@ -8,6 +8,7 @@ import sim.Simulator;
 
 import com.google.common.collect.Range;
 
+
 /**
  * Visualizing a graph. This is recommended to be done only for single
  * simulation runs, not large scale testing due to the performance overhead.
@@ -17,7 +18,6 @@ public class Visualization {
 
     public static void main(String[] args) {
 
-        // 1000 agents only
         final Range<Integer> numAgents = Range.closedOpen(1000, 1001);
         final int runs = 1;
         final int A = 4;

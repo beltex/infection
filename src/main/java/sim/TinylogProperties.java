@@ -51,6 +51,9 @@ public class TinylogProperties {
     private String dirName;
 
 
+    /**
+     * Should logs be written to Standard Output?
+     */
     private boolean stdout;
 
 

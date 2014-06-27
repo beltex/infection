@@ -8,10 +8,14 @@ import sim.Simulator;
 
 import com.google.common.collect.Range;
 
+
+/**
+ * Original research paper scenario
+ *
+ */
 public class OriginalPaper {
 
     public static void main(String[] args) {
-
 
         final Range<Integer> numAgents = Range.closedOpen(1000, 10001);
         final int runs = 10;

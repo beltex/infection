@@ -46,7 +46,7 @@ public class MarkersChart {
 
     public MarkersChart(int maxItemCount, String dirName, String timestamp) {
         params = new PlotParameters();
-        params.title = "Simulation Markers Chart";
+        params.title = "Simulation Marker's Chart - " + timestamp;
         params.xAxisLabel = "Number of Agents";
         params.yAxisLabel = "Interaction Step";
         params.type = PlotType.SCATTER;
@@ -58,13 +58,13 @@ public class MarkersChart {
                       File.separator + dirName +
                       File.separator + "chart." + timestamp + ".png";
 
-        infectionComplete = new ChartSeries2DMeasure("Infection Count");
+        infectionComplete = new ChartSeries2DMeasure("Infection Complete");
         infectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
 
-        leaderElectionComplete = new ChartSeries2DMeasure("Leader");
+        leaderElectionComplete = new ChartSeries2DMeasure("Leader Believes Election Complete");
         leaderElectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
 
-        allElectionComplete = new ChartSeries2DMeasure("All");
+        allElectionComplete = new ChartSeries2DMeasure("All Agents Believe Election Complete");
         allElectionComplete.getXYSeries().setMaximumItemCount(maxItemCount);
 
 
@@ -108,6 +108,10 @@ public class MarkersChart {
 
     /**
      * Display the chart (plot it)
+     *
+     * Code from gs-algo ChartMeasure class outputPlot() method, SCREEN case.
+     * This is done so that we can set JFrame to center of display via
+     * setLocationRelativeTo(null). Will send PR for this.
      */
     public void display() {
         ChartPanel panel = new ChartPanel(chart, params.width, params.height,

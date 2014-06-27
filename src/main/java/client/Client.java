@@ -10,14 +10,12 @@ import com.google.common.collect.Range;
 
 
 /**
- * A general purpose client setup for mass testing.
+ * General purpose sample client
  *
  */
 public class Client {
 
-
     public static void main(String[] args) {
-
 
         /**
          * How many agents should be used in the simulation?
@@ -68,8 +66,15 @@ public class Client {
         final int maxTimeSteps = 100000;
 
 
+        /**
+         *
+         */
+        final double interactProbability = 0.25;
+        final double traversalProbability = 0.75;
+
+
         // Create a graph
-        ExtendedGraph g = new ExtendedGraph("SampleClient");
+        ExtendedGraph g = new ExtendedGraph("Client");
 
 
         // Create a new simulation
@@ -86,13 +91,13 @@ public class Client {
         sim.generateGraphChain(10, true, true, false);
 
         // Define how agents should be spread across the graph
-        sim.agentDistribution(AgentDistribution.SINGLE);
+        sim.agentDistribution(AgentDistribution.EVEN_SPREAD);
 
         // Define how a node should be selected on every time step
         sim.nodeSelection(Simulator.NODE_WEIGHTED);
 
         // Set the probabilities for the possible actions
-        sim.setActionProbabilites(0.25, 0.75);
+        sim.setActionProbabilites(interactProbability, traversalProbability);
 
         // Run the simulation
         sim.execute();

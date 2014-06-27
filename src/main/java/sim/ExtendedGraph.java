@@ -56,6 +56,9 @@ public class ExtendedGraph extends SingleGraph {
     private String RANDOM_SINGLE_nodeID;
 
 
+    /**
+     * ID of the node that all agents have hit a dead end in.
+     */
     private String deadEnd_nodeID;
 
 
