@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.graphstream.graph.Edge;
 import org.pmw.tinylog.Logger;
@@ -53,8 +54,8 @@ public class RandomSource {
      * http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#SecureRandom
      * http://docs.oracle.com/javase/7/docs/technotes/guides/security/SunProviders.html#SUNProvider
      */
-    private final String PROVIDER = "SUN";
-    private final String ALGORITHM = "SHA1PRNG";
+    private static final String PROVIDER = "SUN";
+    private static final String ALGORITHM = "SHA1PRNG";
 
 
     /**
@@ -214,17 +215,15 @@ public class RandomSource {
 
 
             // Find the node
-            Iterator<String> it_set = map.keySet().iterator();
-            while (it_set.hasNext()) {
-                String k = it_set.next();
+            for (Entry<String, Range<Double>> entry: map.entrySet()) {
 
-                // If in range
-                if (map.get(k).contains(r)) {
-                    n = g.getNode(k);
-                    Logger.debug("{0} is with range {1}", r, map.get(k));
+                if (entry.getValue().contains(r)) {
+                    n = g.getNode(entry.getKey());
                     break;
                 }
+
             }
+
 
             if (action == TimeStep.ACTION_INTERACT && n.getAgentCount() >= 2) {
                 Logger.debug("ACTION_INTERACT: Node selected: " + n);
@@ -265,17 +264,12 @@ public class RandomSource {
         HashMap<Integer, Range<Double>> map = g.getActionProbabilitySpread();
 
         // Find the action in which the random double r falls within
-        for (Integer key : map.keySet()) {
-            if (map.get(key).contains(r)) {
-                Logger.trace("KEY: {0}; {1} is with range {2}", key,
-                                                                r,
-                                                                map.get(key));
-                return key;
-            }
+        if (map.get(TimeStep.ACTION_INTERACT).contains(r)) {
+            return TimeStep.ACTION_INTERACT;
         }
-
-        // This should never happen
-        return -1;
+        else {
+            return TimeStep.ACTION_TRAVERSE;
+        }
     }
 
 

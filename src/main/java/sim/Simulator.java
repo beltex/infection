@@ -192,13 +192,14 @@ public class Simulator  {
      * Simulator init operations
      */
     private void init() {
-        g.setActionProbabilitySpread(actionProbabilitySpread());
-
         /*
          * Init helper classes
          */
         RandomSource.getInstance().init(g);
-        GraphVis.getInstance().init(g);
+
+        if (flag_vis) {
+            GraphVis.getInstance().init(g);
+        }
 
 
         /*
@@ -289,6 +290,7 @@ public class Simulator  {
             Logger.warn("Single node graph - no traverse actions allowed");
         }
 
+        g.setActionProbabilitySpread(actionProbabilitySpread());
 
 
         for (int y = numAgents.lowerEndpoint(); y < numAgents.upperEndpoint(); y++) {
