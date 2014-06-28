@@ -67,7 +67,8 @@ public class Client {
 
 
         /**
-         *
+         * Probabilities for the possible actions on every timestep. Must add
+         * up to 1.0 (100%).
          */
         final double interactProbability = 0.25;
         final double traversalProbability = 0.75;

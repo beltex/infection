@@ -5,7 +5,6 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.graphstream.graph.Edge;
@@ -68,6 +67,9 @@ public class RandomSource {
     private final int NUM_ACTIONS = 2;
 
 
+    private int numNodes;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS
     ///////////////////////////////////////////////////////////////////////////
@@ -75,6 +77,7 @@ public class RandomSource {
 
     public void init(ExtendedGraph g) {
         this.g = g;
+        this.numNodes = g.getNodeCount();
 
         try {
             sr = SecureRandom.getInstance(ALGORITHM, PROVIDER);
@@ -165,7 +168,7 @@ public class RandomSource {
      * @return ExtendedNode Random node
      */
     public ExtendedNode nextNode() {
-        return g.getNode(sr.nextInt(g.getNodeCount()));
+        return g.getNode(sr.nextInt(numNodes));
     }
 
 

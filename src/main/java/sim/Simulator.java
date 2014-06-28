@@ -78,6 +78,12 @@ public class Simulator  {
 
 
     /**
+     * Range of the number of agents that a simulation runs will have
+     */
+    private Range<Integer> numAgents;
+
+
+    /**
      * How many times should the simulation be run?
      */
     private int runs;
@@ -90,13 +96,13 @@ public class Simulator  {
     private static SimulatorJSON simJSON = new SimulatorJSON();
 
 
-    private TinylogProperties tinylog;
-
-
-    private Range<Integer> numAgents;
-
-
+    /**
+     * What is the probabilities of the possible actions?
+     */
     private HashMap<Integer, Double> actionProbability;
+
+
+    private TinylogProperties tinylog;
 
 
     ///////////////////////////////////////////////////////////////////////////

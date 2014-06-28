@@ -8,6 +8,8 @@ TODO
 - [CSS] Add sprite to show direction of traversal for undirected graphs
 - [CSS] Change the size of the label for when graph is really dense
 - [gh-pages] Add graph screenshot to README.md
+- [gh-pages] Add experiments section
+- More ranged options - action probabilites, number of nodes, etc
 - Update to NIO
 - Simulation run dir - have additional counter label for easier cd
 - Check for self edges in a graph?
@@ -16,5 +18,4 @@ TODO
 - Implement ExtendedEdge class - have edge weights
 - Should conversions & metFollowers of an agent reset if infected?
 - Look into OpenGL, DirectX, and Quartz Java system properties
-- Add experiments section to README.md
 - Add d3.js or nvd3.js charts and report?

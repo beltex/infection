@@ -41,7 +41,7 @@ public class Visualization {
         sim.vis();
 
         /*
-         * Turn on charts
+         * Turn on charts, as in display them
          */
         sim.charts();
 
