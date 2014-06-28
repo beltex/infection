@@ -39,7 +39,7 @@ public class AgentDistributionTest {
          */
         GraphVis.getInstance().init(g);
 
-        ad = new AgentDistribution();
+        ad = new AgentDistribution(false);
     }
 
 
