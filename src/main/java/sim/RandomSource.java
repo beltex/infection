@@ -129,17 +129,15 @@ public class RandomSource {
      */
     public Agent[] nextAgentPair(ExtendedNode n) {
         Agent[] agents = new Agent[2];
+        int agentCount = n.getAgentCount();
 
         while (true) {
-            agents[0] = nextAgent(n);
-            agents[1] = nextAgent(n);
+            agents[0] = n.getAgent(sr.nextInt(agentCount));
+            agents[1] = n.getAgent(sr.nextInt(agentCount));
 
             if (agents[0].getAID() != agents[1].getAID()) {
                 return agents;
             }
-
-            Logger.trace("Selected same agent twice - {0}, {1}", agents[0],
-                                                                 agents[1]);
         }
     }
 

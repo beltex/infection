@@ -105,6 +105,9 @@ public class Simulator  {
     private TinylogProperties tinylog;
 
 
+    private RandomSource rs;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -201,7 +204,7 @@ public class Simulator  {
         /*
          * Init helper classes
          */
-        RandomSource.getInstance().init(g);
+        rs.init(g);
 
         if (flag_vis) {
             GraphVis.getInstance().init(g);
@@ -264,6 +267,7 @@ public class Simulator  {
      */
     public void execute() {
         Logger.info("Simulation SETTINGS" + toString());
+        rs = RandomSource.getInstance();
         GraphVis.getInstance().init(g);
 
 

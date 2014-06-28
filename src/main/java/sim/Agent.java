@@ -81,14 +81,14 @@ public class Agent {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public String toString() {
-        return "\n\t AID: " + AID +
-                ";\n\t Leader AID:  " + leaderAID +
-                ";\n\t Conversions: " + conversions +
-                ";\n\t Met followers: " + metFollowers +
-                ";\n\t Is leader: " + isLeader +
-                ";\n\t Election Complete: " + electionComplete;
-    }
+//    public String toString() {
+//        return "\n\t AID: " + AID +
+//                ";\n\t Leader AID:  " + leaderAID +
+//                ";\n\t Conversions: " + conversions +
+//                ";\n\t Met followers: " + metFollowers +
+//                ";\n\t Is leader: " + isLeader +
+//                ";\n\t Election Complete: " + electionComplete;
+//    }
 
 
     /**
