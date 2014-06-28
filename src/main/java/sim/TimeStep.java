@@ -349,10 +349,10 @@ public class TimeStep {
 
 
     private void agentInfection(Agent infector, Agent infected) {
-        Logger.debug("Infector agent: " + infector);
+        //Logger.trace("Infector agent: " + infector);
 
         infected.setLeaderAID(infector.getLeaderAID());
-        Logger.debug("Infected agent: " + infected);
+        //Logger.trace("Infected agent: " + infected);
 
         if (infector.getLeaderAID() == g.getNumAgents() - 1) {
             infectionCounter++;
