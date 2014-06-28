@@ -68,6 +68,7 @@ public class AgentDistribution {
         RANDOM_SPREAD, "RANDOM_SPREAD"
     );
 
+
     ///////////////////////////////////////////////////////////////////////////
     // PRIVATE ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
@@ -82,12 +83,16 @@ public class AgentDistribution {
     private RandomSource rdm;
 
 
+    private boolean flag_vis;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public AgentDistribution() {
+    public AgentDistribution(boolean flag_vis) {
+        this.flag_vis = flag_vis;
     }
 
 
@@ -104,7 +109,10 @@ public class AgentDistribution {
 
 
     public void execute() {
-        gv = GraphVis.getInstance();
+        if (flag_vis) {
+            gv = GraphVis.getInstance();
+        }
+
         rdm = RandomSource.getInstance();
 
 
@@ -164,7 +172,10 @@ public class AgentDistribution {
         }
 
         n.setAgents(createAgents());
-        gv.updateNode(n.getId());
+
+        if (flag_vis) {
+            gv.updateNode(n.getId());
+        }
     }
 
 
@@ -175,7 +186,9 @@ public class AgentDistribution {
 
         Logger.info("All agents placed in node - {0}", n);
 
-        gv.updateNode(n.getId());
+        if (flag_vis) {
+            gv.updateNode(n.getId());
+        }
     }
 
 
@@ -210,7 +223,9 @@ public class AgentDistribution {
             agents.removeAll(sublist);
             remainingAgents = agents.size();
 
-            gv.updateNode(n.getId());
+            if (flag_vis) {
+                gv.updateNode(n.getId());
+            }
         }
 
         // Log final starting distribution of agents
@@ -262,7 +277,10 @@ public class AgentDistribution {
             n.addAgents(sublist);
 
             agents.removeAll(sublist);
-            gv.updateNode(n.getId());
+
+            if (flag_vis) {
+                gv.updateNode(n.getId());
+            }
         }
     }
 

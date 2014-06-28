@@ -211,7 +211,7 @@ public class Simulator  {
         /*
          * Create and distribute the agents
          */
-        AgentDistribution dist = new AgentDistribution();
+        AgentDistribution dist = new AgentDistribution(flag_vis);
         dist.init(g);
         dist.execute();
     }
