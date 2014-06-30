@@ -100,6 +100,8 @@ Logs from the simulation can be found in the `logs` directory which is
 created at run time. Each simulation run creates it's own timestamped
 directory inside containing logs, simulation data in JSON format, and charts.
 
+- Logging is only really useful for single simulation runs, adding of new feautres, etc
+- When running large tests, logs are both repetitive and carry a performance and space overhead.
 
 ### References
 

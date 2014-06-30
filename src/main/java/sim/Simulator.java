@@ -326,7 +326,8 @@ public class Simulator  {
         double marker_leaderElectionComplete_interact = 0;
         double marker_allElectionComplete_interact = 0;
 
-        MarkersChart icc2 = new MarkersChart((numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs * 3, tinylog.getDirName(), tinylog.getTimestamp());
+        int maxItems = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs * 3;
+        MarkersChart mc = new MarkersChart(maxItems, tinylog.getDirName(), tinylog.getTimestamp());
 
         ArrayList<SimulatorRun> list = simJSON.getRunData();
         for (SimulatorRun r : list) {
@@ -343,21 +344,21 @@ public class Simulator  {
 
 
             marker_infectionComplete_interact += (double)r.getInfectionCompleteInteractions();
-            icc2.addDataPoint(r.getNumAgents(), r.getInfectionCompleteInteractions());
+            mc.addDataPoint(r.getNumAgents(), r.getInfectionCompleteInteractions());
 
             marker_leaderElectionComplete_interact += (double)r.getLeaderElectionCompleteInteractions();
-            icc2.addDataPointLeader(r.getNumAgents(), r.getLeaderElectionCompleteInteractions());
+            mc.addDataPointLeader(r.getNumAgents(), r.getLeaderElectionCompleteInteractions());
 
 
             marker_allElectionComplete_interact += (double)r.getAllElectionCompleteInteractions();
-            icc2.addDataPointAll(r.getNumAgents(), r.getAllElectionCompleteInteractions());
+            mc.addDataPointAll(r.getNumAgents(), r.getAllElectionCompleteInteractions());
         }
 
         // Must come before chart display, exception thrown otherwise
-        icc2.save();
+        mc.save();
 
         if (flag_charts) {
-            icc2.display();
+            mc.display();
         }
 
         Logger.info("# of INFECTED agents: " + (infected / runs));

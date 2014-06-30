@@ -156,9 +156,6 @@ public class TimeStep {
         Logger.debug("ACTION: {0}", action);
 
 
-
-
-
         /*
          * Execute the action
          */
@@ -389,6 +386,10 @@ public class TimeStep {
                 simRun.setLeaderElectionCompleteInteractions(actionInteractCounter);
 
                 flag_leaderElectionComplete = true;
+
+                if (!flag_infectionComplete) {
+                    Logger.warn("Leader delcared election complete EARLY");
+                }
             }
 
             Logger.info("STEP: {0}; Agent believes election is complete and " +

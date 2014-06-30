@@ -98,6 +98,13 @@ public class SimulatorRun {
 
     public SimulatorRun() {
         stepInfectionsMap = new LinkedHashMap<Integer, Integer>();
+
+        infectionCompleteStep = 0;
+        leaderElectionCompleteStep = 0;
+        allElectionCompleteStep = 0;
+        infectionCompleteInteractions = 0;
+        leaderElectionCompleteInteractions = 0;
+        allElectionCompleteInteractions = 0;
     }
 
 
