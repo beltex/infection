@@ -296,6 +296,10 @@ public class Simulator  {
             System.exit(-1);
         }
 
+        if (g.hasDeadEnd()) {
+            Logger.warn("The graph has a dead END");
+        }
+
         if (g.getNodeCount() == 1) {
             Logger.warn("Single node graph - no traverse actions allowed");
         }

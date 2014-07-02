@@ -115,12 +115,12 @@ public class ExtendedNode extends SingleNode {
     }
 
 
-    public String toString() {
-        return "ID: " + super.id +
-                "; Agent count: " + agents.size() +
-                "; Infection count: " + infectionCount() +
-                "; Election complete count: " + electionCompleteCount();
-    }
+//    public String toString() {
+//        return "ID: " + super.id +
+//                "; Agent count: " + agents.size() +
+//                "; Infection count: " + infectionCount() +
+//                "; Election complete count: " + electionCompleteCount();
+//    }
 
 
     ///////////////////////////////////////////////////////////////////////////

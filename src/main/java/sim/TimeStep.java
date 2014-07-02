@@ -64,6 +64,9 @@ public class TimeStep {
     private boolean deadEnd;
 
 
+    private boolean agentDeadEnd;
+
+
     private boolean flag_vis;
 
 
@@ -92,7 +95,8 @@ public class TimeStep {
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
 
-        deadEnd = false;
+        deadEnd = g.getHasDeadEnd();
+        agentDeadEnd = false;
         flag_infectionComplete = false;
         flag_leaderElectionComplete = false;
         flag_allElectionComplete = false;
@@ -105,6 +109,8 @@ public class TimeStep {
         rs = RandomSource.getInstance();
 
         //simRun.addInfection(step, infectionCounter);
+
+
 
         Logger.debug("TimeStep INIT");
     }
@@ -129,13 +135,8 @@ public class TimeStep {
          */
         int action = -1;
 
-        if (deadEnd || g.hasDeadEnd()) {
-            // Can only do interact now
-            deadEnd = true;
-            action = ACTION_INTERACT;
-            n = g.getNode(g.getDeadEnd_nodeID());
-        }
-        else {
+        // If the graph structure has no dead end, no point in checking for one
+        if (!deadEnd) {
             // Graph is safe for traverse action
             action = rs.nextActionWeighted();
 
@@ -153,6 +154,13 @@ public class TimeStep {
                     break;
             }
         }
+        else if (agentDeadEnd || g.agentDeadEnd()) {
+            // Can only do interact now
+            agentDeadEnd = true;
+            action = ACTION_INTERACT;
+            n = g.getNode(g.getDeadEnd_nodeID());
+        }
+
         Logger.debug("ACTION: {0}", action);
 
 
