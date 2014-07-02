@@ -26,6 +26,8 @@ public class OriginalPaper {
 
         ExtendedGraph g = new ExtendedGraph("Original Paper");
         g.addNode("A");
+        g.addNode("B");
+        g.addEdge("AB", "A", "B", false);
 
 
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.OFF);

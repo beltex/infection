@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.graphstream.algorithm.ConnectedComponents;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.pmw.tinylog.Logger;
 
@@ -63,6 +65,9 @@ public class ExtendedGraph extends SingleGraph {
 
 
     private HashMap<Integer, Range<Double>> actionProbabilitySpread;
+
+
+    private boolean hasDeadEnd;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -172,13 +177,32 @@ public class ExtendedGraph extends SingleGraph {
 
 
     /**
+     * Does this graph have a dead end? That is, a node with an out degree of
+     * 0, no escape.
+     *
+     * @return True if the graph has one or more dead end(s), false otherwise
+     */
+    public boolean hasDeadEnd() {
+        for (Node n : this.getNodeSet()) {
+
+            if (n.getOutDegree() == 0) {
+                hasDeadEnd = true;
+            }
+        }
+
+        hasDeadEnd = false;
+        return hasDeadEnd;
+    }
+
+
+    /**
      * Check if all agents are in a single node which has an out degree of 0,
      * a dead end. Thus, no agent can escape. If this is the case, traversal
      * actions cannot be attempted.
      *
      * @return True if the graph has hit a dead end, false otherwise
      */
-    public boolean hasDeadEnd() {
+    public boolean agentDeadEnd() {
         Iterator<ExtendedNode> it = this.getNodeIterator();
 
         while (it.hasNext()) {
@@ -210,6 +234,22 @@ public class ExtendedGraph extends SingleGraph {
         }
 
         return false;
+    }
+
+
+    /**
+     * Is the graph directed?
+     *
+     * @return True if all edges are directed, false otherwise.
+     */
+    public boolean isDirected() {
+        for (Edge e: this.getEdgeSet()) {
+            if (!e.isDirected()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
@@ -288,6 +328,11 @@ public class ExtendedGraph extends SingleGraph {
 
     public String getDeadEnd_nodeID() {
         return deadEnd_nodeID;
+    }
+
+
+    public boolean getHasDeadEnd() {
+        return hasDeadEnd;
     }
 
 
