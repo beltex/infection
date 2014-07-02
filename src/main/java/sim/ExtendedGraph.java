@@ -183,14 +183,16 @@ public class ExtendedGraph extends SingleGraph {
      * @return True if the graph has one or more dead end(s), false otherwise
      */
     public boolean hasDeadEnd() {
+        hasDeadEnd = false;
+
         for (Node n : this.getNodeSet()) {
 
             if (n.getOutDegree() == 0) {
                 hasDeadEnd = true;
+                return hasDeadEnd;
             }
         }
 
-        hasDeadEnd = false;
         return hasDeadEnd;
     }
 
