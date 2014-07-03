@@ -93,6 +93,12 @@ public class AgentDistribution {
 
     public AgentDistribution(boolean flag_vis) {
         this.flag_vis = flag_vis;
+
+        if (flag_vis) {
+            gv = GraphVis.getInstance();
+        }
+
+        rdm = RandomSource.getInstance();
     }
 
 
@@ -109,13 +115,6 @@ public class AgentDistribution {
 
 
     public void execute() {
-        if (flag_vis) {
-            gv = GraphVis.getInstance();
-        }
-
-        rdm = RandomSource.getInstance();
-
-
         /*
          * User sets agent dist algo. Have to check that it has been done, and
          * that its correct.

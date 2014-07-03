@@ -138,7 +138,9 @@ public class TimeStep {
         // If the graph structure has no dead end, no point in checking for one
         if (!deadEnd) {
             // Graph is safe for traverse action
-            action = rs.nextActionWeighted();
+            // TODO: Use next action if 50/50, nextActionWeighted otherwise
+            //action = rs.nextActionWeighted();
+            action = rs.nextAction();
 
 
             /*

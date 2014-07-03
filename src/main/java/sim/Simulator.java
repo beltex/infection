@@ -13,7 +13,7 @@ import com.google.common.collect.Range;
  * The "controller" class. Single point of contact for the user.
  *
  */
-public class Simulator  {
+public class Simulator {
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -106,6 +106,9 @@ public class Simulator  {
 
 
     private RandomSource rs;
+
+
+    private AgentDistribution dist;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -214,7 +217,6 @@ public class Simulator  {
         /*
          * Create and distribute the agents
          */
-        AgentDistribution dist = new AgentDistribution(flag_vis);
         dist.init(g);
         dist.execute();
     }
@@ -269,6 +271,8 @@ public class Simulator  {
         Logger.info("Simulation SETTINGS" + toString());
         rs = RandomSource.getInstance();
         GraphVis.getInstance().init(g);
+
+        dist = new AgentDistribution(flag_vis);
 
 
         /*
