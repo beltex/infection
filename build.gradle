@@ -9,7 +9,7 @@ description = 'Leader election simulator with dynamic graph visualization'
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
 
-applicationDefaultJvmArgs = ["-Xmx2048m", "-XX:+HeapDumpOnOutOfMemoryError"]
+applicationDefaultJvmArgs = ["-Xmx4096m", "-XX:+UseG1GC", "-XX:+HeapDumpOnOutOfMemoryError"]
 mainClassName = hasProperty('client') ? 'client.' + client : 
                                         'client.Visualization'
 

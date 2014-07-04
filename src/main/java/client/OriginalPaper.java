@@ -28,6 +28,7 @@ public class OriginalPaper {
         g.addNode("A");
         g.addNode("B");
         g.addEdge("AB", "A", "B", false);
+        g.setSINGLE_nodeID("A");
 
 
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.OFF);

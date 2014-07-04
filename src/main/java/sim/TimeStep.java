@@ -105,13 +105,13 @@ public class TimeStep {
         simRun = new SimulatorRun();
         simRun.setNumAgents(g.getNumAgents());
 
-        gv = GraphVis.getInstance();
+        if (flag_vis) {
+            gv = GraphVis.getInstance();
+        }
+
         rs = RandomSource.getInstance();
 
         //simRun.addInfection(step, infectionCounter);
-
-
-
         Logger.debug("TimeStep INIT");
     }
 

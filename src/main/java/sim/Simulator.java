@@ -311,7 +311,10 @@ public class Simulator {
         g.setActionProbabilitySpread(actionProbabilitySpread());
 
 
-        for (int y = numAgents.lowerEndpoint(); y < numAgents.upperEndpoint(); y++) {
+        int lower = numAgents.lowerEndpoint();
+        int upper = numAgents.upperEndpoint();
+
+        for (int y = lower; y < upper; y++) {
             execute(y);
         }
 
