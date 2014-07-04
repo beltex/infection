@@ -113,11 +113,17 @@ public class Agent {
     }
 
 
+    /**
+     * Agent converted (infected) another. Increment the conversions counter
+     */
     public void converted() {
         conversions++;
     }
 
 
+    /**
+     * Agent met a follower. Increment the met followers counter
+     */
     public void metFollower() {
         metFollowers++;
     }

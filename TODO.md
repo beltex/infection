@@ -20,3 +20,4 @@ TODO
 - Look into OpenGL, DirectX, and Quartz Java system properties
 - Add d3.js or nvd3.js charts and report?
 - Figure out why gradle daemon prevents build becoming a background process
+- ChainGen graph slower than hand made version?

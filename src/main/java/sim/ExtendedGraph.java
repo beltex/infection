@@ -67,6 +67,9 @@ public class ExtendedGraph extends SingleGraph {
     private HashMap<Integer, Range<Double>> actionProbabilitySpread;
 
 
+    /**
+     * Does this graph have a dead end?
+     */
     private boolean hasDeadEnd;
 
 
