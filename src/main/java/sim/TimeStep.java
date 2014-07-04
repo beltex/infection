@@ -41,6 +41,7 @@ public class TimeStep {
     private int electionCompleteCounter;
     private int actionInteractCounter;
     private int actionTraverseCounter;
+    private int numAgents;
 
 
     /**
@@ -101,9 +102,10 @@ public class TimeStep {
         flag_leaderElectionComplete = false;
         flag_allElectionComplete = false;
         this.flag_vis = flag_vis;
+        numAgents = g.getNumAgents();
 
         simRun = new SimulatorRun();
-        simRun.setNumAgents(g.getNumAgents());
+        simRun.setNumAgents(numAgents);
 
         if (flag_vis) {
             gv = GraphVis.getInstance();
@@ -182,7 +184,7 @@ public class TimeStep {
          */
 
         // Is infection complete?
-        if (!flag_infectionComplete && infectionCounter == g.getNumAgents()) {
+        if (!flag_infectionComplete && infectionCounter == numAgents) {
             Logger.info("STEP: {0}; All agents INFECTED", step);
             simRun.setInfectionCompleteStep(step);
             simRun.setInfectionCompleteInteractions(actionInteractCounter);
@@ -191,7 +193,7 @@ public class TimeStep {
         }
 
         // Do all agents believe election is complete?
-        if (flag_infectionComplete && !flag_allElectionComplete && electionCompleteCounter == g.getNumAgents()) {
+        if (flag_infectionComplete && !flag_allElectionComplete && electionCompleteCounter == numAgents) {
             Logger.info("STEP: {0}; All agents believe election is complete", step);
             simRun.setAllElectionCompleteStep(step);
             simRun.setAllElectionCompleteInteractions(actionInteractCounter);
@@ -361,7 +363,7 @@ public class TimeStep {
         infected.setLeaderAID(infector.getLeaderAID());
         //Logger.trace("Infected agent: " + infected);
 
-        if (infector.getLeaderAID() == g.getNumAgents() - 1) {
+        if (infector.getLeaderAID() == numAgents - 1) {
             infectionCounter++;
             //simRun.addInfection(step, infectionCounter);
         }
@@ -372,7 +374,7 @@ public class TimeStep {
         // TODO: Explain meaning of boolean return
         // Check if the agent interacted with anyone with a higher AID
         if (agent.getLeaderAID() == agent.getAID()) {
-            agent.setConversions(agent.getConversions() + 1);
+            agent.converted();
             Logger.debug("Possible leader: {0}", agent);
 
             isElectionComplete(agent);
@@ -391,7 +393,7 @@ public class TimeStep {
             electionCompleteCounter++;
 
             // Is this the real leader that believes election is complete?
-            if (agent.getAID() == g.getNumAgents() - 1) {
+            if (agent.getAID() == numAgents - 1) {
                 simRun.setLeaderElectionCompleteStep(step);
                 simRun.setLeaderElectionCompleteInteractions(actionInteractCounter);
 
@@ -417,7 +419,7 @@ public class TimeStep {
 
     private boolean metFollower(Agent agent) {
         if (agent.getLeaderAID() == agent.getAID()) {
-            agent.setMetFollowers(agent.getMetFollowers() + 1);
+            agent.metFollower();
             Logger.debug("Agent met a follwer: {0}", agent);
             return true;
         }
@@ -435,8 +437,8 @@ public class TimeStep {
         Logger.info("Simulation run POSTMORTEM - BEGIN");
 
         // Set completed simulation run stats
-        simRun.setInfections(g.infectionCount());
-        simRun.setElectionCompleteCount(g.electionCompleteCount());
+        simRun.setInfections(infectionCounter);
+        simRun.setElectionCompleteCount(electionCompleteCounter);
         simRun.setInteractions(actionInteractCounter);
         simRun.setTraversals(actionTraverseCounter);
 
@@ -446,8 +448,8 @@ public class TimeStep {
         /*
          * Log stats
          */
-        Logger.info("# of INFECTED agents: " + g.infectionCount() + "/" + g.getNumAgents());
-        Logger.info("# of agents that believe election is COMPLETE: " + g.electionCompleteCount() + "/" + g.getNumAgents());
+        Logger.info("# of INFECTED agents: " + infectionCounter + "/" + numAgents);
+        Logger.info("# of agents that believe election is COMPLETE: " + electionCompleteCounter + "/" + numAgents);
         Logger.info("# of agent INTERACTIONS: " + actionInteractCounter);
         Logger.info("# of agent TRAVERSALS: " + actionTraverseCounter);
         Logger.info("MARKER - Infection Complete Step: " + simRun.getInfectionCompleteStep());

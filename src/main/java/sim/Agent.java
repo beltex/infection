@@ -113,6 +113,16 @@ public class Agent {
     }
 
 
+    public void converted() {
+        conversions++;
+    }
+
+
+    public void metFollower() {
+        metFollowers++;
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - GETTERS
     ///////////////////////////////////////////////////////////////////////////
