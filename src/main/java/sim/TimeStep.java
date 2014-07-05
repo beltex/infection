@@ -42,6 +42,7 @@ public class TimeStep {
     private int actionInteractCounter;
     private int actionTraverseCounter;
     private int numAgents;
+    private int leaderAID;
 
 
     /**
@@ -103,6 +104,7 @@ public class TimeStep {
         flag_allElectionComplete = false;
         this.flag_vis = flag_vis;
         numAgents = g.getNumAgents();
+        leaderAID = numAgents - 1;
 
         simRun = new SimulatorRun();
         simRun.setNumAgents(numAgents);
@@ -359,11 +361,12 @@ public class TimeStep {
 
     private void agentInfection(Agent infector, Agent infected) {
         //Logger.trace("Infector agent: " + infector);
+        int infectorLeaderAID = infector.getLeaderAID();
 
-        infected.setLeaderAID(infector.getLeaderAID());
+        infected.setLeaderAID(infectorLeaderAID);
         //Logger.trace("Infected agent: " + infected);
 
-        if (infector.getLeaderAID() == numAgents - 1) {
+        if (infectorLeaderAID == leaderAID) {
             infectionCounter++;
             //simRun.addInfection(step, infectionCounter);
         }
@@ -393,7 +396,7 @@ public class TimeStep {
             electionCompleteCounter++;
 
             // Is this the real leader that believes election is complete?
-            if (agent.getAID() == numAgents - 1) {
+            if (agent.getAID() == leaderAID) {
                 simRun.setLeaderElectionCompleteStep(step);
                 simRun.setLeaderElectionCompleteInteractions(actionInteractCounter);
 
