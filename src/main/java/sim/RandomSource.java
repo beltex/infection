@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -150,13 +151,16 @@ public class RandomSource {
      */
     public Edge nextLeavingEdge(ExtendedNode n) {
         // Valid edges to choose from
-        ArrayList<Edge> list = new ArrayList<Edge>(n.getLeavingEdgeSet());
 
         // Pick the random edge
-        int index = sr.nextInt(list.size());
+//        if (n.getOutDegree() != n.getLeavingEdgeSet().size()) {
+//            System.out.println("NOT EQUAL");
+//            System.exit(-1);
+//        }
 
         // Return the opposite of node n, the outgoing node
-        return list.get(index);
+
+        return n.getLeavingEdge(sr.nextInt(n.getOutDegree()));
     }
 
 
