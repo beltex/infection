@@ -178,6 +178,17 @@ public class ExtendedNode extends SingleNode {
     /**
      * Remove an agent from the node
      *
+     * @param index Index of the agent to be removed
+     * @return Agent Returns the removed agent
+     */
+    public Agent removeAgent(int index) {
+        return agents.remove(index);
+    }
+
+
+    /**
+     * Remove an agent from the node
+     *
      * @param agent Agent to be removed
      * @return True if the agent was removed successfully from the node, false
      * 		   otherwise

@@ -114,6 +114,16 @@ public class RandomSource {
      * Pick a random agent in the node n
      *
      * @param n Node from which the agent should be picked from
+     * @return Randomly chosen index of an agent
+     */
+    public int nextAgentIndex(ExtendedNode n) {
+        return sr.nextInt(n.getAgentCount());
+    }
+
+    /**
+     * Pick a random agent in the node n
+     *
+     * @param n Node from which the agent should be picked from
      * @return Randomly chosen Agent object
      */
     public Agent nextAgent(ExtendedNode n) {

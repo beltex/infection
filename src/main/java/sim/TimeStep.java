@@ -308,10 +308,8 @@ public class TimeStep {
      */
     private void actionTraverse(ExtendedNode n) {
         // Pick a random agent in the current node
-        Agent agent = rs.nextAgent(n);
-
         // Remove it from the current Node
-        n.removeAgent(agent);
+        Agent agent = n.removeAgent(rs.nextAgentIndex(n));
 
         // Pick a random out going edge
         Edge e = rs.nextLeavingEdge(n);
