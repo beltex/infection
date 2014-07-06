@@ -72,6 +72,9 @@ public class TimeStep {
     private boolean flag_vis;
 
 
+    private int nodeSelection;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
@@ -96,12 +99,15 @@ public class TimeStep {
         electionCompleteCounter = 0;
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
+        nodeSelection = g.getNodeSelection();
+
 
         deadEnd = g.getHasDeadEnd();
         agentDeadEnd = false;
         flag_infectionComplete = false;
         flag_leaderElectionComplete = false;
         flag_allElectionComplete = false;
+
 
         this.flag_vis = flag_vis;
         numAgents = g.getNumAgents();
@@ -152,13 +158,11 @@ public class TimeStep {
              * Pick a random node
              */
 
-            switch (g.getNodeSelection()) {
-                case Simulator.NODE_WEIGHTED:
-                    n = rs.nextNodeWeighted(action);
-                    break;
-                case Simulator.NODE_NON_WEIGHTED:
-                    n = rs.nextNode(action);
-                    break;
+            if (nodeSelection == Simulator.NODE_NON_WEIGHTED) {
+                n = rs.nextNode(action);
+            } else {
+                // NODE_WEIGHTED;
+                n = rs.nextNodeWeighted(action);
             }
         }
         else if (agentDeadEnd || g.agentDeadEnd()) {
@@ -176,13 +180,6 @@ public class TimeStep {
          */
         if (action == ACTION_INTERACT) {
             actionInteract(n);
-
-
-            /*
-             * Marker checks
-             */
-
-
         }
         else {
             actionTraverse(n);
