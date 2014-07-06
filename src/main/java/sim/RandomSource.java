@@ -129,14 +129,19 @@ public class RandomSource {
      * @return Array holding two different agents
      */
     public Agent[] nextAgentPair(ExtendedNode n) {
+        Agent agent_i;
+        Agent agent_j;
         Agent[] agents = new Agent[2];
         int agentCount = n.getAgentCount();
 
         while (true) {
-            agents[0] = n.getAgent(sr.nextInt(agentCount));
-            agents[1] = n.getAgent(sr.nextInt(agentCount));
+            agent_i = n.getAgent(sr.nextInt(agentCount));
+            agent_j = n.getAgent(sr.nextInt(agentCount));
 
-            if (agents[0].getAID() != agents[1].getAID()) {
+            if (agent_i.getAID() != agent_j.getAID()) {
+                agents[0] = agent_i;
+                agents[1] = agent_j;
+
                 return agents;
             }
         }
