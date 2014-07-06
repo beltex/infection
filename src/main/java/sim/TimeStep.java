@@ -102,6 +102,7 @@ public class TimeStep {
         flag_infectionComplete = false;
         flag_leaderElectionComplete = false;
         flag_allElectionComplete = false;
+
         this.flag_vis = flag_vis;
         numAgents = g.getNumAgents();
         leaderAID = numAgents - 1;
@@ -175,32 +176,16 @@ public class TimeStep {
          */
         if (action == ACTION_INTERACT) {
             actionInteract(n);
+
+
+            /*
+             * Marker checks
+             */
+
+
         }
-        else if (action == ACTION_TRAVERSE) {
+        else {
             actionTraverse(n);
-        }
-
-
-        /*
-         * Marker checks
-         */
-
-        // Is infection complete?
-        if (!flag_infectionComplete && infectionCounter == numAgents) {
-            Logger.info("STEP: {0}; All agents INFECTED", step);
-            simRun.setInfectionCompleteStep(step);
-            simRun.setInfectionCompleteInteractions(actionInteractCounter);
-
-            flag_infectionComplete = true;
-        }
-
-        // Do all agents believe election is complete?
-        if (flag_infectionComplete && !flag_allElectionComplete && electionCompleteCounter == numAgents) {
-            Logger.info("STEP: {0}; All agents believe election is complete", step);
-            simRun.setAllElectionCompleteStep(step);
-            simRun.setAllElectionCompleteInteractions(actionInteractCounter);
-
-            flag_allElectionComplete = true;
         }
 
 
@@ -271,6 +256,7 @@ public class TimeStep {
             agent_i.setElectionComplete(true);
             agent_j.setElectionComplete(true);
             electionCompleteCounter++;
+            flag_electionComplete();
 
             Logger.debug("Election complete from agents: {0}, {1}", agent_i,
                                                                     agent_j);
@@ -369,6 +355,15 @@ public class TimeStep {
         if (infectorLeaderAID == leaderAID) {
             infectionCounter++;
             //simRun.addInfection(step, infectionCounter);
+
+            // Is infection complete?
+            if (!flag_infectionComplete && infectionCounter == numAgents) {
+                Logger.info("STEP: {0}; All agents INFECTED", step);
+                simRun.setInfectionCompleteStep(step);
+                simRun.setInfectionCompleteInteractions(actionInteractCounter);
+
+                flag_infectionComplete = true;
+            }
         }
     }
 
@@ -393,6 +388,8 @@ public class TimeStep {
         if ((termB + (termA * agent.getConversions())) < agent.getMetFollowers()) {
             agent.setLeader(true);
             agent.setElectionComplete(true);
+
+            // TODO: what if a non-leader increments this?
             electionCompleteCounter++;
 
             // Is this the real leader that believes election is complete?
@@ -401,6 +398,7 @@ public class TimeStep {
                 simRun.setLeaderElectionCompleteInteractions(actionInteractCounter);
 
                 flag_leaderElectionComplete = true;
+                flag_electionComplete();
 
                 if (!flag_infectionComplete) {
                     Logger.warn("Leader delcared election complete EARLY");
@@ -434,6 +432,19 @@ public class TimeStep {
     ///////////////////////////////////////////////////////////////////////////
     // PRIVATE METHODS - HELPERS
     ///////////////////////////////////////////////////////////////////////////
+
+
+    private void flag_electionComplete() {
+        // Do all agents believe election is complete?
+        if (!flag_allElectionComplete && electionCompleteCounter == numAgents) {
+
+            Logger.info("STEP: {0}; All agents believe election is complete", step);
+            simRun.setAllElectionCompleteStep(step);
+            simRun.setAllElectionCompleteInteractions(actionInteractCounter);
+
+            flag_allElectionComplete = true;
+        }
+    }
 
 
     private void postmortem() {
