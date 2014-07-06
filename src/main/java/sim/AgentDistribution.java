@@ -295,9 +295,11 @@ public class AgentDistribution {
      * @return Array list of the agent(s)
      */
     private ArrayList<Agent> createAgents() {
-        ArrayList<Agent> agents = new ArrayList<Agent>();
+        int numAgents = g.getNumAgents();
 
-        for (int i = 0; i < g.getNumAgents(); i++) {
+        ArrayList<Agent> agents = new ArrayList<Agent>(numAgents);
+
+        for (int i = 0; i < numAgents; i++) {
             agents.add(new Agent(i));
         }
 

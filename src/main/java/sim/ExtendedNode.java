@@ -42,7 +42,8 @@ public class ExtendedNode extends SingleNode {
         // Same as: (ExtendedGraph) super.graph
         this.graph = (ExtendedGraph) graph;
 
-        agents = new ArrayList<Agent>();
+        // Set initial cap
+        agents = new ArrayList<Agent>(this.graph.getNumAgents());
     }
 
 
