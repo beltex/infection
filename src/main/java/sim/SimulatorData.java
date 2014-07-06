@@ -14,7 +14,7 @@ import com.google.common.collect.Range;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class SimulatorJSON {
+public class SimulatorData {
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,7 @@ public class SimulatorJSON {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public SimulatorJSON() {
+    public SimulatorData() {
         runData = new ArrayList<SimulatorRun>();
     }
 

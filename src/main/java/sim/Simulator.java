@@ -93,7 +93,7 @@ public class Simulator {
      * Holds all data about entire simulation. Will be exported to JSON at the
      * very end
      */
-    private static SimulatorJSON simJSON = new SimulatorJSON();
+    private static SimulatorData simJSON = new SimulatorData();
 
 
     /**
@@ -253,7 +253,7 @@ public class Simulator {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    protected static SimulatorJSON getSimulatoJSON() {
+    protected static SimulatorData getSimulatoJSON() {
         return simJSON;
     }
 
