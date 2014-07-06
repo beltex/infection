@@ -186,8 +186,8 @@ public class RandomSource {
                 Logger.debug("ACTION_INTERACT: Node selected: " + n);
                 return n;
             }
-            else if (n.getAgentCount() >= 1 && n.getOutDegree() >= 1) {
-                // ACTION_TRAVERSE
+            else if (action == TimeStep.ACTION_TRAVERSE && n.getAgentCount() >= 1
+                                                        && n.getOutDegree() >= 1) {
                 Logger.debug("ACTION_TRAVERSE: Node selected: " + n);
                 return n;
             }
@@ -230,8 +230,8 @@ public class RandomSource {
                 Logger.debug("ACTION_INTERACT: Node selected: " + n);
                 return n;
             }
-            else if (n.getAgentCount() >= 1 && n.getOutDegree() >= 1) {
-                // ACTION_TRAVERSE
+            else if (action == TimeStep.ACTION_TRAVERSE && n.getAgentCount() >= 1
+                                                        && n.getOutDegree() >= 1) {
                 Logger.debug("ACTION_TRAVERSE: Node selected: " + n);
                 return n;
             }
