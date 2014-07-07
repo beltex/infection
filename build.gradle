@@ -9,31 +9,32 @@ description = 'Leader election simulator with dynamic graph visualization'
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
 
-applicationDefaultJvmArgs = ["-Xmx4096m", "-XX:-UseConcMarkSweepGC", "-XX:+HeapDumpOnOutOfMemoryError"]
+applicationDefaultJvmArgs = ["-Xmx4096m",
+                             "-XX:-UseConcMarkSweepGC",
+                             "-XX:+HeapDumpOnOutOfMemoryError"]
+
 mainClassName = hasProperty('client') ? 'client.' + client : 
                                         'client.Visualization'
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
-    compile 'org.graphstream:gs-core:1.2'
-    compile 'org.graphstream:gs-algo:1.2'
-    compile 'org.graphstream:gs-ui:1.2'
-    compile 'org.tinylog:tinylog:0.9.1'
-    compile 'com.google.guava:guava:16.0.1'
-    compile 'com.google.code.gson:gson:2.2.4'
-    testCompile 'junit:junit:4.11'
+  compile 'org.graphstream:gs-core:1.2'
+  compile 'org.graphstream:gs-algo:1.2'
+  compile 'org.graphstream:gs-ui:1.2'
+  compile 'org.tinylog:tinylog:0.9.1'
+  compile 'com.google.guava:guava:16.0.1'
+  compile 'com.google.code.gson:gson:2.2.4'
+  testCompile 'junit:junit:4.11'
 }
 
 tasks.withType(FindBugs) {
-    findbugsMain.onlyIf {project.properties['findbugs'].toBoolean()}
-    findbugsTest.onlyIf {project.properties['findbugs'].toBoolean()}
+  findbugsMain.onlyIf {project.properties['findbugs'].toBoolean()}
+  findbugsTest.onlyIf {project.properties['findbugs'].toBoolean()}
 
-    ignoreFailures = true
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
+  ignoreFailures = true
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
 }
