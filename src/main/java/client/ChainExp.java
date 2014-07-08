@@ -13,7 +13,7 @@ import com.google.common.collect.Range;
  * Original research paper scenario
  *
  */
-public class OriginalPaper {
+public class ChainExp {
 
     public static void main(String[] args) {
 
@@ -26,6 +26,9 @@ public class OriginalPaper {
 
         ExtendedGraph g = new ExtendedGraph("Original Paper");
         g.addNode("A");
+        g.addNode("B");
+        g.addEdge("AB", "A", "B", false);
+        g.setSINGLE_nodeID("A");
 
 
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.OFF);

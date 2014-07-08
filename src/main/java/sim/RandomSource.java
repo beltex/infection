@@ -3,8 +3,6 @@ package sim;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -78,7 +76,7 @@ public class RandomSource {
 
     public void init(ExtendedGraph g) {
         this.g = g;
-        this.numNodes = g.getNodeCount();
+        this.numNodes = this.g.getNodeCount();
 
         try {
             sr = SecureRandom.getInstance(ALGORITHM, PROVIDER);
@@ -111,7 +109,7 @@ public class RandomSource {
 
 
     /**
-     * Pick a random agent in the node n
+     * Pick a random index of an agent in the node
      *
      * @param n Node from which the agent should be picked from
      * @return Randomly chosen index of an agent
@@ -120,11 +118,12 @@ public class RandomSource {
         return sr.nextInt(n.getAgentCount());
     }
 
+
     /**
-     * Pick a random agent in the node n
+     * Pick a random agent in the node
      *
      * @param n Node from which the agent should be picked from
-     * @return Randomly chosen Agent object
+     * @return Randomly chosen agent
      */
     public Agent nextAgent(ExtendedNode n) {
         return n.getAgent(sr.nextInt(n.getAgentCount()));
@@ -159,22 +158,15 @@ public class RandomSource {
 
 
     /**
-     * Pick a random leaving (outgoing) edge from the node n.
+     * Pick a random leaving (outgoing) edge from the node
      *
      * @param n Node to choose leaving edge from
      * @return Edge Outgoing edge
      */
     public Edge nextLeavingEdge(ExtendedNode n) {
-        // Valid edges to choose from
+        // NOTE: n.getLeavingEdgeSet().size() returns getOutDegree
 
-        // Pick the random edge
-//        if (n.getOutDegree() != n.getLeavingEdgeSet().size()) {
-//            System.out.println("NOT EQUAL");
-//            System.exit(-1);
-//        }
-
-        // Return the opposite of node n, the outgoing node
-
+        // Get leaving edge works based off index, not object
         return n.getLeavingEdge(sr.nextInt(n.getOutDegree()));
     }
 

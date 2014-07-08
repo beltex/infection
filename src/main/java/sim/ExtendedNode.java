@@ -112,7 +112,7 @@ public class ExtendedNode extends SingleNode {
      * Clear the node (reset). This is done before a new run of a simulation.
      */
     public void reset() {
-        agents = new ArrayList<Agent>();
+        agents = new ArrayList<Agent>(graph.getNumAgents());
     }
 
 

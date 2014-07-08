@@ -11,20 +11,32 @@ import com.google.common.collect.Range;
  * turned out.
  *
  */
-public class SimulatorMeta {
+public class SimulatorMetaData {
+
 
     /**
      * When was the simulation performed?
      */
     private Date date;
 
+
     /**
-    * How many agents
-    */
+     * How long did the whole simulation take?
+     */
+    private String duration;
+
+
+    private String graphType;
+    private int numNodes;
+
+    private double interactProbability;
+    private double traversalProbability;
+
+    private double accuracy;
+
     private Range<Integer> numAgents;
     private int termA;
     private int termB;
     private int maxTimeSteps;
     private int runs;
-
 }

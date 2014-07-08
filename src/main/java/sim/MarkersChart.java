@@ -81,7 +81,6 @@ public class MarkersChart {
                 params.orientation, params.showLegend, false, false);
         chart.setTextAntiAlias(true);
 
-
         Logger.debug("Infection count chart INIT");
     }
 

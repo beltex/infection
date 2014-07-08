@@ -270,7 +270,10 @@ public class Simulator {
     public void execute() {
         Logger.info("Simulation SETTINGS" + toString());
         rs = RandomSource.getInstance();
-        GraphVis.getInstance().init(g);
+
+        if (flag_vis) {
+            GraphVis.getInstance().init(g);
+        }
 
         dist = new AgentDistribution(flag_vis);
 
@@ -311,6 +314,7 @@ public class Simulator {
         g.setActionProbabilitySpread(actionProbabilitySpread());
 
 
+        // TODO: range types - closed, closeOpen, etc
         int lower = numAgents.lowerEndpoint();
         int upper = numAgents.upperEndpoint();
 
@@ -367,6 +371,7 @@ public class Simulator {
 
         // Must come before chart display, exception thrown otherwise
         mc.save();
+
 
         if (flag_charts) {
             mc.display();

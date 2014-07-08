@@ -28,6 +28,12 @@ dependencies {
   testCompile 'junit:junit:4.11'
 }
 
+
+/*
+ * FindBugs - static code analysis
+ */
+
+
 tasks.withType(FindBugs) {
   findbugsMain.onlyIf {project.properties['findbugs'].toBoolean()}
   findbugsTest.onlyIf {project.properties['findbugs'].toBoolean()}

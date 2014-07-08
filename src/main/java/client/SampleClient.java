@@ -13,7 +13,7 @@ import com.google.common.collect.Range;
  * General purpose sample client
  *
  */
-public class Client {
+public class SampleClient {
 
     public static void main(String[] args) {
 
