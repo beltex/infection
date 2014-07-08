@@ -103,6 +103,12 @@ directory inside containing logs, simulation data in JSON format, and charts.
 - Logging is only really useful for single simulation runs, adding of new feautres, etc
 - When running large tests, logs are both repetitive and carry a performance and space overhead.
 
+
+**Charts**
+
+![alt text](http://beltex.github.io/infection/chart-1.png)
+
+
 ### References
 
 - [_Infection algorithms for distributed agents_](http://beltex.github.io/infection/paper-1.pdf)

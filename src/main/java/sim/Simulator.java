@@ -22,15 +22,15 @@ public class Simulator {
 
 
     /**
-     * Automatic graph generation flag
+     * Weighted random node selection
      */
-    public static final int NODE_NON_WEIGHTED = 0;
+    public static final int NODE_WEIGHTED = 0;
 
 
     /**
-     * Automatic graph generation flag
+     * Non-weighted random node selection
      */
-    public static final int NODE_WEIGHTED = 1;
+    public static final int NODE_NON_WEIGHTED = 1;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -42,13 +42,13 @@ public class Simulator {
 
 
     /**
-     * Graph visualization flag
+     * Graph visualization display flag
      */
     private boolean flag_vis = false;
 
 
     /**
-     * Simulation charts (plots) flags
+     * Simulation charts (plots) display flag
      */
     private boolean flag_charts = false;
 
