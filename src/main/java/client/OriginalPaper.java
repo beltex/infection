@@ -2,7 +2,6 @@ package client;
 
 import org.pmw.tinylog.Level;
 
-import sim.AgentDistribution;
 import sim.AgentDistribution.Distribution;
 import sim.ExtendedGraph;
 import sim.Simulator;
@@ -34,7 +33,6 @@ public class OriginalPaper {
 
         sim.agentDistribution(Distribution.SINGLE);
         sim.nodeSelection(NodeSelection.NON_WEIGHTED);
-        sim.setActionProbabilites(0.50, 0.50);
 
         sim.execute();
     }

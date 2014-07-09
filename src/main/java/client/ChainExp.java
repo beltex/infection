@@ -2,7 +2,6 @@ package client;
 
 import org.pmw.tinylog.Level;
 
-import sim.AgentDistribution;
 import sim.AgentDistribution.Distribution;
 import sim.ExtendedGraph;
 import sim.Simulator;

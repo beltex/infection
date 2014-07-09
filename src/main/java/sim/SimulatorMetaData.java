@@ -7,12 +7,17 @@ import com.google.common.collect.Range;
 
 
 /**
- * Holds meta data about the overall simualtion run. This class is seriablized
+ * Holds meta data about the overall simulation run. This class is serialized
  * into JSON. This is the file you look at to get a view of how the simulation
  * turned out.
  *
  */
 public class SimulatorMetaData {
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PRIVATE ATTRIBUTES
+    ///////////////////////////////////////////////////////////////////////////
 
 
     /**
@@ -42,22 +47,77 @@ public class SimulatorMetaData {
     private int runs;
 
 
+    ///////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTORS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public SimulatorMetaData() {
+
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Set the duration of the simulation. Call this at the end, as the duration
+     * is computed here.
+     *
+     * @param start When did in the simulation start? In ms.
+     */
     public void setDuration(long start) {
         long end = new Date().getTime();
         long diff = end - start;
 
         long hours = TimeUnit.MILLISECONDS.toHours(diff);
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) -
+                       TimeUnit.HOURS.toMinutes(hours);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff) - minutes;
 
-        duration = String.format("%d hour, %d min, %d sec",
-                                 hours,
+        duration = String.format("%d hour, %d min, %d sec", hours, minutes,
+                                                                   seconds);
+    }
 
-                                 minutes -
-                                 TimeUnit.HOURS.toMinutes(hours),
 
-                                 seconds -
-                                 (minutes -
-                                  TimeUnit.HOURS.toMinutes(hours)));
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
+    public void setNumNodes(int numNodes) {
+        this.numNodes = numNodes;
+    }
+
+
+    public void setInteractProbability(double interactProbability) {
+        this.interactProbability = interactProbability;
+    }
+
+
+    public void setTraversalProbability(double traversalProbability) {
+        this.traversalProbability = traversalProbability;
+    }
+
+
+    public void setTermA(int termA) {
+        this.termA = termA;
+    }
+
+
+    public void setTermB(int termB) {
+        this.termB = termB;
+    }
+
+
+    public void setMaxTimeSteps(int maxTimeSteps) {
+        this.maxTimeSteps = maxTimeSteps;
+    }
+
+
+    public void setRuns(int runs) {
+        this.runs = runs;
     }
 }

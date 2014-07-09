@@ -3,6 +3,7 @@ package sim;
 import org.graphstream.graph.Edge;
 import org.pmw.tinylog.Logger;
 
+import sim.Simulator.ActionSelection;
 import sim.Simulator.NodeSelection;
 
 
@@ -77,6 +78,9 @@ public class TimeStep {
     private NodeSelection nodeSelection;
 
 
+    private ActionSelection as;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
@@ -91,7 +95,8 @@ public class TimeStep {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public TimeStep(ExtendedGraph g, int termA, int termB, boolean flag_vis) {
+    public TimeStep(ExtendedGraph g, int termA, int termB, boolean flag_vis,
+                                                           ActionSelection as) {
         this.g = g;
         this.termA = termA;
         this.termB = termB;
@@ -112,6 +117,7 @@ public class TimeStep {
 
 
         this.flag_vis = flag_vis;
+        this.as = as;
         numAgents = g.getNumAgents();
         leaderAID = numAgents - 1;
 
@@ -151,20 +157,33 @@ public class TimeStep {
         // If the graph structure has no dead end, no point in checking for one
         if (!deadEnd) {
             // Graph is safe for traverse action
-            // TODO: Use next action if 50/50, nextActionWeighted otherwise
-            //action = rs.nextActionWeighted();
-            action = rs.nextAction();
+
+
+            /*
+             * Pick an action
+             */
+
+            switch (as) {
+                case NON_WEIGHTED:
+                    action = rs.nextAction();
+                    break;
+                case WEIGHTED:
+                    action = rs.nextActionWeighted();
+                    break;
+            }
 
 
             /*
              * Pick a random node
              */
 
-            if (nodeSelection == NodeSelection.NON_WEIGHTED) {
-                n = rs.nextNode(action);
-            } else {
-                // NODE_WEIGHTED;
-                n = rs.nextNodeWeighted(action);
+            switch (nodeSelection) {
+                case NON_WEIGHTED:
+                    n = rs.nextNode(action);
+                    break;
+                case WEIGHTED:
+                    n = rs.nextNodeWeighted(action);
+                    break;
             }
         }
         else if (agentDeadEnd || g.agentDeadEnd()) {

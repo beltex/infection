@@ -369,7 +369,7 @@ public class ExtendedGraph extends SingleGraph {
 
 
     public void setNodeSelection(NodeSelection mode) {
-        this.nodeSelection = nodeSelection;
+        this.nodeSelection = mode;
     }
 
 

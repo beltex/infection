@@ -32,7 +32,26 @@ public class Simulator {
         WEIGHTED,
 
         /**
-         * Node selection is non-weighted, all nodes are equiprobable.
+         * Node selection is non-weighted, all nodes are equiprobable
+         */
+        NON_WEIGHTED;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PROTECTED ENUM
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    protected enum ActionSelection {
+
+        /**
+         * Actions have weights (probabilities)
+         */
+        WEIGHTED,
+
+        /**
+         * 50/50 action selection, equiprobable
          */
         NON_WEIGHTED;
     }
@@ -122,6 +141,9 @@ public class Simulator {
     private JSONUtil json;
 
 
+    private ActionSelection as;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -157,22 +179,9 @@ public class Simulator {
         this.maxTimeSteps = maxTimeSteps;
         this.runs = runs;
 
-
-        // Record simulation settings
-        simJSON.setDate(tinylog.getDate());
-        simJSON.setTermA(termA);
-        simJSON.setTermB(termB);
-        simJSON.setRuns(runs);
-        simJSON.setMaxTimeSteps(maxTimeSteps);
-        simJSON.setNumAgents(numAgents);
-
-
-        // Set default probabilities for actions
-        actionProbability = new HashMap<Integer, Double>();
-        actionProbability.put(TimeStep.ACTION_INTERACT, 0.5);
-        actionProbability.put(TimeStep.ACTION_TRAVERSE, 0.5);
-
         json = new JSONUtil();
+
+        as = ActionSelection.NON_WEIGHTED;
 
         Logger.info("Simulator CREATED");
     }
@@ -243,7 +252,7 @@ public class Simulator {
             Logger.info("STARTING RUN: " + (y + 1));
             init();
 
-            TimeStep ts = new TimeStep(g, termA, termB, flag_vis);
+            TimeStep ts = new TimeStep(g, termA, termB, flag_vis, as);
             for (int i = 0; i < maxTimeSteps; i++) {
                 ts.step();
 
@@ -265,7 +274,12 @@ public class Simulator {
     private void simulatorMetaDate() {
         smd = new SimulatorMetaData();
 
+        smd.setDate(tinylog.getDate());
         smd.setDuration(tinylog.getDate().getTime());
+        smd.setTermA(termA);
+        smd.setTermB(termB);
+        smd.setMaxTimeSteps(maxTimeSteps);
+        smd.setRuns(runs);
 
         json.writeJSON(tinylog.getDirName(), "metadata", tinylog.getTimestamp(),
                                                          smd, true);
@@ -462,6 +476,10 @@ public class Simulator {
      * @param traversal Probability of traversal action.
      */
     public void setActionProbabilites(double interaction, double traversal) {
+        // TODO: CHECK SUM & IF 50/50, use NON_WEIGHTED
+
+        as = ActionSelection.WEIGHTED;
+        actionProbability = new HashMap<Integer, Double>();
         actionProbability.put(TimeStep.ACTION_INTERACT, interaction);
         actionProbability.put(TimeStep.ACTION_TRAVERSE, traversal);
     }
