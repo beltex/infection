@@ -142,6 +142,11 @@ public class TinylogProperties {
     }
 
 
+    public DateFormat getDateFormat() {
+        return dateFormat;
+    }
+
+
     public String getDirName() {
         return dirName;
     }

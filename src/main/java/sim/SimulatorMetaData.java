@@ -1,6 +1,7 @@
 package sim;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import com.google.common.collect.Range;
 
@@ -39,4 +40,24 @@ public class SimulatorMetaData {
     private int termB;
     private int maxTimeSteps;
     private int runs;
+
+
+    public void setDuration(long start) {
+        long end = new Date().getTime();
+        long diff = end - start;
+
+        long hours = TimeUnit.MILLISECONDS.toHours(diff);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+
+        duration = String.format("%d hour, %d min, %d sec",
+                                 hours,
+
+                                 minutes -
+                                 TimeUnit.HOURS.toMinutes(hours),
+
+                                 seconds -
+                                 (minutes -
+                                  TimeUnit.HOURS.toMinutes(hours)));
+    }
 }

@@ -1,18 +1,10 @@
 package sim;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.pmw.tinylog.Logger;
-
 import com.google.common.collect.Range;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 
 public class SimulatorData {
 
@@ -65,33 +57,6 @@ public class SimulatorData {
      */
     public boolean addRunData(SimulatorRun e) {
         return runData.add(e);
-    }
-
-
-    /**
-     * @return
-     */
-    public String toJSON() {
-        //Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
-
-
-    /**
-     *
-     * @param dirName
-     * @param timestamp
-     */
-    public void writeJSON(String dirName, String timestamp) {
-        String jsonName = "data." + timestamp + ".json";
-        Path path = FileSystems.getDefault().getPath("logs", dirName, jsonName);
-
-        try {
-            Files.write(path, this.toJSON().getBytes(), StandardOpenOption.CREATE);
-        } catch (IOException e) {
-            Logger.error(e);
-        }
     }
 
 

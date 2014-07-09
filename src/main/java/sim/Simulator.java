@@ -1,7 +1,11 @@
 package sim;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
@@ -111,6 +115,12 @@ public class Simulator {
     private AgentDistribution dist;
 
 
+    private SimulatorMetaData smd;
+
+
+    private JSONUtil json;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -160,6 +170,8 @@ public class Simulator {
         actionProbability = new HashMap<Integer, Double>();
         actionProbability.put(TimeStep.ACTION_INTERACT, 0.5);
         actionProbability.put(TimeStep.ACTION_TRAVERSE, 0.5);
+
+        json = new JSONUtil();
 
         Logger.info("Simulator CREATED");
     }
@@ -248,6 +260,84 @@ public class Simulator {
         }
     }
 
+
+    private void simulatorMetaDate() {
+        smd = new SimulatorMetaData();
+
+        smd.setDuration(tinylog.getDate().getTime());
+
+        json.writeJSON(tinylog.getDirName(), "metadata", tinylog.getTimestamp(),
+                                                         smd, true);
+    }
+
+
+    private void postmortem() {
+        simulatorMetaDate();
+
+        double infected = 0;
+        double eleComp = 0;
+        double interactions = 0;
+        double traversals = 0;
+        double marker_infectionComplete = 0;
+        double marker_leaderElectionComplete = 0;
+        double marker_allElectionComplete = 0;
+
+        double marker_infectionComplete_interact = 0;
+        double marker_leaderElectionComplete_interact = 0;
+        double marker_allElectionComplete_interact = 0;
+
+        int maxItems = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs * 3;
+        MarkersChart mc = new MarkersChart(maxItems, tinylog.getDirName(), tinylog.getTimestamp());
+
+        ArrayList<SimulatorRun> list = simJSON.getRunData();
+        for (SimulatorRun r : list) {
+            infected += (double)r.getInfections();
+            eleComp += (double)r.getElectionCompleteCount();
+            interactions += (double)r.getInteractions();
+            traversals += (double)r.getTraversals();
+            marker_infectionComplete += (double)r.getInfectionCompleteStep();
+
+            marker_leaderElectionComplete += (double)r.getLeaderElectionCompleteStep();
+
+
+            marker_allElectionComplete += (double)r.getAllElectionCompleteStep();
+
+
+            marker_infectionComplete_interact += (double)r.getInfectionCompleteInteractions();
+            mc.addDataPoint(r.getNumAgents(), r.getInfectionCompleteInteractions());
+
+            marker_leaderElectionComplete_interact += (double)r.getLeaderElectionCompleteInteractions();
+            mc.addDataPointLeader(r.getNumAgents(), r.getLeaderElectionCompleteInteractions());
+
+
+            marker_allElectionComplete_interact += (double)r.getAllElectionCompleteInteractions();
+            mc.addDataPointAll(r.getNumAgents(), r.getAllElectionCompleteInteractions());
+        }
+
+        // Must come before chart display, exception thrown otherwise
+        mc.save();
+
+
+        if (flag_charts) {
+            mc.display();
+        }
+
+        Logger.info("# of INFECTED agents: " + (infected / runs));
+        Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
+        Logger.info("# of agent INTERACTIONS: " + (interactions / runs));
+        Logger.info("# of agent TRAVERSALS: " + (traversals/runs));
+        Logger.info("MARKER - Infection Complete Step: " + (marker_infectionComplete / runs));
+        Logger.info("MARKER - Leader Election Complete Step: " + (marker_leaderElectionComplete / runs));
+        Logger.info("MARKER - All Election Complete Step: " + (marker_allElectionComplete/runs));
+
+        Logger.info("MARKER - Infection Complete INTERACT: " + (marker_infectionComplete_interact / runs));
+        Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
+        Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
+
+        json.writeJSON(tinylog.getDirName(), "data", tinylog.getTimestamp(), simJSON, false);
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PROTECTED METHODS
     ///////////////////////////////////////////////////////////////////////////
@@ -325,71 +415,6 @@ public class Simulator {
         Logger.info("ALL SIMULATION RUNS COMPLETE");
 
         postmortem();
-    }
-
-
-    public void postmortem() {
-        double infected = 0;
-        double eleComp = 0;
-        double interactions = 0;
-        double traversals = 0;
-        double marker_infectionComplete = 0;
-        double marker_leaderElectionComplete = 0;
-        double marker_allElectionComplete = 0;
-
-        double marker_infectionComplete_interact = 0;
-        double marker_leaderElectionComplete_interact = 0;
-        double marker_allElectionComplete_interact = 0;
-
-        int maxItems = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs * 3;
-        MarkersChart mc = new MarkersChart(maxItems, tinylog.getDirName(), tinylog.getTimestamp());
-
-        ArrayList<SimulatorRun> list = simJSON.getRunData();
-        for (SimulatorRun r : list) {
-            infected += (double)r.getInfections();
-            eleComp += (double)r.getElectionCompleteCount();
-            interactions += (double)r.getInteractions();
-            traversals += (double)r.getTraversals();
-            marker_infectionComplete += (double)r.getInfectionCompleteStep();
-
-            marker_leaderElectionComplete += (double)r.getLeaderElectionCompleteStep();
-
-
-            marker_allElectionComplete += (double)r.getAllElectionCompleteStep();
-
-
-            marker_infectionComplete_interact += (double)r.getInfectionCompleteInteractions();
-            mc.addDataPoint(r.getNumAgents(), r.getInfectionCompleteInteractions());
-
-            marker_leaderElectionComplete_interact += (double)r.getLeaderElectionCompleteInteractions();
-            mc.addDataPointLeader(r.getNumAgents(), r.getLeaderElectionCompleteInteractions());
-
-
-            marker_allElectionComplete_interact += (double)r.getAllElectionCompleteInteractions();
-            mc.addDataPointAll(r.getNumAgents(), r.getAllElectionCompleteInteractions());
-        }
-
-        // Must come before chart display, exception thrown otherwise
-        mc.save();
-
-
-        if (flag_charts) {
-            mc.display();
-        }
-
-        Logger.info("# of INFECTED agents: " + (infected / runs));
-        Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
-        Logger.info("# of agent INTERACTIONS: " + (interactions / runs));
-        Logger.info("# of agent TRAVERSALS: " + (traversals/runs));
-        Logger.info("MARKER - Infection Complete Step: " + (marker_infectionComplete / runs));
-        Logger.info("MARKER - Leader Election Complete Step: " + (marker_leaderElectionComplete / runs));
-        Logger.info("MARKER - All Election Complete Step: " + (marker_allElectionComplete/runs));
-
-        Logger.info("MARKER - Infection Complete INTERACT: " + (marker_infectionComplete_interact / runs));
-        Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
-        Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
-
-        simJSON.writeJSON(tinylog.getDirName(), tinylog.getTimestamp());
     }
 
 
@@ -513,7 +538,7 @@ public class Simulator {
      * @param directed Should the edges be directed?
      * @param doublyLinked Should the nodes be doubly linked?
      * @param loopBack Should the last node have an edge looping back to the
-     * 				   start?
+     *                 start?
      */
     public void generateGraphChain(int n, boolean directed,
                                           boolean doublyLinked,
@@ -528,7 +553,7 @@ public class Simulator {
      * Generate an n * n grid graph
      *
      * @param n How many nodes should this graph have? Since this is a grid,
-     * 		    this equates to n * n nodes
+     *          this equates to n * n nodes
      * @param directed Should the graph be directed?
      * @param crossEdges Should the grid have cross edges?
      */

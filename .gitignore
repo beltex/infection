@@ -2,6 +2,7 @@
 # Modified from Bootstrap
 
 # infection
+Sandbox.java
 logs/
 
 # Gradle
