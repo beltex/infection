@@ -3,6 +3,7 @@ package client;
 import org.pmw.tinylog.Level;
 
 import sim.AgentDistribution;
+import sim.AgentDistribution.Distribution;
 import sim.ExtendedGraph;
 import sim.Simulator;
 import sim.Simulator.NodeSelection;
@@ -32,8 +33,8 @@ public class Visualization {
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.INFO);
 
         sim.generateGraphChain(10, true, true, false);
-        sim.agentDistribution(AgentDistribution.SINGLE);
-        sim.nodeSelection(NodeSelection.NODE_WEIGHTED);
+        sim.agentDistribution(Distribution.SINGLE);
+        sim.nodeSelection(NodeSelection.WEIGHTED);
         sim.setActionProbabilites(interactProbability, traversalProbability);
 
         /*

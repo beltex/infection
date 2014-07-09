@@ -6,6 +6,8 @@ import java.util.HashMap;
 import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
 
+import sim.AgentDistribution.Distribution;
+
 import com.google.common.collect.Range;
 
 
@@ -22,8 +24,17 @@ public class Simulator {
 
 
     public enum NodeSelection {
-        NODE_WEIGHTED,
-        NODE_NON_WEIGHTED;
+
+        /**
+         * Node selection weighted based on the number of agents in each
+         * node. More agents thus means higher probability of selection.
+         */
+        WEIGHTED,
+
+        /**
+         * Node selection is non-weighted, all nodes are equiprobable.
+         */
+        NON_WEIGHTED;
     }
 
 
@@ -427,7 +438,7 @@ public class Simulator {
      * @param agentDistributionAlgo Agent distribution algorithm to be used. See
      * 								constants in AgentDistribution class
      */
-    public void agentDistribution(int agentDistributionAlgo) {
+    public void agentDistribution(Distribution agentDistributionAlgo) {
         g.setAgentDistribution(agentDistributionAlgo);
     }
 

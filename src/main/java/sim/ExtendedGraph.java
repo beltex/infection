@@ -9,6 +9,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.pmw.tinylog.Logger;
 
+import sim.AgentDistribution.Distribution;
 import sim.Simulator.NodeSelection;
 
 import com.google.common.collect.Range;
@@ -43,7 +44,7 @@ public class ExtendedGraph extends SingleGraph {
     /**
      * Which agent distribution method should be used
      */
-    private int agentDistribution;
+    private Distribution agentDistribution;
 
 
     /**
@@ -96,13 +97,12 @@ public class ExtendedGraph extends SingleGraph {
     public String toString() {
         // Info only relevant if SINGLE agent distribution being used
         String single = "";
-        if (agentDistribution == AgentDistribution.SINGLE) {
+        if (agentDistribution == Distribution.SINGLE) {
             single = ";\n SINGLE Node ID: " + SINGLE_nodeID;
         }
 
         return ";\n Number of Agents: " + numAgents +
-               ";\n Agent Distribution Method: " +
-                  AgentDistribution.map.get(agentDistribution) + single;
+               ";\n Agent Distribution Method: " + agentDistribution + single;
     }
 
 
@@ -318,7 +318,7 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
-    public int getAgentDistribution() {
+    public Distribution getAgentDistribution() {
         return agentDistribution;
     }
 
@@ -363,7 +363,7 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
-    public void setAgentDistribution(int agentDistribution) {
+    public void setAgentDistribution(Distribution agentDistribution) {
         this.agentDistribution = agentDistribution;
     }
 

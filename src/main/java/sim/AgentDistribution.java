@@ -5,8 +5,6 @@ import java.util.Iterator;
 
 import org.pmw.tinylog.Logger;
 
-import com.google.common.collect.ImmutableMap;
-
 
 /**
  * Agent distribution algorithms. Offer multiple ways to spread the agents
@@ -20,53 +18,35 @@ public class AgentDistribution {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC ATTRIBUTES
+    // PUBLIC ENUM
     ///////////////////////////////////////////////////////////////////////////
 
 
-    /**
-     * All agents are placed in a single node which the user sets
-     */
-    public static final int SINGLE = 1;
+    public enum Distribution {
 
+        /**
+         * All agents are placed in a single node which the user sets
+         */
+        SINGLE,
 
-    /**
-     * All agents are placed in a single random node
-     */
-    public static final int RANDOM_SINGLE = 2;
+        /**
+         * All agents are placed in a single random node
+         */
+        RANDOM_SINGLE,
 
+        /**
+         * Agents are spread evenly across the graph. If the number of agents is not
+         * evenly divisible by the number of nodes, the agent with AID 0 is added to
+         * the first node (ID 0), then distribution of the rest of the nodes occurs.
+         * This is to make things as deterministic as possible.
+         */
+        EVEN_SPREAD,
 
-    /**
-     * Agents are spread evenly across the graph. If the number of agents is not
-     * evenly divisible by the number of nodes, the agent with AID 0 is added to
-     * the first node (ID 0), then distribution of the rest of the nodes occurs.
-     * This is to make things as deterministic as possible.
-     */
-    public static final int EVEN_SPREAD = 3;
-
-
-    /**
-     * Agents are spread randomly across the graph
-     */
-    public static final int RANDOM_SPREAD = 4;
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    // PROTECTED ATTRIBUTES
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    /**
-     * Map of agent distribution algorithms paired with string name. This is
-     * for more friendly logging - being able to print the actual name of the
-     * option being used.
-     */
-    protected static final ImmutableMap<Integer, String> map = ImmutableMap.of(
-        SINGLE, "SINGLE",
-        RANDOM_SINGLE, "RANDOM_SINGLE",
-        EVEN_SPREAD, "EVEN_SPREAD",
-        RANDOM_SPREAD, "RANDOM_SPREAD"
-    );
+        /**
+         * Agents are spread randomly across the graph
+         */
+        RANDOM_SPREAD;
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -119,18 +99,18 @@ public class AgentDistribution {
          * User sets agent dist algo. Have to check that it has been done, and
          * that its correct.
          */
-        int algo = g.getAgentDistribution();
+        Distribution algo = g.getAgentDistribution();
 
-        if (algo < SINGLE || algo > RANDOM_SPREAD) {
+        if (algo == null) {
             Logger.warn("Agent distribution algorithm NOT set or invalid - " +
                         "default to SINGLE with all agents in node 0");
 
             g.setSINGLE_nodeID(g.getNode(0).getId());
-            g.setAgentDistribution(SINGLE);
+            g.setAgentDistribution(Distribution.SINGLE);
         }
 
 
-        Logger.info("{0} distribution of agents - BEGIN", map.get(algo));
+        Logger.info("{0} distribution of agents - BEGIN", algo);
 
         switch (g.getAgentDistribution()) {
             case SINGLE:
@@ -147,7 +127,7 @@ public class AgentDistribution {
                 break;
         }
 
-        Logger.info("{0} distribution of agents - COMPLETE", map.get(algo));
+        Logger.info("{0} distribution of agents - COMPLETE", algo);
     }
 
 

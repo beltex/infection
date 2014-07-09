@@ -160,7 +160,7 @@ public class TimeStep {
              * Pick a random node
              */
 
-            if (nodeSelection == NodeSelection.NODE_NON_WEIGHTED) {
+            if (nodeSelection == NodeSelection.NON_WEIGHTED) {
                 n = rs.nextNode(action);
             } else {
                 // NODE_WEIGHTED;
