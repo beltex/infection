@@ -9,6 +9,8 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.pmw.tinylog.Logger;
 
+import sim.Simulator.NodeSelection;
+
 import com.google.common.collect.Range;
 
 
@@ -35,7 +37,7 @@ public class ExtendedGraph extends SingleGraph {
     /**
      * Which node selection method should be used?
      */
-    private int nodeSelection;
+    private NodeSelection nodeSelection;
 
 
     /**
@@ -321,7 +323,7 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
-    public int getNodeSelection() {
+    public NodeSelection getNodeSelection() {
         return nodeSelection;
     }
 
@@ -366,7 +368,7 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
-    public void setNodeSelection(int nodeSelection) {
+    public void setNodeSelection(NodeSelection mode) {
         this.nodeSelection = nodeSelection;
     }
 

@@ -5,6 +5,7 @@ import org.pmw.tinylog.Level;
 import sim.AgentDistribution;
 import sim.ExtendedGraph;
 import sim.Simulator;
+import sim.Simulator.NodeSelection;
 
 import com.google.common.collect.Range;
 
@@ -32,7 +33,7 @@ public class Visualization {
 
         sim.generateGraphChain(10, true, true, false);
         sim.agentDistribution(AgentDistribution.SINGLE);
-        sim.nodeSelection(Simulator.NODE_WEIGHTED);
+        sim.nodeSelection(NodeSelection.NODE_WEIGHTED);
         sim.setActionProbabilites(interactProbability, traversalProbability);
 
         /*

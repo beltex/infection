@@ -5,6 +5,7 @@ import org.pmw.tinylog.Level;
 import sim.AgentDistribution;
 import sim.ExtendedGraph;
 import sim.Simulator;
+import sim.Simulator.NodeSelection;
 
 import com.google.common.collect.Range;
 
@@ -95,7 +96,7 @@ public class SampleClient {
         sim.agentDistribution(AgentDistribution.EVEN_SPREAD);
 
         // Define how a node should be selected on every time step
-        sim.nodeSelection(Simulator.NODE_WEIGHTED);
+        sim.nodeSelection(NodeSelection.NODE_WEIGHTED);
 
         // Set the probabilities for the possible actions
         sim.setActionProbabilites(interactProbability, traversalProbability);

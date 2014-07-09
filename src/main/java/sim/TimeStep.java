@@ -3,6 +3,8 @@ package sim;
 import org.graphstream.graph.Edge;
 import org.pmw.tinylog.Logger;
 
+import sim.Simulator.NodeSelection;
+
 
 /**
  * Heart beat of the simulator (time step). That is, handles each
@@ -72,7 +74,7 @@ public class TimeStep {
     private boolean flag_vis;
 
 
-    private int nodeSelection;
+    private NodeSelection nodeSelection;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -158,7 +160,7 @@ public class TimeStep {
              * Pick a random node
              */
 
-            if (nodeSelection == Simulator.NODE_NON_WEIGHTED) {
+            if (nodeSelection == NodeSelection.NODE_NON_WEIGHTED) {
                 n = rs.nextNode(action);
             } else {
                 // NODE_WEIGHTED;

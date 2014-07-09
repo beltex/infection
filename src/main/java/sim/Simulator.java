@@ -1,11 +1,7 @@
 package sim;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
@@ -21,20 +17,14 @@ public class Simulator {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC ATTRIBUTES
+    // PUBLIC ENUM
     ///////////////////////////////////////////////////////////////////////////
 
 
-    /**
-     * Weighted random node selection
-     */
-    public static final int NODE_WEIGHTED = 0;
-
-
-    /**
-     * Non-weighted random node selection
-     */
-    public static final int NODE_NON_WEIGHTED = 1;
+    public enum NodeSelection {
+        NODE_WEIGHTED,
+        NODE_NON_WEIGHTED;
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -447,8 +437,8 @@ public class Simulator {
      *
      * @param nodeSelectionMethod Node selection method
      */
-    public void nodeSelection(int nodeSelectionMethod) {
-        g.setNodeSelection(nodeSelectionMethod);
+    public void nodeSelection(NodeSelection mode) {
+        g.setNodeSelection(mode);
     }
 
 

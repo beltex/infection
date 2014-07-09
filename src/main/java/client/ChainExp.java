@@ -5,6 +5,7 @@ import org.pmw.tinylog.Level;
 import sim.AgentDistribution;
 import sim.ExtendedGraph;
 import sim.Simulator;
+import sim.Simulator.NodeSelection;
 
 import com.google.common.collect.Range;
 
@@ -34,7 +35,7 @@ public class ChainExp {
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.OFF);
 
         sim.agentDistribution(AgentDistribution.SINGLE);
-        sim.nodeSelection(Simulator.NODE_NON_WEIGHTED);
+        sim.nodeSelection(NodeSelection.NODE_NON_WEIGHTED);
         sim.setActionProbabilites(0.50, 0.50);
 
         sim.execute();
