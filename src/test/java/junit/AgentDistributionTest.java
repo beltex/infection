@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 
 import sim.*;
+import sim.AgentDistribution.Distribution;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +52,7 @@ public class AgentDistributionTest {
         // Set the graph up
         int numAgents = 1337;
         g.setNumAgents(numAgents);
-        g.setAgentDistribution(AgentDistribution.SINGLE);
+        g.setAgentDistribution(Distribution.SINGLE);
         g.setSINGLE_nodeID("E");
 
         // Init RandomSource and AgentDistribution
@@ -74,7 +75,7 @@ public class AgentDistributionTest {
         // Set the graph up
         int numAgents = 117;
         g.setNumAgents(numAgents);
-        g.setAgentDistribution(AgentDistribution.RANDOM_SINGLE);
+        g.setAgentDistribution(Distribution.RANDOM_SINGLE);
 
         // Init RandomSource and AgentDistribution
         RandomSource.getInstance().init(g);
@@ -97,7 +98,7 @@ public class AgentDistributionTest {
         // Set the graph up
         int numAgents = 2552;
         g.setNumAgents(numAgents);
-        g.setAgentDistribution(AgentDistribution.RANDOM_SPREAD);
+        g.setAgentDistribution(Distribution.RANDOM_SPREAD);
 
         // Init RandomSource and AgentDistribution
         RandomSource.getInstance().init(g);
@@ -127,7 +128,7 @@ public class AgentDistributionTest {
         int numAgents = 8573;
         RandomSource.getInstance().init(g);
         g.setNumAgents(numAgents);
-        g.setAgentDistribution(AgentDistribution.EVEN_SPREAD);
+        g.setAgentDistribution(Distribution.EVEN_SPREAD);
 
         ad.init(g);
         ad.execute();

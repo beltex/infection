@@ -107,12 +107,13 @@ public class AgentDistribution {
 
             g.setSINGLE_nodeID(g.getNode(0).getId());
             g.setAgentDistribution(Distribution.SINGLE);
+            algo = Distribution.SINGLE;
         }
 
 
         Logger.info("{0} distribution of agents - BEGIN", algo);
 
-        switch (g.getAgentDistribution()) {
+        switch (algo) {
             case SINGLE:
                 single();
                 break;
