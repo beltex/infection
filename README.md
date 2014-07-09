@@ -59,11 +59,16 @@ cd infection/
 
 **Gradle**
 
-Gradle is used for build automation. It can be installed via Homebrew.
+Gradle is used for build automation. It can be installed via Homebrew (for OS X users).
 
 ```bash
+# Install Gradle
 brew update
 brew install gradle
+
+# Update Gradle version (if already installed)
+brew update
+brew upgrade gradle
 ```
 
 To use Gradle:

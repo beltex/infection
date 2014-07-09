@@ -51,26 +51,16 @@ public class TinylogProperties {
     private String dirName;
 
 
-    /**
-     * Should logs be written to Standard Output?
-     */
-    private boolean stdout;
-
-
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public TinylogProperties(Level logLevel, boolean stdout) {
+    public TinylogProperties(Level logLevel) {
         this.logLevel = logLevel;
-        this.stdout = stdout;
 
         createLogsDir();
-
-        if (!stdout) {
-            startTinylog();
-        }
+        startTinylog();
     }
 
 
@@ -119,9 +109,9 @@ public class TinylogProperties {
                                                       new StartupPolicy());
 
         Configurator.currentConfig()
-        .writer(rfw)
-        .level(logLevel)
-        .activate();
+                    .writer(rfw)
+                    .level(logLevel)
+                    .activate();
 
         Logger.info("Logs directory for this simulation created: {0}", path);
     }
@@ -130,6 +120,11 @@ public class TinylogProperties {
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS
     ///////////////////////////////////////////////////////////////////////////
+
+
+    public void stdout() {
+        Configurator.defaultConfig().activate();
+    }
 
 
     public Path getPath() {

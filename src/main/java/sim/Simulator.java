@@ -135,7 +135,7 @@ public class Simulator {
                                                      int runs,
                                                      Level logLevel) {
         // Init logging before anything else
-        tinylog = new TinylogProperties(logLevel, false);
+        tinylog = new TinylogProperties(logLevel);
 
         this.g = g;
         this.numAgents = numAgents;
@@ -473,6 +473,14 @@ public class Simulator {
     }
 
 
+    /**
+     * Redirect logs to standard output
+     */
+    public void stdout() {
+        tinylog.stdout();
+    }
+
+
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - GRAPH GENERATORS
     ///////////////////////////////////////////////////////////////////////////
@@ -485,9 +493,13 @@ public class Simulator {
      * @param directed Should the edges be directed?
      * @param randomlyDirectedEdges Should the edges be randomly directed?
      */
-    public void generateGraphFullyConnected(int n, boolean directed, boolean randomlyDirectedEdges) {
+    public void generateGraphFullyConnected(int n,
+                                            boolean directed,
+                                            boolean randomlyDirectedEdges) {
         flag_generateGraph = true;
-        GraphGeneratorSource.getInstance().graphFullyConnected(n, directed, randomlyDirectedEdges);
+        GraphGeneratorSource.getInstance()
+                            .graphFullyConnected(n, directed,
+                                                    randomlyDirectedEdges);
     }
 
 
@@ -500,11 +512,15 @@ public class Simulator {
      * @param n Number of nodes the graph should have
      * @param directed Should the edges be directed?
      * @param doublyLinked Should the nodes be doubly linked?
-     * @param loopBack Should the last node have an edge looping back to the start?
+     * @param loopBack Should the last node have an edge looping back to the
+     * 				   start?
      */
-    public void generateGraphChain(int n, boolean directed, boolean doublyLinked, boolean loopBack) {
+    public void generateGraphChain(int n, boolean directed,
+                                          boolean doublyLinked,
+                                          boolean loopBack) {
         flag_generateGraph = true;
-        GraphGeneratorSource.getInstance().graphChain(n, directed, doublyLinked, loopBack);
+        GraphGeneratorSource.getInstance()
+                            .graphChain(n, directed, doublyLinked, loopBack);
     }
 
 
