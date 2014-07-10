@@ -41,18 +41,17 @@ public class GraphIO {
         FileSource fSource;
 
         try {
-            /*
-             * This will determine the correct FileSource subclass to return
-             * based on the graph file format
-             */
+            // This will determine the correct FileSource subclass to return
+            // based on the graph file format
             fSource = FileSourceFactory.sourceFor(filePath);
-            Logger.info("Graph file format determined: {0}",
-                        fSource.getClass());
         } catch (IOException e) {
             Logger.error(e, "GRAPH FILE ISSUE - either not found or format not"
                          + "recongized (check the extenstion)");
             return null;
         }
+
+        Logger.info("Graph file format determined: {0}",
+                    fSource.getClass());
 
         // Set the sink - graph object to add
         ExtendedGraph g = new ExtendedGraph("Graph");
@@ -63,8 +62,7 @@ public class GraphIO {
             fSource.readAll(filePath);
         } catch (IOException e) {
             Logger.error(e);
-            fSource.removeSink(g);
-            return null;
+            g = null;
         }
 
         fSource.removeSink(g);
@@ -76,10 +74,12 @@ public class GraphIO {
      * Write a graph to disk. Format will be based on the extension given.
      *
      * @param g ExtendedGraph to be saved
-     * @param filePath Path and filename to save graph to
+     * @param dirName Log dir path for this simulation
+     * @param timestamp Timestamp of this simulation run
      * @return True if write successful, false otherwise
      */
-    public static boolean writeGraph(ExtendedGraph g, String dirName, String timestamp) {
+    public static boolean writeGraph(ExtendedGraph g, String dirName,
+                                                      String timestamp) {
         FileSink fSink;
 
         String fileName = "graph." + timestamp + ".gml";

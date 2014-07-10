@@ -35,8 +35,8 @@ public class SimulatorMetaData {
     private String graphType;
     private int numNodes;
 
-    private double interactProbability;
-    private double traversalProbability;
+    private String interactProbability;
+    private String traversalProbability;
 
     private double accuracy;
 
@@ -93,12 +93,12 @@ public class SimulatorMetaData {
 
 
     public void setInteractProbability(double interactProbability) {
-        this.interactProbability = interactProbability;
+        this.interactProbability = Double.toString(interactProbability * 100) + "%";
     }
 
 
     public void setTraversalProbability(double traversalProbability) {
-        this.traversalProbability = traversalProbability;
+        this.traversalProbability = Double.toString(traversalProbability * 100) + "%";
     }
 
 

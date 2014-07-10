@@ -126,6 +126,10 @@ public class Simulator {
     private HashMap<Integer, Double> actionProbability;
 
 
+    private double interactProbability = 0.50;
+    private double traversalProbability = 0.50;
+
+
     private TinylogProperties tinylog;
 
 
@@ -189,10 +193,6 @@ public class Simulator {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    /**
-     *
-     * @return
-     */
     private HashMap<Integer, Range<Double>> actionProbabilitySpread() {
         double offset = 0.0;
         HashMap<Integer, Range<Double>> map = new HashMap<Integer, Range<Double>>();
@@ -279,6 +279,10 @@ public class Simulator {
         smd.setTermB(termB);
         smd.setMaxTimeSteps(maxTimeSteps);
         smd.setRuns(runs);
+        smd.setInteractProbability(interactProbability);
+        smd.setTraversalProbability(traversalProbability);
+
+//        System.out.println(JSONUtil.toJSON(smd, true));
 
         JSONUtil.writeJSON(tinylog.getDirName(), "metadata",
                                                  tinylog.getTimestamp(),
@@ -354,6 +358,8 @@ public class Simulator {
         if (flag_saveData) {
             JSONUtil.writeJSON(tinylog.getDirName(), "data", tinylog.getTimestamp(), simData, false);
         }
+
+        GraphIO.writeGraph(g, tinylog.getDirName(), tinylog.getTimestamp());
     }
 
 
@@ -482,6 +488,9 @@ public class Simulator {
         actionProbability = new HashMap<Integer, Double>();
         actionProbability.put(TimeStep.ACTION_INTERACT, interaction);
         actionProbability.put(TimeStep.ACTION_TRAVERSE, traversal);
+
+        interactProbability = interaction;
+        traversalProbability = traversal;
     }
 
 
