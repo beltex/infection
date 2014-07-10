@@ -21,7 +21,7 @@ public class JSONUtil {
      * @param pretty Should the JSON be pretty printed?
      * @return JSON string
      */
-    public String toJSON(Object o, boolean pretty) {
+    public static String toJSON(Object o, boolean pretty) {
         Gson gson;
         if (pretty) {
             gson = new GsonBuilder().setPrettyPrinting().create();
@@ -44,9 +44,10 @@ public class JSONUtil {
      * @param pretty Should the JSON be pretty printed?
      * @return JSON String
      */
-    public void writeJSON(String dirName, String fileName, String timestamp,
-                                                           Object o,
-                                                           boolean pretty) {
+    public static void writeJSON(String dirName, String fileName,
+                                                 String timestamp,
+                                                 Object o,
+                                                 boolean pretty) {
         String jsonName = fileName + "." + timestamp + ".json";
         Path path = FileSystems.getDefault().getPath("logs", dirName, jsonName);
 

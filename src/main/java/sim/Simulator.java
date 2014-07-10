@@ -138,10 +138,10 @@ public class Simulator {
     private SimulatorMetaData smd;
 
 
-    private JSONUtil json;
+    private ActionSelection as = ActionSelection.NON_WEIGHTED;
 
 
-    private ActionSelection as;
+    private boolean flag_saveData = false;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -171,17 +171,11 @@ public class Simulator {
         tinylog = new TinylogProperties(logLevel);
 
         this.g = g;
-        this.numAgents = numAgents;
-        this.g.setNullAttributesAreErrors(true);
-
+        this.runs = runs;
         this.termA = termA;
         this.termB = termB;
+        this.numAgents = numAgents;
         this.maxTimeSteps = maxTimeSteps;
-        this.runs = runs;
-
-        json = new JSONUtil();
-
-        as = ActionSelection.NON_WEIGHTED;
 
         Logger.info("Simulator CREATED");
     }
@@ -281,8 +275,10 @@ public class Simulator {
         smd.setMaxTimeSteps(maxTimeSteps);
         smd.setRuns(runs);
 
-        json.writeJSON(tinylog.getDirName(), "metadata", tinylog.getTimestamp(),
-                                                         smd, true);
+        JSONUtil.writeJSON(tinylog.getDirName(), "metadata",
+                                                 tinylog.getTimestamp(),
+                                                 smd,
+                                                 true);
     }
 
 
@@ -349,7 +345,10 @@ public class Simulator {
         Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
         Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
 
-        json.writeJSON(tinylog.getDirName(), "data", tinylog.getTimestamp(), simJSON, false);
+
+        if (flag_saveData) {
+            JSONUtil.writeJSON(tinylog.getDirName(), "data", tinylog.getTimestamp(), simJSON, false);
+        }
     }
 
 
@@ -374,6 +373,8 @@ public class Simulator {
      */
     public void execute() {
         Logger.info("Simulation SETTINGS" + toString());
+
+        g.setNullAttributesAreErrors(true);
         rs = RandomSource.getInstance();
 
         if (flag_vis) {
@@ -524,6 +525,10 @@ public class Simulator {
         tinylog.stdout();
     }
 
+
+    public void saveSimData() {
+        flag_saveData = true;
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - GRAPH GENERATORS
