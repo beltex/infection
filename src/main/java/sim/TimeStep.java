@@ -480,7 +480,7 @@ public class TimeStep {
         simRun.setTraversals(actionTraverseCounter);
 
         // Add it to the list of all runs
-        Simulator.getSimulatoJSON().getRunData().add(simRun);
+        Simulator.getSimData().getRunData().add(simRun);
 
         /*
          * Log stats

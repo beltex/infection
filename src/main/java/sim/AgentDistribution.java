@@ -57,10 +57,10 @@ public class AgentDistribution {
     private ExtendedGraph g;
 
 
-    private GraphVis gv;
+    private GraphVis gv = GraphVis.getInstance();
 
 
-    private RandomSource rdm;
+    private RandomSource rs = RandomSource.getInstance();
 
 
     private boolean flag_vis;
@@ -73,12 +73,6 @@ public class AgentDistribution {
 
     public AgentDistribution(boolean flag_vis) {
         this.flag_vis = flag_vis;
-
-        if (flag_vis) {
-            gv = GraphVis.getInstance();
-        }
-
-        rdm = RandomSource.getInstance();
     }
 
 
@@ -160,7 +154,7 @@ public class AgentDistribution {
 
 
     private void randomSingle() {
-        ExtendedNode n = rdm.nextNode();
+        ExtendedNode n = rs.nextNode();
         n.setAgents(createAgents());
         g.setRANDOM_SINGLE_nodeID(n.getId());
 
@@ -179,7 +173,7 @@ public class AgentDistribution {
         // While there are still agents to be allocated
         while (remainingAgents > 0) {
             int allocate = 0;
-            ExtendedNode n = rdm.nextNode();
+            ExtendedNode n = rs.nextNode();
 
             if (remainingAgents == 1) {
                 // Due to exclusive range of nextInt()
@@ -193,7 +187,7 @@ public class AgentDistribution {
                  * nextInt() is exclusive is and so is subList(). So we drop
                  * two values, have to add one back
                  */
-                allocate = rdm.nextInt(agents.size() + 1);
+                allocate = rs.nextInt(agents.size() + 1);
             }
 
             ArrayList<Agent> sublist = new ArrayList<Agent>(agents.subList(0, allocate));

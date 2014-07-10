@@ -117,7 +117,7 @@ public class Simulator {
      * Holds all data about entire simulation. Will be exported to JSON at the
      * very end
      */
-    private static SimulatorData simJSON = new SimulatorData();
+    private static SimulatorData simData = new SimulatorData();
 
 
     /**
@@ -129,7 +129,10 @@ public class Simulator {
     private TinylogProperties tinylog;
 
 
-    private RandomSource rs;
+    private RandomSource rs = RandomSource.getInstance();
+
+
+    private GraphVis gv = GraphVis.getInstance();
 
 
     private AgentDistribution dist;
@@ -216,35 +219,37 @@ public class Simulator {
     }
 
 
-    /**
-     * Simulator init operations
-     */
-    private void init() {
-        /*
-         * Init helper classes
-         */
-        rs.init(g);
-
-        if (flag_vis) {
-            GraphVis.getInstance().init(g);
-        }
-
-
-        /*
-         * Create and distribute the agents
-         */
-        dist.init(g);
-        dist.execute();
-    }
-
-
     private void execute(int numAgents) {
         g.setNumAgents(numAgents);
 
         for (int y = 0; y < runs; y++) {
             Logger.info("----------------------------------------------------");
             Logger.info("STARTING RUN: " + (y + 1));
-            init();
+
+
+            ///////////////////////////////////////////////////////////////////
+            // INIT OPS
+
+
+            /*
+             * Init helper classes
+             */
+            rs.init(g);
+
+            if (flag_vis) {
+                gv.init(g);
+            }
+
+
+            /*
+             * Create and distribute the agents
+             */
+            dist.init(g);
+            dist.execute();
+
+
+            ///////////////////////////////////////////////////////////////////
+
 
             TimeStep ts = new TimeStep(g, termA, termB, flag_vis, as);
             for (int i = 0; i < maxTimeSteps; i++) {
@@ -300,7 +305,7 @@ public class Simulator {
         int maxItems = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs * 3;
         MarkersChart mc = new MarkersChart(maxItems, tinylog.getDirName(), tinylog.getTimestamp());
 
-        ArrayList<SimulatorRun> list = simJSON.getRunData();
+        ArrayList<SimulatorRun> list = simData.getRunData();
         for (SimulatorRun r : list) {
             infected += (double)r.getInfections();
             eleComp += (double)r.getElectionCompleteCount();
@@ -347,7 +352,7 @@ public class Simulator {
 
 
         if (flag_saveData) {
-            JSONUtil.writeJSON(tinylog.getDirName(), "data", tinylog.getTimestamp(), simJSON, false);
+            JSONUtil.writeJSON(tinylog.getDirName(), "data", tinylog.getTimestamp(), simData, false);
         }
     }
 
@@ -357,8 +362,8 @@ public class Simulator {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    protected static SimulatorData getSimulatoJSON() {
-        return simJSON;
+    protected static SimulatorData getSimData() {
+        return simData;
     }
 
 
@@ -369,26 +374,17 @@ public class Simulator {
 
     /**
      * Execute the simulation
-     *
      */
     public void execute() {
         Logger.info("Simulation SETTINGS" + toString());
 
         g.setNullAttributesAreErrors(true);
-        rs = RandomSource.getInstance();
-
-        if (flag_vis) {
-            GraphVis.getInstance().init(g);
-        }
-
         dist = new AgentDistribution(flag_vis);
 
 
-        /*
-         * These only need to happen once
-         */
         if (flag_vis) {
-            GraphVis.getInstance().display();
+            gv.init(g);
+            gv.display();
         }
 
         if (flag_generateGraph) {
@@ -417,7 +413,10 @@ public class Simulator {
             Logger.warn("Single node graph - no traverse actions allowed");
         }
 
-        g.setActionProbabilitySpread(actionProbabilitySpread());
+
+        if (as == ActionSelection.WEIGHTED) {
+            g.setActionProbabilitySpread(actionProbabilitySpread());
+        }
 
 
         // TODO: range types - closed, closeOpen, etc
@@ -461,10 +460,10 @@ public class Simulator {
     /**
      * How should a node randomly be selected? Set node selection method.
      *
-     * @param nodeSelectionMethod Node selection method
+     * @param method Node selection method
      */
-    public void nodeSelection(NodeSelection mode) {
-        g.setNodeSelection(mode);
+    public void nodeSelection(NodeSelection method) {
+        g.setNodeSelection(method);
     }
 
 
@@ -529,6 +528,7 @@ public class Simulator {
     public void saveSimData() {
         flag_saveData = true;
     }
+
 
     ///////////////////////////////////////////////////////////////////////////
     // PUBLIC METHODS - GRAPH GENERATORS
