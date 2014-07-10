@@ -69,6 +69,9 @@ public class TimeStep {
     private boolean deadEnd;
 
 
+    /**
+     * Have the agents hit a dead end?
+     */
     private boolean agentDeadEnd;
 
 
@@ -146,18 +149,12 @@ public class TimeStep {
     public void step() {
         Logger.debug("Step: {0} BEGIN", step);
 
-        ExtendedNode n = null;
-
-
-        /*
-         * Determine the action to perform. Interact or traverse?
-         */
         int action = -1;
+        ExtendedNode n = null;
 
         // If the graph structure has no dead end, no point in checking for one
         if (!deadEnd) {
             // Graph is safe for traverse action
-
 
             /*
              * Pick an action
@@ -171,7 +168,6 @@ public class TimeStep {
                     action = rs.nextActionWeighted();
                     break;
             }
-
 
             /*
              * Pick a random node
@@ -187,7 +183,16 @@ public class TimeStep {
             }
         }
         else if (agentDeadEnd || g.agentDeadEnd()) {
-            // Can only do interact now
+            /*
+             * Can only do interact now.
+             *
+             * TODO: Below code needs to only be set once, but done on every
+             *       timestep once true.
+             *
+             * NOTE: agentDeadEnd flag is used as short-circuit to prevent
+             *       unneeded calls to agentDeadEnd() - which is expensive
+             */
+
             agentDeadEnd = true;
             action = ACTION_INTERACT;
             n = g.getNode(g.getDeadEnd_nodeID());
@@ -199,13 +204,15 @@ public class TimeStep {
         /*
          * Execute the action
          */
-        if (action == ACTION_INTERACT) {
-            actionInteract(n);
-        }
-        else {
-            actionTraverse(n);
-        }
 
+        switch (action) {
+            case ACTION_INTERACT:
+                actionInteract(n);
+                break;
+            case ACTION_TRAVERSE:
+                actionTraverse(n);
+                break;
+        }
 
         Logger.debug("Step: {0} COMPLETE", step);
         step++;

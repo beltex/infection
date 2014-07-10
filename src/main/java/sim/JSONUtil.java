@@ -11,7 +11,17 @@ import org.pmw.tinylog.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+
+/**
+ * Utility class for JSON related tasks
+ *
+ */
 public class JSONUtil {
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // PUBLIC METHODS
+    ///////////////////////////////////////////////////////////////////////////
 
 
     /**
