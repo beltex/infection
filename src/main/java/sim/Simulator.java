@@ -117,7 +117,7 @@ public class Simulator {
      * Holds all data about entire simulation. Will be exported to JSON at the
      * very end
      */
-    private static SimulatorData simData = new SimulatorData();
+    private static ArrayList<SimulatorRun> runData = new ArrayList<SimulatorRun>();
 
 
     /**
@@ -303,8 +303,7 @@ public class Simulator {
                                                      tinylog.getTimestamp());
 
 
-        ArrayList<SimulatorRun> list = simData.getRunData();
-        for (SimulatorRun r : list) {
+        for (SimulatorRun r : runData) {
             int nAgents = r.getNumAgents();
 
             avg_infection_level += r.getInfections() / (double) nAgents;
@@ -329,7 +328,7 @@ public class Simulator {
         if (flag_saveData) {
             JSONUtil.writeJSON(tinylog.getDirName(),
                                "data", tinylog.getTimestamp(),
-                               simData, false);
+                               runData, false);
         }
 
 
@@ -342,8 +341,8 @@ public class Simulator {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    protected static SimulatorData getSimData() {
-        return simData;
+    protected static ArrayList<SimulatorRun> getSimData() {
+        return runData;
     }
 
 
