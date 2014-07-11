@@ -294,44 +294,25 @@ public class Simulator {
     private void postmortem() {
         simulatorMetaDate();
 
-        double infected = 0;
-        double eleComp = 0;
-        double interactions = 0;
-        double traversals = 0;
-        double marker_infectionComplete = 0;
-        double marker_leaderElectionComplete = 0;
-        double marker_allElectionComplete = 0;
+        double avg_infection_level = 0.0;
 
-        double marker_infectionComplete_interact = 0;
-        double marker_leaderElectionComplete_interact = 0;
-        double marker_allElectionComplete_interact = 0;
+        // 3 types of data points
+        int tRuns = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs;
+        int maxItems = tRuns * 3;
+        MarkersChart mc = new MarkersChart(maxItems, tinylog.getDirName(),
+                                                     tinylog.getTimestamp());
 
-        int maxItems = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs * 3;
-        MarkersChart mc = new MarkersChart(maxItems, tinylog.getDirName(), tinylog.getTimestamp());
 
         ArrayList<SimulatorRun> list = simData.getRunData();
         for (SimulatorRun r : list) {
-            infected += (double)r.getInfections();
-            eleComp += (double)r.getElectionCompleteCount();
-            interactions += (double)r.getInteractions();
-            traversals += (double)r.getTraversals();
-            marker_infectionComplete += (double)r.getInfectionCompleteStep();
+            int nAgents = r.getNumAgents();
 
-            marker_leaderElectionComplete += (double)r.getLeaderElectionCompleteStep();
+            avg_infection_level += r.getInfections() / (double) nAgents;
 
-
-            marker_allElectionComplete += (double)r.getAllElectionCompleteStep();
-
-
-            marker_infectionComplete_interact += (double)r.getInfectionCompleteInteractions();
-            mc.addDataPoint(r.getNumAgents(), r.getInfectionCompleteInteractions());
-
-            marker_leaderElectionComplete_interact += (double)r.getLeaderElectionCompleteInteractions();
-            mc.addDataPointLeader(r.getNumAgents(), r.getLeaderElectionCompleteInteractions());
-
-
-            marker_allElectionComplete_interact += (double)r.getAllElectionCompleteInteractions();
-            mc.addDataPointAll(r.getNumAgents(), r.getAllElectionCompleteInteractions());
+            // TODO: interaction or step?
+            mc.addDataPoint(nAgents, r.getInfectionCompleteInteractions());
+            mc.addDataPointLeader(nAgents, r.getLeaderElectionCompleteInteractions());
+            mc.addDataPointAll(nAgents, r.getAllElectionCompleteInteractions());
         }
 
         // Must come before chart display, exception thrown otherwise
@@ -342,22 +323,15 @@ public class Simulator {
             mc.display();
         }
 
-        Logger.info("# of INFECTED agents: " + (infected / runs));
-        Logger.info("# of agents that believe election is COMPLETE: " + (eleComp/runs));
-        Logger.info("# of agent INTERACTIONS: " + (interactions / runs));
-        Logger.info("# of agent TRAVERSALS: " + (traversals/runs));
-        Logger.info("MARKER - Infection Complete Step: " + (marker_infectionComplete / runs));
-        Logger.info("MARKER - Leader Election Complete Step: " + (marker_leaderElectionComplete / runs));
-        Logger.info("MARKER - All Election Complete Step: " + (marker_allElectionComplete/runs));
-
-        Logger.info("MARKER - Infection Complete INTERACT: " + (marker_infectionComplete_interact / runs));
-        Logger.info("MARKER - Leader Election Complete INTERACT: " + (marker_leaderElectionComplete_interact / runs));
-        Logger.info("MARKER - All Election Complete INTERACT: " + (marker_allElectionComplete_interact/runs));
+        System.out.println("AVG_INFECTION_LEVEL: " + (avg_infection_level / tRuns) * 100.0);
 
 
         if (flag_saveData) {
-            JSONUtil.writeJSON(tinylog.getDirName(), "data", tinylog.getTimestamp(), simData, false);
+            JSONUtil.writeJSON(tinylog.getDirName(),
+                               "data", tinylog.getTimestamp(),
+                               simData, false);
         }
+
 
         GraphIO.writeGraph(g, tinylog.getDirName(), tinylog.getTimestamp());
     }

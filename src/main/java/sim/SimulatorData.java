@@ -26,6 +26,7 @@ public class SimulatorData {
 
 
     public SimulatorData() {
+        // TODO: Set cap
         runData = new ArrayList<SimulatorRun>();
     }
 
