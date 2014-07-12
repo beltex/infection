@@ -19,35 +19,6 @@ public class TimeStep {
     // PRIVATE ATTRIBUTES
     ///////////////////////////////////////////////////////////////////////////
 
-
-    private ExtendedGraph g;
-
-
-    private GraphVis gv;
-
-
-    private RandomSource rs;
-
-
-    private SimulatorRun simRun;
-
-
-    /**
-     * The current time step
-     */
-    private int step;
-
-
-    private int termA;
-    private int termB;
-    private int infectionCounter;
-    private int electionCompleteCounter;
-    private int actionInteractCounter;
-    private int actionTraverseCounter;
-    private int numAgents;
-    private int leaderAID;
-
-
     /**
      * Is infection complete?
      */
@@ -66,22 +37,37 @@ public class TimeStep {
     private boolean flag_allElectionComplete;
 
 
-    private boolean deadEnd;
-
-
     /**
      * Have the agents hit a dead end?
      */
     private boolean agentDeadEnd;
 
 
-    private boolean flag_vis;
+    /**
+     * The current time step
+     */
+    private int step;
 
 
-    private NodeSelection nodeSelection;
+    private int infectionCounter;
+    private int electionCompleteCounter;
+    private int actionInteractCounter;
+    private int actionTraverseCounter;
 
+    private GraphVis gv;
+    private ExtendedGraph g;
+    private RandomSource rs;
+    private SimulatorRun simRun;
 
-    private ActionSelection as;
+    private final int termA;
+    private final int termB;
+    private final int numAgents;
+    private final int leaderAID;
+
+    private final boolean deadEnd;
+    private final boolean flag_vis;
+    private final NodeSelection ns;
+    private final ActionSelection as;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -109,7 +95,7 @@ public class TimeStep {
         electionCompleteCounter = 0;
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
-        nodeSelection = g.getNodeSelection();
+        ns = g.getNodeSelection();
 
 
         deadEnd = g.getHasDeadEnd();
@@ -173,7 +159,7 @@ public class TimeStep {
              * Pick a random node
              */
 
-            switch (nodeSelection) {
+            switch (ns) {
                 case NON_WEIGHTED:
                     n = rs.nextNode(action);
                     break;

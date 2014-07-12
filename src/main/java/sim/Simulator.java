@@ -62,7 +62,10 @@ public class Simulator {
     ///////////////////////////////////////////////////////////////////////////
 
 
-    private ExtendedGraph g;
+    /**
+     * Should SimulatorRun data be saved to disk?
+     */
+    private boolean flag_saveData = false;
 
 
     /**
@@ -126,29 +129,15 @@ public class Simulator {
     private HashMap<Integer, Double> actionProbability;
 
 
+    private ExtendedGraph g;
+    private TinylogProperties tinylog;
+    private GraphVis gv = GraphVis.getInstance();
+    private RandomSource rs = RandomSource.getInstance();
+    private AgentDistribution dist;
+    private SimulatorMetaData smd;
+    private ActionSelection as = ActionSelection.NON_WEIGHTED;
     private double interactProbability = 0.50;
     private double traversalProbability = 0.50;
-
-
-    private TinylogProperties tinylog;
-
-
-    private RandomSource rs = RandomSource.getInstance();
-
-
-    private GraphVis gv = GraphVis.getInstance();
-
-
-    private AgentDistribution dist;
-
-
-    private SimulatorMetaData smd;
-
-
-    private ActionSelection as = ActionSelection.NON_WEIGHTED;
-
-
-    private boolean flag_saveData = false;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -270,7 +259,8 @@ public class Simulator {
     }
 
 
-    private void simulatorMetaDate() {
+    private void postmortem() {
+        // Fill in simulator metadata
         smd = new SimulatorMetaData();
 
         smd.setDate(tinylog.getDate());
@@ -281,24 +271,17 @@ public class Simulator {
         smd.setRuns(runs);
         smd.setInteractProbability(interactProbability);
         smd.setTraversalProbability(traversalProbability);
-
-//        System.out.println(JSONUtil.toJSON(smd, true));
-
-        JSONUtil.writeJSON(tinylog.getDirName(), "metadata",
-                                                 tinylog.getTimestamp(),
-                                                 smd,
-                                                 true);
-    }
+        smd.setNumNodes(g.getNodeCount());
 
 
-    private void postmortem() {
-        simulatorMetaDate();
+        // Rest of stats
 
         double avg_infection_level = 0.0;
+        double leader_error = 0.0;
 
         // 3 types of data points
-        int tRuns = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs;
-        int maxItems = tRuns * 3;
+        int totalRuns = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs;
+        int maxItems = totalRuns * 3;
         MarkersChart mc = new MarkersChart(maxItems, tinylog.getDirName(),
                                                      tinylog.getTimestamp());
 
@@ -307,6 +290,10 @@ public class Simulator {
             int nAgents = r.getNumAgents();
 
             avg_infection_level += r.getInfections() / (double) nAgents;
+
+            if (r.getInfectionCompleteStep() > r.getLeaderElectionCompleteStep()) {
+                leader_error++;
+            }
 
             // TODO: interaction or step?
             mc.addDataPoint(nAgents, r.getInfectionCompleteInteractions());
@@ -322,8 +309,15 @@ public class Simulator {
             mc.display();
         }
 
-        System.out.println("AVG_INFECTION_LEVEL: " + (avg_infection_level / tRuns) * 100.0);
 
+        smd.setAvgInfectionLevel((avg_infection_level / totalRuns) * 100.0);
+        smd.setAvgLeaderError((leader_error / totalRuns) * 100.0);
+
+
+        JSONUtil.writeJSON(tinylog.getDirName(), "metadata",
+                tinylog.getTimestamp(),
+                smd,
+                true);
 
         if (flag_saveData) {
             JSONUtil.writeJSON(tinylog.getDirName(),
@@ -359,7 +353,6 @@ public class Simulator {
 
         g.setNullAttributesAreErrors(true);
         dist = new AgentDistribution(flag_vis);
-
 
         if (flag_vis) {
             gv.init(g);

@@ -46,6 +46,9 @@ public class SimulatorMetaData {
     private int maxTimeSteps;
     private int runs;
 
+    private String avg_infectionLevel;
+    private String avg_leaderError;
+
 
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
@@ -53,7 +56,6 @@ public class SimulatorMetaData {
 
 
     public SimulatorMetaData() {
-
     }
 
 
@@ -119,5 +121,15 @@ public class SimulatorMetaData {
 
     public void setRuns(int runs) {
         this.runs = runs;
+    }
+
+
+    public void setAvgInfectionLevel(double level){
+        this.avg_infectionLevel = String.format("%.2f", level) + "%";
+    }
+
+
+    public void setAvgLeaderError(double error){
+        this.avg_leaderError = String.format("%.2f", error) + "%";
     }
 }
