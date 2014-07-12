@@ -3,6 +3,8 @@ package sim;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import sim.GraphGeneratorSource.GraphType;
+
 import com.google.common.collect.Range;
 
 
@@ -32,7 +34,7 @@ public class SimulatorMetaData {
     private String duration;
 
 
-    private String graphType;
+    private GraphType graphType;
     private int numNodes;
 
     private String interactProbability;
@@ -48,15 +50,6 @@ public class SimulatorMetaData {
 
     private String avg_infectionLevel;
     private String avg_leaderError;
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    // CONSTRUCTORS
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    public SimulatorMetaData() {
-    }
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -131,5 +124,10 @@ public class SimulatorMetaData {
 
     public void setAvgLeaderError(double error){
         this.avg_leaderError = String.format("%.2f", error) + "%";
+    }
+
+
+    public void setGraphType(GraphType graphType) {
+        this.graphType = graphType;
     }
 }

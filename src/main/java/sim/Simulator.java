@@ -7,6 +7,7 @@ import org.pmw.tinylog.Level;
 import org.pmw.tinylog.Logger;
 
 import sim.AgentDistribution.Distribution;
+import sim.GraphGeneratorSource.GraphType;
 
 import com.google.common.collect.Range;
 
@@ -136,6 +137,7 @@ public class Simulator {
     private AgentDistribution dist;
     private SimulatorMetaData smd;
     private ActionSelection as = ActionSelection.NON_WEIGHTED;
+    private GraphType gt = GraphType.CUSTOM;
     private double interactProbability = 0.50;
     private double traversalProbability = 0.50;
 
@@ -272,6 +274,7 @@ public class Simulator {
         smd.setInteractProbability(interactProbability);
         smd.setTraversalProbability(traversalProbability);
         smd.setNumNodes(g.getNodeCount());
+        smd.setGraphType(gt);
 
 
         // Rest of stats
@@ -520,6 +523,7 @@ public class Simulator {
     public void generateGraphFullyConnected(int n,
                                             boolean directed,
                                             boolean randomlyDirectedEdges) {
+        gt = GraphType.FULLY_CONNECTED;
         flag_generateGraph = true;
         GraphGeneratorSource.getInstance()
                             .graphFullyConnected(n, directed,
@@ -542,6 +546,7 @@ public class Simulator {
     public void generateGraphChain(int n, boolean directed,
                                           boolean doublyLinked,
                                           boolean loopBack) {
+        gt = GraphType.CHAIN;
         flag_generateGraph = true;
         GraphGeneratorSource.getInstance()
                             .graphChain(n, directed, doublyLinked, loopBack);
@@ -557,6 +562,7 @@ public class Simulator {
      * @param crossEdges Should the grid have cross edges?
      */
     public void generateGraphGrid(int n, boolean directed, boolean crossEdges) {
+        gt = GraphType.GRID;
         flag_generateGraph = true;
         GraphGeneratorSource.getInstance().graphGrid(n, directed, crossEdges);
     }
