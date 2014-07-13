@@ -40,13 +40,12 @@ public class SimulatorMetaData {
     private String interactProbability;
     private String traversalProbability;
 
-    private double accuracy;
-
     private Range<Integer> numAgents;
     private int termA;
     private int termB;
     private int maxTimeSteps;
-    private int runs;
+    private int runsPerPopulation;
+    private int totalRuns;
 
     private String avg_infectionLevel;
     private String avg_leaderError;
@@ -113,7 +112,7 @@ public class SimulatorMetaData {
 
 
     public void setRuns(int runs) {
-        this.runs = runs;
+        this.runsPerPopulation = runs;
     }
 
 
@@ -129,5 +128,15 @@ public class SimulatorMetaData {
 
     public void setGraphType(GraphType graphType) {
         this.graphType = graphType;
+    }
+
+
+    public void setTotalRuns(int totalRuns) {
+        this.totalRuns = totalRuns;
+    }
+
+
+    public void setNumAgents(Range<Integer> numAgents) {
+        this.numAgents = numAgents;
     }
 }

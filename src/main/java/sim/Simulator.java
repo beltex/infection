@@ -275,6 +275,7 @@ public class Simulator {
         smd.setTraversalProbability(traversalProbability);
         smd.setNumNodes(g.getNodeCount());
         smd.setGraphType(gt);
+        smd.setNumAgents(numAgents);
 
 
         // Rest of stats
@@ -315,6 +316,7 @@ public class Simulator {
 
         smd.setAvgInfectionLevel((avg_infection_level / totalRuns) * 100.0);
         smd.setAvgLeaderError((leader_error / totalRuns) * 100.0);
+        smd.setTotalRuns(totalRuns);
 
 
         JSONUtil.writeJSON(tinylog.getDirName(), "metadata",
