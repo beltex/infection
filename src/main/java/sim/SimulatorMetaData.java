@@ -69,7 +69,8 @@ public class SimulatorMetaData {
         long hours = TimeUnit.MILLISECONDS.toHours(diff);
         long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) -
                        TimeUnit.HOURS.toMinutes(hours);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff) - minutes;
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff) -
+                       TimeUnit.MINUTES.toSeconds(minutes);
 
         duration = String.format("%d hour, %d min, %d sec", hours, minutes,
                                                                    seconds);
