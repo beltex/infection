@@ -6,6 +6,8 @@ variable graph topologies.
 
 This project is under the **MIT License**. See ```LICENSE``` file.
 
+![alt text](http://beltex.github.io/infection/vis-1.gif)
+
 
 ### Problem
 
@@ -48,7 +50,7 @@ and experiment.
 - [Gradle](http://www.gradle.org) (2.0)
 
 
-### Setup & Use
+## Setup & Use
 
 **Download Project**
 
@@ -88,7 +90,7 @@ gradle run
 
 # To run a specific client class
 # This assumes that the class is located inside the client package
-# (src/main/java/client) 
+# (src/main/java/client)
 gradle -Pclient=<NAME_OF_CLASS> run
 
 # To create Eclipse project files
@@ -104,7 +106,7 @@ gradle javadoc
 Sample client classes can be found inside `src/main/java/client/`
 
 
-**Logs**
+## Logs
 
 Logs from the simulation can be found in the `logs` directory which is
 created at run time. Each simulation run creates it's own timestamped
@@ -113,8 +115,78 @@ directory inside containing logs, simulation data in JSON format, and charts.
 - Logging is only really useful for single simulation runs, adding of new feautres, etc
 - When running large tests, logs are both repetitive and carry a performance and space overhead.
 
+**metadata.json**
 
-**Charts**
+The metadata file contains overview information about the completed simulation.
+
+```json
+{
+  "date": "Jul 14, 2014 11:15:03 PM",
+  "duration": "9 hour, 43 min, 32 sec",
+  "graphType": "CUSTOM",
+  "numNodes": 2,
+  "interactProbability": "50.0%",
+  "traversalProbability": "50.0%",
+  "numAgents": {
+    "lowerBound": {
+      "endpoint": 1000
+    },
+    "upperBound": {
+      "endpoint": 10001
+    }
+  },
+  "termA": 4,
+  "termB": 0,
+  "maxTimeSteps": 600000,
+  "runsPerPopulation": 10,
+  "totalRuns": 90010,
+  "avg_infectionLevel": "87.97%",
+  "avg_leaderError": "10.14%"
+}
+```
+
+**data.json**
+
+- Data file is optional - off by default
+- Have to turn it on via Simulator class method `saveSimData()`
+- Contains the data points used in the markers chart
+- The JSON is minified (not pretty printed as the files get large quickly)
+
+```json
+[
+  {
+    "numAgents": 1000,
+    "infections": 1000,
+    "electionCompleteCount": 5,
+    "interactions": 25086,
+    "traversals": 74914,
+    "infectionCompleteStep": 26320,
+    "leaderElectionCompleteStep": 95610,
+    "allElectionCompleteStep": 0,
+    "infectionCompleteInteractions": 6509,
+    "leaderElectionCompleteInteractions": 23981,
+    "allElectionCompleteInteractions": 0,
+    "stepInfectionsMap": {}
+  },
+  {
+    "numAgents": 1001,
+    "infections": 1001,
+    "electionCompleteCount": 0,
+    "interactions": 24967,
+    "traversals": 75033,
+    "infectionCompleteStep": 31285,
+    "leaderElectionCompleteStep": 0,
+    "allElectionCompleteStep": 0,
+    "infectionCompleteInteractions": 7839,
+    "leaderElectionCompleteInteractions": 0,
+    "allElectionCompleteInteractions": 0,
+    "stepInfectionsMap": {}
+  },
+  ....
+]
+```
+
+**Markers Chart - chart.png**
 
 ![alt text](http://beltex.github.io/infection/chart-1.png)
 
