@@ -92,9 +92,9 @@ public class TimeStep {
 
         step = 0;
         infectionCounter = 1;
-        electionCompleteCounter = 0;
         actionInteractCounter = 0;
         actionTraverseCounter = 0;
+        electionCompleteCounter = 0;
         ns = g.getNodeSelection();
 
 
@@ -355,11 +355,8 @@ public class TimeStep {
 
 
     private void agentInfection(Agent infector, Agent infected) {
-        //Logger.trace("Infector agent: " + infector);
         int infectorLeaderAID = infector.getLeaderAID();
-
         infected.setLeaderAID(infectorLeaderAID);
-        //Logger.trace("Infected agent: " + infected);
 
         if (infectorLeaderAID == leaderAID) {
             infectionCounter++;
@@ -398,14 +395,13 @@ public class TimeStep {
             agent.setLeader(true);
             agent.setElectionComplete(true);
 
-            // TODO: what if a non-leader increments this?
-            electionCompleteCounter++;
 
             // Is this the real leader that believes election is complete?
             if (agent.getAID() == leaderAID) {
                 simRun.setLeaderElectionCompleteStep(step);
                 simRun.setLeaderElectionCompleteInteractions(actionInteractCounter);
 
+                electionCompleteCounter++;
                 flag_leaderElectionComplete = true;
                 flag_electionComplete();
 
