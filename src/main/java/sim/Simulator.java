@@ -246,10 +246,14 @@ public class Simulator {
             for (int i = 0; i < maxTimeSteps; i++) {
                 ts.step();
 
-                if (ts.isFlag_infectionComplete() &&
-                    ts.isFlag_leaderElectionComplete() &&
+                // Checking for infection complete as well causes problems.
+                // With the way the algo is structured, if leader declares
+                // election complete before it really happens, infection no
+                // longer occurs. Sim then runs till max time step for no reason
+                if (ts.isFlag_leaderElectionComplete() &&
                     ts.isFlag_allElectionComplete()) {
-                    Logger.info("STEP: {0}; Cutting off simulation - all actions complete", i);
+                    Logger.info("STEP: {0}; Cutting off simulation - all " +
+                                "actions complete", i);
                     break;
                 }
             }
@@ -322,9 +326,9 @@ public class Simulator {
 
 
         JSONUtil.writeJSON(tinylog.getDirName(), "metadata",
-                tinylog.getTimestamp(),
-                smd,
-                true);
+                                                 tinylog.getTimestamp(),
+                                                 smd,
+                                                 true);
 
         if (flag_saveData) {
             JSONUtil.writeJSON(tinylog.getDirName(),

@@ -266,7 +266,13 @@ public class TimeStep {
         if (agent_i.isElectionComplete() || agent_j.isElectionComplete()) {
             agent_i.setElectionComplete(true);
             agent_j.setElectionComplete(true);
-            electionCompleteCounter++;
+
+            // TODO: Infection should occur here as well
+
+            if (!flag_allElectionComplete) {
+                electionCompleteCounter++;
+            }
+
             flag_electionComplete();
 
             Logger.debug("Election complete from agents: {0}, {1}", agent_i,
