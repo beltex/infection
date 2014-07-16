@@ -295,7 +295,9 @@ public class Simulator {
 
             avg_infection_level += r.getInfections() / (double) nAgents;
 
-            if (r.getInfectionCompleteStep() > r.getLeaderElectionCompleteStep()) {
+            // If the infection complete step is zero, means it never happened
+            int s = r.getInfectionCompleteStep();
+            if (s > 0 && s > r.getLeaderElectionCompleteStep()) {
                 leader_error++;
             }
 
