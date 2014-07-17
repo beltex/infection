@@ -123,7 +123,7 @@ public class TinylogProperties {
 
 
     public void stdout() {
-        Configurator.defaultConfig().activate();
+        Configurator.defaultConfig().level(logLevel).activate();
     }
 
 

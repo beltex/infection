@@ -401,6 +401,11 @@ public class TimeStep {
             agent.setLeader(true);
             agent.setElectionComplete(true);
 
+            Logger.info("STEP: {0}; Agent believes election is complete and " +
+                        "is the leader " +
+                        "\n\t # of interactions: {1}; " +
+                        "{2}",
+                        step, actionInteractCounter, agent);
 
             // Is this the real leader that believes election is complete?
             if (agent.getAID() == leaderAID) {
@@ -415,12 +420,6 @@ public class TimeStep {
                     Logger.warn("Leader delcared election complete EARLY");
                 }
             }
-
-            Logger.info("STEP: {0}; Agent believes election is complete and " +
-                        "is the leader " +
-                        "\n\t # of interactions: {1}; " +
-                        "{2}",
-                        step, actionInteractCounter, agent);
 
             return true;
         }

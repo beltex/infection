@@ -36,7 +36,6 @@ public class ChainExp {
 
         sim.agentDistribution(Distribution.SINGLE);
         sim.nodeSelection(NodeSelection.NON_WEIGHTED);
-        sim.setActionProbabilites(0.50, 0.50);
 
         sim.execute();
     }
