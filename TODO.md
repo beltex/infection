@@ -9,9 +9,10 @@ TODO
 - [CSS] Change the size of the label for when graph is really dense
 - [gh-pages] Add graph screenshot to README.md
 - [gh-pages] Add experiments section
+- Make max time step proportional to number of agents
 - Status level logging (above INFO) - SHIFT down to debug - make status INFO
 - Params class to simplify Simulator class - like GraphStream PlotParams?
-- More ranged options - action probabilites, number of nodes, etc
+- More ranged options - action probabilities, number of nodes, etc
 - Update to NIO
 - Simulation run dir - have additional counter label for easier cd
 - Check for self edges in a graph?

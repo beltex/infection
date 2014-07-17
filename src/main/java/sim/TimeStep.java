@@ -110,8 +110,10 @@ public class TimeStep {
         numAgents = g.getNumAgents();
         leaderAID = numAgents - 1;
 
+
         simRun = new SimulatorRun();
         simRun.setNumAgents(numAgents);
+
 
         if (flag_vis) {
             gv = GraphVis.getInstance();
@@ -269,11 +271,16 @@ public class TimeStep {
 
             // TODO: Infection should occur here as well
 
-            if (!flag_allElectionComplete) {
+            // DO NOT ALLOW NON-REAL INFECTIONS TO INCREMENT THIS COUNTER, OR
+            // ANY OF THE OTHER ONES FOR THAT MATTER
+            if (!flag_allElectionComplete &&
+                (agent_i.getLeaderAID() == leaderAID ||
+                 agent_j.getLeaderAID() == leaderAID)) {
+
                 electionCompleteCounter++;
+                flag_electionComplete();
             }
 
-            flag_electionComplete();
 
             Logger.debug("Election complete from agents: {0}, {1}", agent_i,
                                                                     agent_j);

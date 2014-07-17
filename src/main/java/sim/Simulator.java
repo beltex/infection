@@ -250,6 +250,9 @@ public class Simulator {
                 // With the way the algo is structured, if leader declares
                 // election complete before it really happens, infection no
                 // longer occurs. Sim then runs till max time step for no reason
+
+                // TODO: This check should be inside TimeStep, which sends a
+                //       single signal to Simulator to exit
                 if (ts.isFlag_leaderElectionComplete() &&
                     ts.isFlag_allElectionComplete()) {
                     Logger.info("STEP: {0}; Cutting off simulation - all " +
@@ -287,6 +290,9 @@ public class Simulator {
         double avg_infection_level = 0.0;
         double leader_error = 0.0;
 
+        int leaderOverTaken = 0;
+        int infectionIncomplete = 0;
+
         // 3 types of data points
         int totalRuns = (numAgents.upperEndpoint() - numAgents.lowerEndpoint()) * runs;
         int maxItems = totalRuns * 3;
@@ -296,19 +302,38 @@ public class Simulator {
 
         for (SimulatorRun r : runData) {
             int nAgents = r.getNumAgents();
+            int infectionComp = r.getInfectionCompleteInteractions();
+            int leaderElecComp = r.getLeaderElectionCompleteInteractions();
+            int allElecComp = r.getAllElectionCompleteInteractions();
 
-            avg_infection_level += r.getInfections() / (double) nAgents;
 
-            // If the infection complete step is zero, means it never happened
-            int s = r.getInfectionCompleteStep();
-            if (s > 0 && s > r.getLeaderElectionCompleteStep()) {
+            // If the leader never calls election complete, something went wrong
+            if (leaderElecComp == 0) {
+                leaderOverTaken++;
+            }
+
+            // Leader calls election complete BEFORE 100% infection
+            if (infectionComp > leaderElecComp &&
+                                leaderElecComp != 0 &&
+                                infectionComp != 0) {
                 leader_error++;
             }
 
+            // If the infection complete step is zero, means it never happened,
+            // therefore, leader is wrong by default
+            if (infectionComp == 0) {
+                leader_error++;
+                infectionIncomplete++;
+            }
+
+
+            avg_infection_level += r.getInfections() / (double) nAgents;
+
+
             // TODO: interaction or step?
-            mc.addDataPoint(nAgents, r.getInfectionCompleteInteractions());
-            mc.addDataPointLeader(nAgents, r.getLeaderElectionCompleteInteractions());
-            mc.addDataPointAll(nAgents, r.getAllElectionCompleteInteractions());
+            mc.addDataPoint(nAgents, infectionComp);
+            mc.addDataPointLeader(nAgents, leaderElecComp);
+            mc.addDataPointAll(nAgents, allElecComp);
         }
 
         // Must come before chart display, exception thrown otherwise
