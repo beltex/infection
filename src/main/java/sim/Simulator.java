@@ -484,15 +484,29 @@ public class Simulator {
      * @param traversal Probability of traversal action.
      */
     public void setActionProbabilites(double interaction, double traversal) {
-        // TODO: CHECK SUM & IF 50/50, use NON_WEIGHTED
+        double sum = interaction + traversal;
+        double diff = interaction - traversal;
 
-        as = ActionSelection.WEIGHTED;
-        actionProbability = new HashMap<Integer, Double>();
-        actionProbability.put(TimeStep.ACTION_INTERACT, interaction);
-        actionProbability.put(TimeStep.ACTION_TRAVERSE, traversal);
+        if (!(Double.compare(sum, 1.0) == 0)) {
+            Logger.error("Action probabilites DO NOT sum to 1.0");
+            System.exit(-1);
+        }
 
-        interactProbability = interaction;
-        traversalProbability = traversal;
+        // No point in doing weighted selection if 50/50, performance cost
+        if (!(Double.compare(diff, 0.0) == 0)) {
+            as = ActionSelection.WEIGHTED;
+            actionProbability = new HashMap<Integer, Double>();
+            actionProbability.put(TimeStep.ACTION_INTERACT, interaction);
+            actionProbability.put(TimeStep.ACTION_TRAVERSE, traversal);
+
+            interactProbability = interaction;
+            traversalProbability = traversal;
+            Logger.info("ALL GOOD");
+        }
+        else {
+            // NON_WEIGHTED already set as default
+            Logger.warn("50/50 is the default setting, no need to set it");
+        }
     }
 
 

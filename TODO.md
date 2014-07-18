@@ -7,7 +7,6 @@ TODO
 - [tinylog] Option to have logs written to both console and log file
 - [CSS] Add sprite to show direction of traversal for undirected graphs
 - [CSS] Change the size of the label for when graph is really dense
-- [gh-pages] Add graph screenshot to README.md
 - [gh-pages] Add experiments section
 - Make max time step proportional to number of agents
 - Status level logging (above INFO) - SHIFT down to debug - make status INFO
@@ -24,3 +23,4 @@ TODO
 - Add d3.js or nvd3.js charts and report?
 - Figure out why gradle daemon prevents build becoming a background process
 - ChainGen graph slower than hand made version?
+- README gif file size large, makes page a bit slow
