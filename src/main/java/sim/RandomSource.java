@@ -208,32 +208,29 @@ public class RandomSource {
 
     /**
      * Choose node based on the number of agents. So more agents in a node,
-     * higher probability, In proportion to size.
+     * higher probability, in proportion to size.
      *
      * Make sure that the selected node has at least one agent, otherwise a
      * time-step gets wasted with no action
      *
      * @param action Which action is this node going to be used for? Interact
      *               or traverse?
-     * @return ExtendedNode Random node
+     * @return Random weighted node
      */
     public ExtendedNode nextNodeWeighted(int action) {
         ExtendedNode n = null;
+        HashMap<String, Range<Double>> map = g.agentProbabilitySpread();
 
-        // Refuse to pick a node with no agents, hence while loop
+        // Node picked has to meet needs of action, hence while true
         while (true) {
             double r = sr.nextDouble();
-            HashMap<String, Range<Double>> map = g.agentProbabilitySpread();
-
 
             // Find the node
             for (Entry<String, Range<Double>> entry: map.entrySet()) {
-
                 if (entry.getValue().contains(r)) {
                     n = g.getNode(entry.getKey());
                     break;
                 }
-
             }
 
 
@@ -247,8 +244,7 @@ public class RandomSource {
                 return n;
             }
 
-            // This shouldn't even happen because of the weighted probability
-            Logger.trace("Selected node has no agents - {0}", n);
+            Logger.trace("Selected node invalid for action - {0}", n);
         }
     }
 

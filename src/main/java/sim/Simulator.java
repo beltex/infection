@@ -336,6 +336,9 @@ public class Simulator {
             mc.addDataPointAll(nAgents, allElecComp);
         }
 
+//        System.out.println("LEADER OVER TAKEN:" + leaderOverTaken);
+//        System.out.println("INFECTION INCOMPLETE:" + infectionIncomplete);
+
         // Must come before chart display, exception thrown otherwise
         mc.save();
 
@@ -501,7 +504,6 @@ public class Simulator {
 
             interactProbability = interaction;
             traversalProbability = traversal;
-            Logger.info("ALL GOOD");
         }
         else {
             // NON_WEIGHTED already set as default
