@@ -282,6 +282,7 @@ public class Simulator {
         smd.setTraversalProbability(traversalProbability);
         smd.setNumNodes(g.getNodeCount());
         smd.setGraphType(gt);
+        smd.setNodeSelection(g.getNodeSelection());
         smd.setNumAgents(numAgents);
 
 

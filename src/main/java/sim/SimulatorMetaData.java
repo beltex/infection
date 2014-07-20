@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import sim.GraphGeneratorSource.GraphType;
+import sim.Simulator.NodeSelection;
 
 import com.google.common.collect.Range;
 
@@ -35,6 +36,7 @@ public class SimulatorMetaData {
 
 
     private GraphType graphType;
+    private NodeSelection nodeSelection;
     private int numNodes;
 
     private String interactProbability;
@@ -140,5 +142,10 @@ public class SimulatorMetaData {
 
     public void setNumAgents(Range<Integer> numAgents) {
         this.numAgents = numAgents;
+    }
+
+
+    public void setNodeSelection(NodeSelection nodeSelection) {
+        this.nodeSelection = nodeSelection;
     }
 }
