@@ -169,10 +169,10 @@ public class ExtendedGraph extends SingleGraph {
             // https://code.google.com/p/guava-libraries/wiki/RangesExplained
             map.put(n.getId(), Range.closedOpen(offset, upper));
 
-            Logger.trace("{0}; Probability {1}; Offset {2}; Upper {3}", n,
-                                                                        p,
-                                                                        offset,
-                                                                        upper);
+//            Logger.trace("{0}; Probability {1}; Offset {2}; Upper {3}", n,
+//                                                                        p,
+//                                                                        offset,
+//                                                                        upper);
 
             offset = upper;
         }
