@@ -25,7 +25,7 @@ TODO
 - ChainGen graph slower than hand made version?
 - README gif file size large, makes page a bit slow
 - Add sim version to metadata.json
-- Where does most of the action occur?
+- Where does most of the action occur? - Heat map
 - Vis label - infection counter
 - For Agent dist even spread, compute once
 - Opt nextWeightedNode - iterator, node vs string id, etc
