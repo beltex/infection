@@ -283,6 +283,7 @@ public class Simulator {
         smd.setNumNodes(g.getNodeCount());
         smd.setGraphType(gt);
         smd.setNodeSelection(g.getNodeSelection());
+        smd.setAgentDistribution(g.getAgentDistribution());
         smd.setNumAgents(numAgents);
 
 

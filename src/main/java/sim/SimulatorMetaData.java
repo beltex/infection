@@ -3,6 +3,7 @@ package sim;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import sim.AgentDistribution.Distribution;
 import sim.GraphGeneratorSource.GraphType;
 import sim.Simulator.NodeSelection;
 
@@ -37,6 +38,7 @@ public class SimulatorMetaData {
 
     private GraphType graphType;
     private NodeSelection nodeSelection;
+    private Distribution agentDistribution;
     private int numNodes;
 
     private String interactProbability;
@@ -147,5 +149,10 @@ public class SimulatorMetaData {
 
     public void setNodeSelection(NodeSelection nodeSelection) {
         this.nodeSelection = nodeSelection;
+    }
+
+
+    public void setAgentDistribution(Distribution agentDistribution) {
+        this.agentDistribution = agentDistribution;
     }
 }

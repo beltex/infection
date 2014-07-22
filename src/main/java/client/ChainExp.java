@@ -11,7 +11,7 @@ import com.google.common.collect.Range;
 
 
 /**
- * Original research paper scenario
+ * Chain experiments
  *
  */
 public class ChainExp {
