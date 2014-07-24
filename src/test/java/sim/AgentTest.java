@@ -1,4 +1,4 @@
-package junit;
+package sim;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

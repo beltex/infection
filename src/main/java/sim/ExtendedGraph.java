@@ -67,13 +67,13 @@ public class ExtendedGraph extends SingleGraph {
     private String deadEnd_nodeID;
 
 
-    private HashMap<Integer, Range<Double>> actionProbabilitySpread;
-
-
     /**
      * Does this graph have a dead end?
      */
     private boolean hasDeadEnd;
+
+
+    private HashMap<Integer, Range<Double>> actionProbabilitySpread;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -107,81 +107,6 @@ public class ExtendedGraph extends SingleGraph {
 
 
     /**
-     * The number of agents infected by the leader across the whole graph
-     *
-     * @return Infection count
-     */
-    public int infectionCount() {
-        int count = 0;
-        Iterator<ExtendedNode> it = this.getNodeIterator();
-
-        while (it.hasNext()) {
-            ExtendedNode n = it.next();
-            count += n.infectionCount();
-        }
-
-        return count;
-    }
-
-
-    /**
-     * The number of agents that believe leader election is complete across the
-     * whole graph
-     *
-     * @return Count of agents that believe election is complete
-     */
-    public int electionCompleteCount() {
-        int count = 0;
-        Iterator<ExtendedNode> it = this.getNodeIterator();
-
-        while (it.hasNext()) {
-            ExtendedNode n = it.next();
-            count += n.electionCompleteCount();
-        }
-
-        return count;
-    }
-
-
-    /**
-     * Returns the probability spread across the graph. This is used for making
-     * for a weighted random node selection.
-     *
-     *
-     * @return HashMap with each node's ID and it's probability given as a
-     *         Range object
-     */
-    public HashMap<String, Range<Double>> agentProbabilitySpread() {
-        double offset = 0.0;
-        HashMap<String, Range<Double>> map = new HashMap<String, Range<Double>>();
-
-
-        Iterator<ExtendedNode> it = this.getNodeIterator();
-        while (it.hasNext()) {
-            ExtendedNode n = it.next();
-
-            // Probability of the node being selected
-            double p = (double) n.getAgentCount() / (double) numAgents;
-
-            // Upper bound for the range of the this node
-            double upper = offset + p;
-
-            // https://code.google.com/p/guava-libraries/wiki/RangesExplained
-            map.put(n.getId(), Range.closedOpen(offset, upper));
-
-//            Logger.trace("{0}; Probability {1}; Offset {2}; Upper {3}", n,
-//                                                                        p,
-//                                                                        offset,
-//                                                                        upper);
-
-            offset = upper;
-        }
-
-        return map;
-    }
-
-
-    /**
      * Does this graph have a dead end? That is, a node with an out degree of
      * 0, no escape.
      *
@@ -199,31 +124,6 @@ public class ExtendedGraph extends SingleGraph {
         }
 
         return hasDeadEnd;
-    }
-
-
-    /**
-     * Check if all agents are in a single node which has an out degree of 0,
-     * a dead end. Thus, no agent can escape. If this is the case, traversal
-     * actions cannot be attempted.
-     *
-     * @return True if the graph has hit a dead end, false otherwise
-     */
-    public boolean agentDeadEnd() {
-        Iterator<ExtendedNode> it = this.getNodeIterator();
-
-        while (it.hasNext()) {
-            ExtendedNode n = it.next();
-
-            if (n.getAgentCount() == numAgents && n.getOutDegree() == 0) {
-                Logger.warn("ALL AGENTS HAVE HIT A DEAD END - NO MORE TRAVERSE ACTION");
-
-                deadEnd_nodeID = n.getId();
-                return true;
-            }
-        }
-
-        return false;
     }
 
 
@@ -260,13 +160,119 @@ public class ExtendedGraph extends SingleGraph {
     }
 
 
+    ///////////////////////////////////////////////////////////////////////////
+    // PROTECTED METHODS
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * The number of agents infected by the leader across the whole graph
+     *
+     * @return Infection count
+     */
+    protected int infectionCount() {
+        int count = 0;
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+            count += n.infectionCount();
+        }
+
+        return count;
+    }
+
+
+    /**
+     * The number of agents that believe leader election is complete across the
+     * whole graph
+     *
+     * @return Count of agents that believe election is complete
+     */
+    protected int electionCompleteCount() {
+        int count = 0;
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+            count += n.electionCompleteCount();
+        }
+
+        return count;
+    }
+
+
+    /**
+     * Returns the probability spread across the graph. This is used for making
+     * for a weighted random node selection.
+     *
+     *
+     * @return HashMap with each node's ID and it's probability given as a
+     *         Range object
+     */
+    protected HashMap<String, Range<Double>> agentProbabilitySpread() {
+        double offset = 0.0;
+        HashMap<String, Range<Double>> map = new HashMap<String, Range<Double>>();
+
+
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+
+            // Probability of the node being selected
+            double p = (double) n.getAgentCount() / (double) numAgents;
+
+            // Upper bound for the range of the this node
+            double upper = offset + p;
+
+            // https://code.google.com/p/guava-libraries/wiki/RangesExplained
+            map.put(n.getId(), Range.closedOpen(offset, upper));
+
+//            Logger.trace("{0}; Probability {1}; Offset {2}; Upper {3}", n,
+//                                                                        p,
+//                                                                        offset,
+//                                                                        upper);
+
+            offset = upper;
+        }
+
+        return map;
+    }
+
+
+    /**
+     * Check if all agents are in a single node which has an out degree of 0,
+     * a dead end. Thus, no agent can escape. If this is the case, traversal
+     * actions cannot be attempted.
+     *
+     * @return True if the graph has hit a dead end, false otherwise
+     */
+    protected boolean agentDeadEnd() {
+        Iterator<ExtendedNode> it = this.getNodeIterator();
+
+        while (it.hasNext()) {
+            ExtendedNode n = it.next();
+
+            if (n.getAgentCount() == numAgents && n.getOutDegree() == 0) {
+                Logger.warn("ALL AGENTS HAVE HIT A DEAD END - NO MORE " +
+                            " TRAVERSE ACTION");
+
+                deadEnd_nodeID = n.getId();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     /**
      * How many agents are currently in the graph? This is used to check if any
      * agents have fallen off the graph.
      *
      * @return Number of agents across the graph currently
      */
-    public int checkNumAgents() {
+    protected int checkNumAgents() {
         int count = 0;
         Iterator<ExtendedNode> it = this.getNodeIterator();
 
@@ -283,7 +289,7 @@ public class ExtendedGraph extends SingleGraph {
      * Clear the graph (reset it).
      *
      */
-    public void reset() {
+    protected void reset() {
         Iterator<ExtendedNode> it = this.getNodeIterator();
 
         while (it.hasNext()) {
@@ -293,7 +299,7 @@ public class ExtendedGraph extends SingleGraph {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC METHODS - GETTERS
+    // PROTECTED METHODS - GETTERS
     ///////////////////////////////////////////////////////////////////////////
 
 
@@ -303,77 +309,77 @@ public class ExtendedGraph extends SingleGraph {
      *
      * @return Number of agents in the graph
      */
-    public int getNumAgents() {
+    protected int getNumAgents() {
         return numAgents;
     }
 
 
-    public String getSINGLE_nodeID() {
+    protected String getSINGLE_nodeID() {
         return SINGLE_nodeID;
     }
 
 
-    public String getRANDOM_SINGLE_nodeID() {
+    protected String getRANDOM_SINGLE_nodeID() {
         return RANDOM_SINGLE_nodeID;
     }
 
 
-    public Distribution getAgentDistribution() {
+    protected Distribution getAgentDistribution() {
         return agentDistribution;
     }
 
 
-    public NodeSelection getNodeSelection() {
+    protected NodeSelection getNodeSelection() {
         return nodeSelection;
     }
 
 
-    public HashMap<Integer, Range<Double>> getActionProbabilitySpread() {
+    protected HashMap<Integer, Range<Double>> getActionProbabilitySpread() {
         return actionProbabilitySpread;
     }
 
 
-    public String getDeadEnd_nodeID() {
+    protected String getDeadEnd_nodeID() {
         return deadEnd_nodeID;
     }
 
 
-    public boolean getHasDeadEnd() {
+    protected boolean getHasDeadEnd() {
         return hasDeadEnd;
     }
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC METHODS - SETTERS
+    // PROTECTED METHODS - SETTERS
     ///////////////////////////////////////////////////////////////////////////
 
 
-    public void setNumAgents(int numAgents) {
+    protected void setNumAgents(int numAgents) {
         this.numAgents = numAgents;
     }
 
 
-    public void setSINGLE_nodeID(String SINGLE_nodeID) {
+    protected void setSINGLE_nodeID(String SINGLE_nodeID) {
         this.SINGLE_nodeID = SINGLE_nodeID;
     }
 
 
-    public void setRANDOM_SINGLE_nodeID(String rANDOM_SINGLE_nodeID) {
+    protected void setRANDOM_SINGLE_nodeID(String rANDOM_SINGLE_nodeID) {
         RANDOM_SINGLE_nodeID = rANDOM_SINGLE_nodeID;
     }
 
 
-    public void setAgentDistribution(Distribution agentDistribution) {
+    protected void setAgentDistribution(Distribution agentDistribution) {
         this.agentDistribution = agentDistribution;
     }
 
 
-    public void setNodeSelection(NodeSelection mode) {
+    protected void setNodeSelection(NodeSelection mode) {
         this.nodeSelection = mode;
     }
 
 
-    public void setActionProbabilitySpread(
+    protected void setActionProbabilitySpread(
             HashMap<Integer, Range<Double>> agentProbabilitySpread) {
         this.actionProbabilitySpread = agentProbabilitySpread;
     }
