@@ -73,6 +73,9 @@ public class ExtendedGraph extends SingleGraph {
     private boolean hasDeadEnd;
 
 
+    /**
+     * Probabilities of all possible actions
+     */
     private HashMap<Integer, Range<Double>> actionProbabilitySpread;
 
 

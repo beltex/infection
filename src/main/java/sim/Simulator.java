@@ -462,8 +462,11 @@ public class Simulator {
      * How should the agents be distributed across the graph? Set an agent
      * distribution algorithm.
      *
-     * @param agentDistributionAlgo Agent distribution algorithm to be used. See
-     * 								constants in AgentDistribution class
+     * If your using SINGLE agent distribution, make sure to set the node which
+     * agents should be allocated to via setSingleAgentDistNodeID().
+     *
+     * @param agentDistributionAlgo Agent distribution algorithm to be used
+     * @see {@link sim.Simulator#setSingleAgentDistNodeID(String)}
      */
     public void agentDistribution(Distribution agentDistributionAlgo) {
         g.setAgentDistribution(agentDistributionAlgo);
@@ -554,8 +557,28 @@ public class Simulator {
     }
 
 
+    /**
+     * Save the data points used for the markers chart to disk in JSON format.
+     *
+     * WARNING: File size could be quite largely, easily hundreds of MB's for
+     *          large simulations.
+     */
     public void saveSimData() {
         flag_saveData = true;
+    }
+
+
+    /**
+     * Declare the node that should have all agents allocated to it. This is
+     * only relevant if SINGLE agent distribution method is being used. If not
+     * set, node at index 0 will be selected.
+     *
+     * @param id The ID of the node. If the graph is being generated
+     *           automatically by one of the graph generators, the ID will be
+     *           a number starting from 0.
+     */
+    public void setSingleAgentDistNodeID(String id) {
+        g.setSINGLE_nodeID(id);
     }
 
 

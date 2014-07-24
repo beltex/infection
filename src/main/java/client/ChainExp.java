@@ -32,6 +32,7 @@ public class ChainExp {
 
         sim.generateGraphChain(2, false, false, false);
         sim.agentDistribution(Distribution.SINGLE);
+        sim.setSingleAgentDistNodeID("0");
         sim.nodeSelection(NodeSelection.WEIGHTED);
 
         sim.execute();
