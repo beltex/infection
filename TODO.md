@@ -22,7 +22,6 @@ TODO
 - Look into OpenGL, DirectX, and Quartz Java system properties
 - Add d3.js or nvd3.js charts and report?
 - Figure out why gradle daemon prevents build becoming a background process
-- ChainGen graph slower than hand made version?
 - README gif file size large, makes page a bit slow
 - Add sim version to metadata.json
 - Where does most of the action occur? - Heat map

@@ -22,18 +22,15 @@ public class ChainExp {
         final int runs = 10;
         final int A = 4;
         final int B = 0;
-        final int maxTimeSteps = 600000;
+        final int maxTimeSteps = 1200000;
 
 
         ExtendedGraph g = new ExtendedGraph("Chain Experiment");
-        g.addNode("A");
-        g.addNode("B");
-        g.addEdge("AB", "A", "B", false);
-        g.setSINGLE_nodeID("A");
 
 
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.OFF);
 
+        sim.generateGraphChain(2, false, false, false);
         sim.agentDistribution(Distribution.SINGLE);
         sim.nodeSelection(NodeSelection.WEIGHTED);
 

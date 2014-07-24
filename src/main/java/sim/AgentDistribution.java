@@ -222,9 +222,9 @@ public class AgentDistribution {
         int remainder = g.getNumAgents() % numNodes;
 
         if (remainder != 0) {
-            Logger.info("Number of agents NOT evenly divisible by the number" +
-                        " of nodes; First {0} nodes will have an extra agent " +
-                        " added to them", remainder);
+            Logger.info("Number of agents NOT evenly divisible by the number " +
+                        "of nodes; First {0} nodes will have an extra agent " +
+                        "added to them", remainder);
 
             for (int i = 0; i < remainder; i++) {
                 ExtendedNode n = g.getNode(i);
