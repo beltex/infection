@@ -45,7 +45,13 @@ public class AgentDistribution {
         /**
          * Agents are spread randomly across the graph
          */
-        RANDOM_SPREAD;
+        RANDOM_SPREAD,
+
+        /**
+         * Agents are split evenly between first and last node of a chain graph.
+         * This option can only be used with a chain graph of course.
+         */
+        CHAIN_ENDS;
     }
 
 
@@ -119,6 +125,9 @@ public class AgentDistribution {
                 break;
             case RANDOM_SPREAD:
                 randomSpread();
+                break;
+            case CHAIN_ENDS:
+                chainEnds();
                 break;
         }
 
@@ -256,6 +265,32 @@ public class AgentDistribution {
                 gv.updateNode(n.getId());
             }
         }
+    }
+
+
+    public void chainEnds() {
+        ExtendedNode head = g.getNode(0);
+        ExtendedNode tail = g.getNode(g.getNodeCount() - 1);
+
+        ArrayList<Agent> agents = createAgents();
+
+        int numAgents = g.getNumAgents();
+        int alloc = 0;
+        int r = numAgents % 2;
+
+        if (r != 0) {
+            // Have remainder to deal with
+            alloc = (numAgents - r) / 2;
+        }
+        else {
+            // Evenly divisible
+            alloc = numAgents / 2;
+        }
+
+        head.setAgents(new ArrayList<Agent>(agents.subList(0, alloc)));
+
+        // Tail takes on the remainder - sublist to end
+        tail.setAgents(new ArrayList<Agent>(agents.subList(alloc, numAgents)));
     }
 
 

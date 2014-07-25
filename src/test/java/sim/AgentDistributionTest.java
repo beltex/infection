@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
-import sim.*;
 import sim.AgentDistribution.Distribution;
 
 import org.junit.Before;
@@ -33,12 +32,6 @@ public class AgentDistributionTest {
         g.addEdge("DE", "D", "E");
         g.addEdge("EA", "E", "A");
         g.addEdge("EF", "E", "F");
-
-        /*
-         * Have to do this even though we don't need it. A short coming of the
-         * design. This is a TODO list item
-         */
-        GraphVis.getInstance().init(g);
 
         ad = new AgentDistribution(false);
     }
@@ -141,6 +134,26 @@ public class AgentDistributionTest {
             ExtendedNode n = it.next();
             agentCount += n.getAgentCount();
         }
+
+        assertEquals(numAgents, agentCount);
+    }
+
+
+    @Test
+    public void chainEnds_agentCountTest() {
+        int numAgents = 1017;
+        RandomSource.getInstance().init(g);
+        g.setNumAgents(numAgents);
+        g.setAgentDistribution(Distribution.CHAIN_ENDS);
+
+        ad.init(g);
+        ad.execute();
+
+
+        int agentCount = 0;
+        ExtendedNode head = g.getNode(0);
+        ExtendedNode tail = g.getNode(g.getNodeCount() - 1);
+        agentCount = head.getAgentCount() + tail.getAgentCount();
 
         assertEquals(numAgents, agentCount);
     }
