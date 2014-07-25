@@ -39,6 +39,7 @@ public class SimulatorMetaData {
     private GraphType graphType;
     private NodeSelection nodeSelection;
     private Distribution agentDistribution;
+    private String agentDistSINGLE_nodeID;
     private int numNodes;
 
     private String interactProbability;
@@ -154,5 +155,10 @@ public class SimulatorMetaData {
 
     public void setAgentDistribution(Distribution agentDistribution) {
         this.agentDistribution = agentDistribution;
+    }
+
+
+    public void setAgentDistSINGLE_nodeID(String id) {
+        this.agentDistSINGLE_nodeID = id;
     }
 }

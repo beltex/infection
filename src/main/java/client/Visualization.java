@@ -32,8 +32,8 @@ public class Visualization {
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.INFO);
 
         sim.generateGraphChain(10, true, true, false);
-        sim.agentDistribution(Distribution.SINGLE);
-        sim.nodeSelection(NodeSelection.WEIGHTED);
+        sim.agentDistribution(Distribution.EVEN_SPREAD);
+        sim.nodeSelection(NodeSelection.NON_WEIGHTED);
         sim.setActionProbabilites(interactProbability, traversalProbability);
 
         /*

@@ -286,6 +286,10 @@ public class Simulator {
         smd.setAgentDistribution(g.getAgentDistribution());
         smd.setNumAgents(numAgents);
 
+        if (g.getAgentDistribution() == Distribution.SINGLE) {
+            smd.setAgentDistSINGLE_nodeID(g.getSINGLE_nodeID());
+        }
+
 
         // Rest of stats
 
