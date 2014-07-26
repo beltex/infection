@@ -50,6 +50,9 @@ public class AgentDistribution {
         /**
          * Agents are split evenly between first and last node of a chain graph.
          * This option can only be used with a chain graph of course.
+         *
+         * If the number of agents is odd, the tail (last node) will get the
+         * remainder.
          */
         CHAIN_ENDS;
     }
@@ -274,16 +277,15 @@ public class AgentDistribution {
 
         ArrayList<Agent> agents = createAgents();
 
-        int numAgents = g.getNumAgents();
         int alloc = 0;
-        int r = numAgents % 2;
+        int numAgents = g.getNumAgents();
 
-        if (r != 0) {
-            // Have remainder to deal with
-            alloc = (numAgents - r) / 2;
+        if ((numAgents % 2) != 0) {
+            // Odd number of agents
+            alloc = (numAgents - 1) / 2;
         }
         else {
-            // Evenly divisible
+            // Even number of agents
             alloc = numAgents / 2;
         }
 
