@@ -240,9 +240,7 @@ public class AgentDistribution {
 
             for (int i = 0; i < remainder; i++) {
                 ExtendedNode n = g.getNode(i);
-
-                n.addAgent(agents.get(i));
-                agents.remove(i);
+                n.addAgent(agents.remove(i));
             }
         }
 
