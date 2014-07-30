@@ -32,6 +32,7 @@ public class OriginalPaper {
         Simulator sim = new Simulator(g, numAgents, A, B, maxTimeSteps, runs, Level.OFF);
 
         sim.agentDistribution(Distribution.SINGLE);
+        sim.setSingleAgentDistNodeID("A");
         sim.nodeSelection(NodeSelection.NON_WEIGHTED);
 
         sim.execute();

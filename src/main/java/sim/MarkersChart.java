@@ -110,7 +110,7 @@ public class MarkersChart {
      *
      * Code from gs-algo ChartMeasure class outputPlot() method, SCREEN case.
      * This is done so that we can set JFrame to center of display via
-     * setLocationRelativeTo(null). Will send PR for this.
+     * setLocationRelativeTo(null). Has been fixed in GS 1.3.
      */
     public void display() {
         ChartPanel panel = new ChartPanel(chart, params.width, params.height,
