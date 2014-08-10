@@ -4,8 +4,6 @@ infection
 A simulator for studying infection algorithms for distributed agents with
 variable graph topologies.
 
-This project is under the **MIT License**. See ```LICENSE``` file.
-
 ![alt text](http://beltex.github.io/infection/vis-1.gif)
 
 
@@ -197,3 +195,8 @@ The metadata file contains overview information about the completed simulation.
 
 - [_Infection algorithms for distributed agents_](http://beltex.github.io/infection/paper-1.pdf)
 - [_Efficient leader election among numbered agents_](http://beltex.github.io/infection/paper-2.pdf)
+
+
+### License
+
+This project is under the **GNU General Public License v2.0**.

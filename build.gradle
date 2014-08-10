@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 apply plugin: 'findbugs'
 
-version = '0.0.4'
+version = '0.0.5'
 description = 'Leader election simulator with dynamic graph visualization'
 
 sourceCompatibility = '1.7'
