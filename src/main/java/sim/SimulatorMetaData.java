@@ -37,6 +37,7 @@ import com.google.common.collect.Range;
  * turned out.
  *
  */
+@SuppressWarnings("unused")
 public class SimulatorMetaData {
 
 
@@ -52,11 +53,17 @@ public class SimulatorMetaData {
 
 
     /**
+     * Simulator version (infection).
+     */
+    private final String version = "0.0.5";
+
+
+    /**
      * Optional description about the simulation.
      */
     private String description;
-    
-    
+
+
     /**
      * How long did the whole simulation take?
      */
@@ -113,10 +120,10 @@ public class SimulatorMetaData {
     public void setDate(Date date) {
         this.date = date;
     }
-    
-    
+
+
     public void setDescription(String description) {
-    	this.description = description;
+        this.description = description;
     }
 
 

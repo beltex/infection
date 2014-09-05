@@ -120,6 +120,7 @@ The metadata file contains overview information about the completed simulation.
 ```json
 {
   "date": "Jul 14, 2014 11:15:03 PM",
+  "version": "0.0.5",
   "description": "Description about the test",
   "duration": "9 hour, 43 min, 32 sec",
   "graphType": "CUSTOM",
