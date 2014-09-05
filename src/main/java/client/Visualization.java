@@ -56,6 +56,7 @@ public class Visualization {
         sim.agentDistribution(Distribution.EVEN_SPREAD);
         sim.nodeSelection(NodeSelection.NON_WEIGHTED);
         sim.setActionProbabilites(interactProbability, traversalProbability);
+        sim.simDescription("Description about the test");
 
         /*
          * Turn on graph visualization

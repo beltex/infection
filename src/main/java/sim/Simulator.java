@@ -188,6 +188,7 @@ public class Simulator {
                                                      Level logLevel) {
         // Init logging before anything else
         tinylog = new TinylogProperties(logLevel);
+        smd = new SimulatorMetaData();
 
         this.g = g;
         this.runs = runs;
@@ -291,8 +292,6 @@ public class Simulator {
 
     private void postmortem() {
         // Fill in simulator metadata
-        smd = new SimulatorMetaData();
-
         smd.setDate(tinylog.getDate());
         smd.setDuration(tinylog.getDate().getTime());
         smd.setTermA(termA);
@@ -604,6 +603,17 @@ public class Simulator {
      */
     public void setSingleAgentDistNodeID(String id) {
         g.setSINGLE_nodeID(id);
+    }
+
+
+    /**
+     * Provide an optional description about the simulation run. This will be
+     * saved to the metadata.json.
+     *
+     * @param description Description
+     */
+    public void simDescription(String description) {
+        smd.setDescription(description);
     }
 
 

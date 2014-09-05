@@ -52,6 +52,12 @@ public class SimulatorMetaData {
 
 
     /**
+     * Optional description about the simulation.
+     */
+    private String description;
+    
+    
+    /**
      * How long did the whole simulation take?
      */
     private String duration;
@@ -106,6 +112,11 @@ public class SimulatorMetaData {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+    
+    
+    public void setDescription(String description) {
+    	this.description = description;
     }
 
 
