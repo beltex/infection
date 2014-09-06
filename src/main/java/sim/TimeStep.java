@@ -341,6 +341,7 @@ public class TimeStep {
         // Update the view
         if (flag_vis) {
             gv.updateNode(n.getId());
+            gv.updateCounter();
         }
     }
 

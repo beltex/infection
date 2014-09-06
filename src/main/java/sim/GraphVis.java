@@ -21,9 +21,13 @@
 
 package sim;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import javax.swing.JLabel;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.ui.swingViewer.View;
@@ -80,6 +84,9 @@ public class GraphVis {
                                           File.separator + "style.css";
 
 
+    private JLabel infectionCounter;
+
+
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTOR
     ///////////////////////////////////////////////////////////////////////////
@@ -96,7 +103,7 @@ public class GraphVis {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC METHODS
+    // PROTECTED METHODS
     ///////////////////////////////////////////////////////////////////////////
 
 
@@ -105,7 +112,7 @@ public class GraphVis {
      *
      * @return GraphVis object
      */
-    public static GraphVis getInstance() {
+    protected static GraphVis getInstance() {
         return INSTANCE;
     }
 
@@ -116,7 +123,7 @@ public class GraphVis {
      *
      * @param g Graph to be displayed
      */
-    public void init(ExtendedGraph g) {
+    protected void init(ExtendedGraph g) {
         this.g = g;
     }
 
@@ -124,7 +131,12 @@ public class GraphVis {
     /**
      * Turn on visualization. Opens up window to actually see the graph.
      */
-    public void display() {
+    protected void display() {
+        infectionCounter = new JLabel("infectionCounter");
+        infectionCounter.setText("Infection Level: 1/" + g.getNumAgents());
+        infectionCounter.setFont(new Font("Courier New", Font.PLAIN, 30));
+        infectionCounter.setForeground(Color.WHITE);
+
         g.addAttribute(UI_QUALITY);
         g.addAttribute(UI_ANTIALIAS);
 
@@ -132,12 +144,13 @@ public class GraphVis {
 
         Viewer viewer = g.display(true);
         View view = viewer.getDefaultView();
+        view.add(infectionCounter);
         view.resizeFrame(1080, 720);
     }
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // PUBLIC METHODS - VISULAZATION
+    // PROTECTED METHODS - VISULAZATION
     ///////////////////////////////////////////////////////////////////////////
 
 
@@ -145,7 +158,7 @@ public class GraphVis {
      * Turn on curved edges (cubic-curve). Currently used for directed, doubly
      * linked chain graphs.
      */
-    public void curvedEdges() {
+    protected void curvedEdges() {
         g.addAttribute(UI_STYLESHEET, "edge { shape: cubic-curve; }");
     }
 
@@ -155,7 +168,7 @@ public class GraphVis {
      *
      * @param id The ID of the node to be updated
      */
-    public void updateNode(String id) {
+    protected void updateNode(String id) {
         ExtendedNode n = g.getNode(id);
         int n_numAgents = n.getAgentCount();
         String label = Integer.toString(n_numAgents);
@@ -182,7 +195,7 @@ public class GraphVis {
      * @param e Edge to be updated
      * @param traverse Is this update to denote a edge traversal?
      */
-    public void updateEdge(Edge e,  boolean traverse) {
+    protected void updateEdge(Edge e,  boolean traverse) {
         // Default setting for an edge
         int size = 1;
         int color = 0;
@@ -196,6 +209,15 @@ public class GraphVis {
         e.addAttribute(UI_COLOR, color);
 
         stepSleep();
+    }
+
+
+    /**
+     * Update the infection counter label.
+     */
+    protected void updateCounter() {
+        infectionCounter.setText("Infection Level:" + g.infectionCount() +
+                                 "/" + g.getNumAgents());
     }
 
 

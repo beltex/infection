@@ -23,7 +23,6 @@ TODO
 - Add d3.js or nvd3.js charts and report?
 - Figure out why gradle daemon prevents build becoming a background process
 - README gif file size large, makes page a bit slow
-- Add sim version to metadata.json
 - Where does most of the action occur? - Heat map
 - Vis label - infection counter
 - For Agent dist even spread, compute once
