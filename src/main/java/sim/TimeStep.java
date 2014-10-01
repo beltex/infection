@@ -341,7 +341,8 @@ public class TimeStep {
         // Update the view
         if (flag_vis) {
             gv.updateNode(n.getId());
-            gv.updateCounter();
+            gv.updateInfectionLabel();
+            gv.updateAllElectionCompleteLabel();
         }
     }
 
@@ -443,6 +444,14 @@ public class TimeStep {
 
                 electionCompleteCounter++;
                 flag_leaderElectionComplete = true;
+
+                // Update the view
+                if (flag_vis) {
+                    gv.updateLeaderElectionCompleteLabel(true);
+                    gv.updateAllElectionCompleteLabel();
+                }
+
+                // TODO: Is this needed here?
                 flag_electionComplete();
 
                 if (!flag_infectionComplete) {

@@ -23,19 +23,16 @@ package sim;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.DisplayMode;
 import java.awt.Font;
-import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,15 +49,14 @@ import org.pmw.tinylog.Logger;
 /**
  * Handles everything related to graph visualization.
  *
- * Note, not using GraphStream event based updates. This is a TODO list item.
- *
+ * NOTE: not using GraphStream event based updates. This is a TODO list item.
  */
 public class GraphVis {
 
 
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
     // PRIVATE ATTRIBUTES
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
 
 
     /**
@@ -78,32 +74,39 @@ public class GraphVis {
     /*
      * Attribute keys defined by GraphStream. See link below for reference.
      *
-     * http://graphstream-project.org/doc/FAQ/Attributes/Is-there-a-list-of-attributes-with-a-predefined-meaning-for-the-graph-viewer_1.0/
+     * http://graphstream-project.org/doc/FAQ/Attributes/
      */
-    private static final String UI_SIZE = "ui.size";
-    private static final String UI_LABEL = "ui.label";
-    private static final String UI_COLOR = "ui.color";
-    private static final String UI_QUALITY = "ui.quality";
-    private static final String UI_ANTIALIAS = "ui.antialias";
+    private static final String UI_SIZE       = "ui.size";
+    private static final String UI_LABEL      = "ui.label";
+    private static final String UI_COLOR      = "ui.color";
+    private static final String UI_QUALITY    = "ui.quality";
+    private static final String UI_ANTIALIAS  = "ui.antialias";
     private static final String UI_STYLESHEET = "ui.stylesheet";
 
 
     /**
-     * CSS file path to be applied to the graph
+     * CSS file path
      */
-    private static final String cssPath = System.getProperty("user.dir") +
+    private static final String CSSPath = System.getProperty("user.dir") +
                                           File.separator + "src" +
                                           File.separator + "main" +
                                           File.separator + "resources" +
                                           File.separator + "style.css";
 
-
+    /*
+     * Labels for stats panel
+     */
     private JLabel infectionCounter;
+    private JLabel leaderElectionComplete;
+    private JLabel allElectionComplete;
 
 
-    ///////////////////////////////////////////////////////////////////////////
+    private static final Font font = new Font("Courier New", Font.BOLD, 20);
+
+
+    //--------------------------------------------------------------------------
     // CONSTRUCTOR
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
 
 
     private GraphVis() {
@@ -116,9 +119,9 @@ public class GraphVis {
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
     // PROTECTED METHODS
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
 
 
     /**
@@ -146,10 +149,46 @@ public class GraphVis {
      * Turn on visualization. Opens up window to actually see the graph.
      */
     protected void display() {
+        // Get display size - handles multi-monitor
+        DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                            .getDefaultScreenDevice()
+                                            .getDisplayMode();
+
+        // JFrame measurements
+        Double width = Math.ceil(dm.getWidth() * 0.85);
+        Double height = Math.ceil(dm.getHeight() * 0.70);
+        Double vis_width = width * 0.8;
+        Double stat_width = width * 0.2;
+
+
+        // Infection label
         infectionCounter = new JLabel("infectionCounter");
-        infectionCounter.setText("Infection Level: 1/" + g.getNumAgents());
-        infectionCounter.setFont(new Font("Courier New", Font.PLAIN, 15));
+        infectionCounter.setFont(font);
         infectionCounter.setForeground(Color.WHITE);
+        infectionCounter.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        infectionCounter.setToolTipText("How many agents are infected by the " +
+                                                               "acutal leader?");
+        updateInfectionLabel();
+
+        // Leader believes election comp label
+        leaderElectionComplete = new JLabel("leaderElectionComplete");
+        leaderElectionComplete.setFont(font);
+        leaderElectionComplete.setForeground(Color.WHITE);
+        leaderElectionComplete.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        leaderElectionComplete.setToolTipText("Does the acutal leader believe "
+                                              + "election is complete?");
+        updateLeaderElectionCompleteLabel(false);
+
+
+        // All believe infec comp
+        allElectionComplete = new JLabel("allElectionComplete");
+        allElectionComplete.setFont(font);
+        allElectionComplete.setForeground(Color.WHITE);
+        allElectionComplete.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        allElectionComplete.setToolTipText("How many agents believe infection "
+                                           + "election is complete?");
+        updateAllElectionCompleteLabel();
+
 
         g.addAttribute(UI_QUALITY);
         g.addAttribute(UI_ANTIALIAS);
@@ -166,65 +205,43 @@ public class GraphVis {
         Layout layout = Layouts.newLayoutAlgorithm();
         viewer.enableAutoLayout(layout);
 
-
-        // Get display size - hanldes multi-monitor
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                               .getDefaultScreenDevice();
-        int width = gd.getDisplayMode().getWidth();
-        int height = gd.getDisplayMode().getHeight();
-        Double width_d = Math.ceil(width * 0.85);
-        Double height_d = Math.ceil(height * 0.70);
-
-
-        Double vis_width = width_d * 0.9;
-        Double vis_height = height_d;
-
         View view = viewer.getDefaultView();
-        //view.resizeFrame(880, 720);
-        //view.setSize(880, 720);
-        view.setPreferredSize(new Dimension(vis_width.intValue(), vis_height.intValue()));
+        view.setPreferredSize(new Dimension(vis_width.intValue(),
+                                            width.intValue()));
 
 
         // Stats Panel
         JPanel statsPanel = new JPanel();
         statsPanel.setBackground(Color.DARK_GRAY);
+        statsPanel.setLayout(new GridLayout(3, 1, 0, 0));
+
         //statsPanel.setSize(200, 720);
         //statsPanel.setMinimumSize(new Dimension(200, 720));
-        //statsPanel.setPreferredSize(new Dimension(200, 720));
+        statsPanel.setPreferredSize(new Dimension(stat_width.intValue(),
+                                                  height.intValue()));
         statsPanel.add(infectionCounter);
+        statsPanel.add(leaderElectionComplete);
+        statsPanel.add(allElectionComplete);
 
 
-
-
-
-        JFrame jframe = new JFrame();
-
-        jframe.setTitle("FIXME");
-        jframe.setSize(width_d.intValue(), height_d.intValue());
-
-        //jframe.setLayout(new GridLayout(1,2));
-        //jframe.setLayout(new BoxLayout());
+        // Main window
+        JFrame jframe = new JFrame("infection");
+        jframe.setSize(width.intValue(), height.intValue());
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.setLayout(new BorderLayout(0, 0));
 
-//        FlowLayout flow = new FlowLayout(FlowLayout.LEFT, 0, 0);
-//        jframe.setLayout(flow);
-
-        //jframe.add(view);
         jframe.add(view, BorderLayout.CENTER);
-        //jframe.add(statsPanel);
-        jframe.add(statsPanel, BorderLayout.LINE_END);
+        jframe.add(statsPanel, BorderLayout.LINE_START);
 
-        //jframe.pack();
+        // Should be done right before display
         jframe.setLocationRelativeTo(null);
         jframe.setVisible(true);
-
-        //jframe.setDefaultCloseOperation(operation);
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
     // PROTECTED METHODS - VISULAZATION
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
 
 
     /**
@@ -253,8 +270,10 @@ public class GraphVis {
 
         // Update the label, size, and colour of the node
         n.addAttribute(UI_LABEL, label);
-        n.addAttribute(UI_SIZE, ((double)n_numAgents/(double)g.getNumAgents()) * 100.0);
-        n.addAttribute(UI_COLOR, (double)n.infectionCount()/(double)n.getAgentCount());
+        n.addAttribute(UI_SIZE, ((double) n_numAgents /
+                                 (double) g.getNumAgents()) * 100.0);
+        n.addAttribute(UI_COLOR, (double) n.infectionCount() /
+                                 (double) n.getAgentCount());
 
         stepSleep();
     }
@@ -288,15 +307,34 @@ public class GraphVis {
     /**
      * Update the infection counter label.
      */
-    protected void updateCounter() {
-        infectionCounter.setText("Infection Level:" + g.infectionCount() +
-                                 "/" + g.getNumAgents());
+    protected void updateInfectionLabel() {
+        infectionCounter.setText("Infections: " + g.infectionCount() + "/"
+                                                + g.getNumAgents());
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////
+    /**
+     * Update the leader election complete label.
+     */
+    protected void updateLeaderElectionCompleteLabel(boolean flag) {
+        // TODO: Should call graph to get this
+        leaderElectionComplete.setText("Leader Believes: " + flag);
+    }
+
+
+    /**
+     * Update the all election complete label.
+     */
+    protected void updateAllElectionCompleteLabel() {
+        allElectionComplete.setText("Believers: " +
+                                    g.electionCompleteCount() + "/" +
+                                    g.getNumAgents());
+    }
+
+
+    //--------------------------------------------------------------------------
     // PRIVATE METHODS
-    ///////////////////////////////////////////////////////////////////////////
+    //--------------------------------------------------------------------------
 
 
     /**
@@ -310,22 +348,23 @@ public class GraphVis {
 
 
     /**
-     * Read in the CSS file and apply it to the graph
+     * Read in the CSS file and apply it to the graph.
      */
     private void applyCSS() {
         Scanner s = null;
         String css = "";
 
         try {
-            s = new Scanner(new File(cssPath));
+            s = new Scanner(new File(CSSPath));
 
             // Read in the CSS
             while (s.hasNext()) {
                 css = css.concat(s.nextLine());
             }
+
             g.addAttribute(UI_STYLESHEET, css);
         } catch (FileNotFoundException e) {
-            Logger.error(e, "CSS FILE NOT FOUND - {0}", cssPath);
+            Logger.error(e, "CSS FILE NOT FOUND - {0}", CSSPath);
         } finally {
             s.close();
         }
