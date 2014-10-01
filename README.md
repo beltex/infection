@@ -45,7 +45,7 @@ and experiment.
 - [Google Guava](https://code.google.com/p/guava-libraries/) (16.0.1)
 - [Google Gson](https://code.google.com/p/google-gson/) (2.2.4)
 - [JUnit](http://junit.org) (4.11)
-- [Gradle](http://www.gradle.org) (2.0)
+- [Gradle](http://www.gradle.org) (2.1)
 
 
 ## Setup & Use

@@ -22,14 +22,24 @@
 package sim;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.graphstream.graph.Edge;
+import org.graphstream.ui.layout.Layout;
+import org.graphstream.ui.layout.Layouts;
+import org.graphstream.ui.swingViewer.GraphRenderer;
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
 import org.pmw.tinylog.Logger;
@@ -142,10 +152,46 @@ public class GraphVis {
 
         applyCSS();
 
-        Viewer viewer = g.display(true);
+
+        // Instead of Viewer viewer = g.display(true);
+        // Based off AbstractGraph.display()
+        Viewer viewer = new Viewer(g,
+                                  Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+        GraphRenderer renderer = Viewer.newGraphRenderer();
+        viewer.addView(Viewer.DEFAULT_VIEW_ID, renderer, false);
+        Layout layout = Layouts.newLayoutAlgorithm();
+        viewer.enableAutoLayout(layout);
+
+
         View view = viewer.getDefaultView();
-        view.add(infectionCounter);
-        view.resizeFrame(1080, 720);
+        view.resizeFrame(880, 720);
+        view.setSize(880, 720);
+        view.setPreferredSize(new Dimension(880, 720));
+
+
+        // Stats Panel
+        JPanel statsPanel = new JPanel();
+        statsPanel.setBackground(Color.DARK_GRAY);
+        //statsPanel.setSize(200, 720);
+        //statsPanel.setMinimumSize(new Dimension(200, 720));
+        statsPanel.setPreferredSize(new Dimension(200, 720));
+        statsPanel.add(infectionCounter);
+
+
+
+        JFrame jframe = new JFrame();
+        jframe.setLocationRelativeTo(null);
+        jframe.setTitle("FIXME");
+        jframe.setSize(1080, 722);
+        jframe.setLayout(new GridLayout(1,2));
+        //FlowLayout flow = new FlowLayout(FlowLayout.LEFT, 0, 0);
+
+        //jframe.setLayout(flow);
+
+        jframe.add(view);
+        jframe.add(statsPanel);
+        jframe.setVisible(true);
+        //jframe.setDefaultCloseOperation(operation);
     }
 
 
