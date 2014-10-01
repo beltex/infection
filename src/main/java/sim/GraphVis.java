@@ -21,17 +21,21 @@
 
 package sim;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -144,7 +148,7 @@ public class GraphVis {
     protected void display() {
         infectionCounter = new JLabel("infectionCounter");
         infectionCounter.setText("Infection Level: 1/" + g.getNumAgents());
-        infectionCounter.setFont(new Font("Courier New", Font.PLAIN, 30));
+        infectionCounter.setFont(new Font("Courier New", Font.PLAIN, 15));
         infectionCounter.setForeground(Color.WHITE);
 
         g.addAttribute(UI_QUALITY);
@@ -163,10 +167,22 @@ public class GraphVis {
         viewer.enableAutoLayout(layout);
 
 
+        // Get display size - hanldes multi-monitor
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                               .getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+        Double width_d = Math.ceil(width * 0.85);
+        Double height_d = Math.ceil(height * 0.70);
+
+
+        Double vis_width = width_d * 0.9;
+        Double vis_height = height_d;
+
         View view = viewer.getDefaultView();
-        view.resizeFrame(880, 720);
-        view.setSize(880, 720);
-        view.setPreferredSize(new Dimension(880, 720));
+        //view.resizeFrame(880, 720);
+        //view.setSize(880, 720);
+        view.setPreferredSize(new Dimension(vis_width.intValue(), vis_height.intValue()));
 
 
         // Stats Panel
@@ -174,23 +190,34 @@ public class GraphVis {
         statsPanel.setBackground(Color.DARK_GRAY);
         //statsPanel.setSize(200, 720);
         //statsPanel.setMinimumSize(new Dimension(200, 720));
-        statsPanel.setPreferredSize(new Dimension(200, 720));
+        //statsPanel.setPreferredSize(new Dimension(200, 720));
         statsPanel.add(infectionCounter);
 
 
 
+
+
         JFrame jframe = new JFrame();
-        jframe.setLocationRelativeTo(null);
+
         jframe.setTitle("FIXME");
-        jframe.setSize(1080, 722);
-        jframe.setLayout(new GridLayout(1,2));
-        //FlowLayout flow = new FlowLayout(FlowLayout.LEFT, 0, 0);
+        jframe.setSize(width_d.intValue(), height_d.intValue());
 
-        //jframe.setLayout(flow);
+        //jframe.setLayout(new GridLayout(1,2));
+        //jframe.setLayout(new BoxLayout());
+        jframe.setLayout(new BorderLayout(0, 0));
 
-        jframe.add(view);
-        jframe.add(statsPanel);
+//        FlowLayout flow = new FlowLayout(FlowLayout.LEFT, 0, 0);
+//        jframe.setLayout(flow);
+
+        //jframe.add(view);
+        jframe.add(view, BorderLayout.CENTER);
+        //jframe.add(statsPanel);
+        jframe.add(statsPanel, BorderLayout.LINE_END);
+
+        //jframe.pack();
+        jframe.setLocationRelativeTo(null);
         jframe.setVisible(true);
+
         //jframe.setDefaultCloseOperation(operation);
     }
 
