@@ -155,6 +155,23 @@ public class ExtendedNode extends SingleNode {
     }
 
 
+    /**
+     * Get Agent with given AID.
+     *
+     * @param aid Agent in question.
+     * @return The Agent if found, null otherwise.
+     */
+    public Agent getAgentWithID(int aid) {
+        for (Agent a : agents) {
+            if (a.getLeaderAID() == aid) {
+                return a;
+            }
+        }
+
+        return null;
+    }
+
+
     public int getAgentCount() {
         return agents.size();
     }
