@@ -16,7 +16,6 @@ TODO
 - Simulation run dir - have additional counter label for easier cd
 - Check for self edges in a graph?
 - Complete and add scripts (make_movie.sh, etc)
-- Do package-info.java
 - Implement ExtendedEdge class - have edge weights
 - Should conversions & metFollowers of an agent reset if infected?
 - Look into OpenGL, DirectX, and Quartz Java system properties
@@ -24,6 +23,5 @@ TODO
 - Figure out why gradle daemon prevents build becoming a background process
 - README gif file size large, makes page a bit slow
 - Where does most of the action occur? - Heat map
-- Vis label - infection counter
 - For Agent dist even spread, compute once
 - Opt nextWeightedNode - iterator, node vs string id, etc

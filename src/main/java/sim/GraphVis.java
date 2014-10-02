@@ -165,16 +165,18 @@ public class GraphVis {
         infectionCounter = new JLabel("infectionCounter");
         infectionCounter.setFont(font);
         infectionCounter.setForeground(Color.WHITE);
-        infectionCounter.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        infectionCounter.setBorder(BorderFactory.
+                                   createLineBorder(Color.WHITE));
         infectionCounter.setToolTipText("How many agents are infected by the " +
-                                                               "acutal leader?");
+                                                              "acutal leader?");
         updateInfectionLabel();
 
         // Leader believes election comp label
         leaderElectionComplete = new JLabel("leaderElectionComplete");
         leaderElectionComplete.setFont(font);
         leaderElectionComplete.setForeground(Color.WHITE);
-        leaderElectionComplete.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        leaderElectionComplete.setBorder(BorderFactory.
+                                         createLineBorder(Color.WHITE));
         leaderElectionComplete.setToolTipText("Does the acutal leader believe "
                                               + "election is complete?");
         updateLeaderElectionCompleteLabel(false);
@@ -184,7 +186,8 @@ public class GraphVis {
         allElectionComplete = new JLabel("allElectionComplete");
         allElectionComplete.setFont(font);
         allElectionComplete.setForeground(Color.WHITE);
-        allElectionComplete.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        allElectionComplete.setBorder(BorderFactory.
+                                      createLineBorder(Color.WHITE));
         allElectionComplete.setToolTipText("How many agents believe infection "
                                            + "election is complete?");
         updateAllElectionCompleteLabel();
@@ -214,9 +217,6 @@ public class GraphVis {
         JPanel statsPanel = new JPanel();
         statsPanel.setBackground(Color.DARK_GRAY);
         statsPanel.setLayout(new GridLayout(3, 1, 0, 0));
-
-        //statsPanel.setSize(200, 720);
-        //statsPanel.setMinimumSize(new Dimension(200, 720));
         statsPanel.setPreferredSize(new Dimension(stat_width.intValue(),
                                                   height.intValue()));
         statsPanel.add(infectionCounter);
