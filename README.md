@@ -4,7 +4,7 @@ infection
 A simulator for studying infection algorithms for distributed agents with
 variable graph topologies.
 
-![alt text](http://beltex.github.io/infection/vis-1.gif)
+![alt text](docs/vis-1.gif)
 
 
 ### Problem
@@ -26,7 +26,7 @@ zombie apocalypse.
   **Patrick Dymond** & **Michael Jenkin**
 
 This work is based on the paper, [_Infection algorithms for distributed
-agents_](http://beltex.github.io/infection/paper-1.pdf), by
+agents_](docs/paper-1.pdf), by
 **Rahul Chaturvedi**, **Patrick Dymond**, and **Michael Jenkin**. In the paper,
 infection algorithms for leader election were presented for a collection of
 numbered agents with the ability to determine probabilistically when election
@@ -34,7 +34,10 @@ was completed.
 
 We extend the work by studying leader election using these infection algorithms,
 but now with variable graph topologies. To do so, a simulator is needed to test
-and experiment.
+and experiment. For more, see:
+
+- [_Efficient leader election among numbered agents_](docs/paper-2.pdf)
+- [_An Infection Algorithm For Leader Election: Experimental Results For A Chain_](docs/paper-3.pdf)
 
 
 ### Tech Stack
@@ -190,13 +193,7 @@ The metadata file contains overview information about the completed simulation.
 
 **Markers Chart - chart.png**
 
-![alt text](http://beltex.github.io/infection/chart-1.png)
-
-
-### References
-
-- [_Infection algorithms for distributed agents_](http://beltex.github.io/infection/paper-1.pdf)
-- [_Efficient leader election among numbered agents_](http://beltex.github.io/infection/paper-2.pdf)
+![alt text](docs/chart-1.png)
 
 
 ### License
